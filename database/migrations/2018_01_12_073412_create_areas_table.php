@@ -17,7 +17,7 @@ class CreateAreasTable extends Migration
             $table->increments('id');
 
             $table->string('name')->comment('区域的名字');
-            $table->text('description')->comment('区域的描述');
+            $table->string('description')->default('')->comment('区域的描述');
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
