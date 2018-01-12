@@ -3,7 +3,7 @@
 
 @section('menu_news_update')
     bs-success
-@section()
+@endsection
 
 @section('container')
     <div class="page-container ">
