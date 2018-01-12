@@ -22,4 +22,8 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
     Route::get('/login', 'HomeController@getLogin');
     Route::post('/login', 'HomeController@login');
 
+
+    // 权限管理
+    Route::resource('guards', 'GuardController');
+
 });

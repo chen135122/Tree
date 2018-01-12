@@ -45,6 +45,29 @@
                 </a>
                 <span class="bg-success icon-thumbnail"><i class="pg-home"></i></span>
             </li>
+            <li>
+                <a href="javascript:;"><span class="title">权限管理</span>
+                    <span class=" arrow"></span></a>
+                <span class="icon-thumbnail"><i class="pg-calender"></i></span>
+                <ul class="sub-menu">
+                    <li class="">
+                        <a href="calendar_month.html">用户列表</a>
+                        <span class="icon-thumbnail">U</span>
+                    </li>
+                    <li class="">
+                        <a href="{{ url('admin/guards') }}">区域管理</a>
+                        <span class="icon-thumbnail">G</span>
+                    </li>
+                    <li class="">
+                        <a href="calendar.html">角色管理</a>
+                        <span class="icon-thumbnail">R</span>
+                    </li>
+                    <li class="">
+                        <a href="calendar_lang.html">权限管理</a>
+                        <span class="icon-thumbnail">P</span>
+                    </li>
+                </ul>
+            </li>
             <li class="">
                 <a href="http://pages.revox.io/dashboard/latest/html/widget.html" class="detailed">
                     <span class="title">Widgets</span>
@@ -62,33 +85,6 @@
             <li class="">
                 <a href="social.html"><span class="title">Social</span></a>
                 <span class="icon-thumbnail"><i class="pg-social"></i></span>
-            </li>
-            <li>
-                <a href="javascript:;"><span class="title">Calendar</span>
-                    <span class=" arrow"></span></a>
-                <span class="icon-thumbnail"><i class="pg-calender"></i></span>
-                <ul class="sub-menu">
-                    <li class="">
-                        <a href="calendar.html">Basic</a>
-                        <span class="icon-thumbnail">c</span>
-                    </li>
-                    <li class="">
-                        <a href="calendar_lang.html">Languages</a>
-                        <span class="icon-thumbnail">L</span>
-                    </li>
-                    <li class="">
-                        <a href="calendar_month.html">Month</a>
-                        <span class="icon-thumbnail">M</span>
-                    </li>
-                    <li class="">
-                        <a href="calendar_lazy.html">Lazy load</a>
-                        <span class="icon-thumbnail">La</span>
-                    </li>
-                    <li class="">
-                        <a href="http://pages.revox.io/dashboard/2.1.0/doc/#calendar" target="_blank">Documentation</a>
-                        <span class="icon-thumbnail">D</span>
-                    </li>
-                </ul>
             </li>
             <li class="">
                 <a href="builder.html">
