@@ -19,5 +19,7 @@ Route::get('/', function () {
 Route::prefix('admin')->namespace('Admin')->group(function() {
 
     Route::get('/', 'HomeController@index');
+    Route::get('/login', 'HomeController@getLogin');
+    Route::post('/login', 'HomeController@login');
 
 });
