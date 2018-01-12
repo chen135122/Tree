@@ -38,6 +38,8 @@ class InstallAdmin extends Command
     public function handle()
     {
         $this->call('key:generate');
+        // 删除所有表
+        $this->call('migrate:fresh');
         // 迁移文件
         $this->call('migrate');
         // 填充数据库
