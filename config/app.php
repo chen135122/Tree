@@ -77,8 +77,10 @@ return [
     | to any of the locales which will be supported by the application.
     |
     */
-
-    'locale' => 'en',
+    'site_name'  => env('SITE_NAME','Laravel'),
+    'site_logo' => env('SITE_LOGO','/img/logo.png'),
+    'site_ico' => env('SITE_ICO','/img/logo.ico'),
+    'locale' => env('LOCALE','en'),
 
     /*
     |--------------------------------------------------------------------------
