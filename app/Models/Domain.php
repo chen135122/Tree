@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Models\Role;
 
-class Guard extends Model
+class Domain extends Model
 {
     protected $fillable = ['name', 'description'];
 

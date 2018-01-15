@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\Guard;
+
+use App\Models\Domain;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -16,15 +17,15 @@ class RolesTableSeeder extends Seeder
     {
         $roles = [
             [
-                'role' => ['name' => '超级管理员', 'guard_id' => Guard::inRandomOrder()->first()->id],
+                'role' => ['name' => '超级管理员'],
                 'ids' => Permission::all()->pluck('id')
             ],
             [
-                'role' => ['name' => '管理员', 'guard_id' => Guard::inRandomOrder()->first()->id],
+                'role' => ['name' => '管理员'],
                 'ids' => Permission::inRandomOrder()->first()->id
             ],
             [
-                'role' => ['name' => '没用的', 'guard_id' => Guard::inRandomOrder()->first()->id],
+                'role' => ['name' => '没用的'],
                 'ids' => []
             ],
         ];

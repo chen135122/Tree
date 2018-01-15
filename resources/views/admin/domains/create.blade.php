@@ -31,7 +31,7 @@
                                             </div>
                                         @endif
 
-                                        <form action="{{ route('guards.store') }}" method="post">
+                                        <form action="{{ route('domains.store') }}" method="post">
                                             {{ csrf_field() }}
                                             <div class="form-group">
                                                 <label for="position" class="col-sm-3 control-label">区域名字</label>

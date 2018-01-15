@@ -34,6 +34,6 @@ class User extends Authenticatable
      */
     public function guards()
     {
-        return $this->belongsToMany(Guard::class);
+        return $this->belongsToMany(Domain::class);
     }
 }

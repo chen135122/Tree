@@ -55,7 +55,7 @@
                         <span class="icon-thumbnail">U</span>
                     </li>
                     <li class="">
-                        <a href="{{ route('guards.index') }}">区域管理</a>
+                        <a href="{{ route('domains.index') }}">区域管理</a>
                         <span class="icon-thumbnail">G</span>
                     </li>
                     <li class="">

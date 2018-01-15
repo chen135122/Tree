@@ -27,7 +27,7 @@
                                             <a class="reload" href="javascript:;"></a>
                                             <a class="remove" href="javascript:;"></a>
                                         </div>
-                                        <a href="{{ route('guards.create') }}" class="btn btn-info btn-cons m-b-10" type="button"><i class="fs-14 pg-plus"></i><span class="bold">添加</span>
+                                        <a href="{{ route('domains.create') }}" class="btn btn-info btn-cons m-b-10" type="button"><i class="fs-14 pg-plus"></i><span class="bold">添加</span>
                                         </a>
                                     </div>
                                     <div class="panel-body">
@@ -46,15 +46,15 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach ($guards as $guard)
+                                                @foreach ($domains as $domain)
                                                     <tr>
-                                                        <td class="v-align-middle semi-bold">{{ $guard->name }}</td>
-                                                        <td class="v-align-middle">{{ $guard->description }}</td>
-                                                        <td class="v-align-middle semi-bold">{{ $guard->created_at }}</td>
-                                                        <td class="v-align-middle semi-bold">{{ $guard->updated_at }}</td>
+                                                        <td class="v-align-middle semi-bold">{{ $domain->name }}</td>
+                                                        <td class="v-align-middle">{{ $domain->description }}</td>
+                                                        <td class="v-align-middle semi-bold">{{ $domain->created_at }}</td>
+                                                        <td class="v-align-middle semi-bold">{{ $domain->updated_at }}</td>
                                                         <td class="v-align-middle semi-bold">
-                                                            <a href="{{ route('guards.edit', ['guard' => $guard]) }}"  class="btn btn-primary ">编辑</a>
-                                                            <button data-id="{{ $guard->id }}" class="btn btn-danger delete_btn">删除</button>
+                                                            <a href="{{ route('domains.edit', ['domain' => $domain]) }}"  class="btn btn-primary ">编辑</a>
+                                                            <button data-id="{{ $domain->id }}" class="btn btn-danger delete_btn">删除</button>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -104,7 +104,7 @@
 
 @section('script')
     <script>
-        var delete_url = "{{ route('guards.index') }}";
+        var delete_url = "{{ route('domains.index') }}";
         $('.delete_btn').click(function(){
             var id = $(this).data('id');
             var url = delete_url + '/' + id;
