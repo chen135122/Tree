@@ -27,7 +27,7 @@
                                             <a class="reload" href="javascript:;"></a>
                                             <a class="remove" href="javascript:;"></a>
                                         </div>
-                                        <a href="{{ route('guards.create') }}" class="btn btn-info btn-cons m-b-10" type="button"><i class="fs-14 pg-plus"></i><span class="bold">添加</span>
+                                        <a href="{{ route('roles.create') }}" class="btn btn-info btn-cons m-b-10" type="button"><i class="fs-14 pg-plus"></i><span class="bold">添加</span>
                                         </a>
                                     </div>
                                     <div class="panel-body">
@@ -39,7 +39,6 @@
                                                                         Comman Practice Followed
                                                                         -->
                                                     <th style="width:20%">角色名</th>
-                                                    <th style="width:20%">角色的描述</th>
                                                     <th style="width:20%">创建时间</th>
                                                     <th style="width:20%">修改时间</th>
                                                     <th style="width:20%">操作</th>
@@ -49,11 +48,10 @@
                                                 @foreach ($roles as $role)
                                                     <tr>
                                                         <td class="v-align-middle semi-bold">{{ $role->name }}</td>
-                                                        <td class="v-align-middle">{{ $role->description }}</td>
                                                         <td class="v-align-middle semi-bold">{{ $role->created_at }}</td>
                                                         <td class="v-align-middle semi-bold">{{ $role->updated_at }}</td>
                                                         <td class="v-align-middle semi-bold">
-                                                            <a href="{{ route('guards.edit', ['guard' => $role]) }}"  class="btn btn-primary ">编辑</a>
+                                                            <a href="{{ route('roles.edit', ['roles' => $role]) }}"  class="btn btn-primary ">编辑</a>
                                                             <button data-id="{{ $role->id }}" class="btn btn-danger delete_btn">删除</button>
                                                         </td>
                                                     </tr>
@@ -104,7 +102,7 @@
 
 @section('script')
     <script>
-        var delete_url = "{{ route('guards.index') }}";
+        var delete_url = "{{ route('roles.index') }}";
         $('.delete_btn').click(function(){
             var id = $(this).data('id');
             var url = delete_url + '/' + id;

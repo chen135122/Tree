@@ -12,9 +12,8 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::latest()->with('guard')->get();
+        $roles = Role::latest()->get();
 
-        dd($roles);
         return view('admin.roles.index', compact('roles'));
     }
 
