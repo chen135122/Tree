@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Mail\ForgetPassword;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -40,4 +42,15 @@ class HomeController extends Controller
     public function test(){
         return Hash::make('123456');
     }
+
+    public function forgetPassword(){
+        return view('admin.home.forget');
+    }
+    public function forgetPasswordPost(Request $request){
+        $user = User::where('email',$request->get('email'))->first();
+        Mail::to($user)->send(new ForgetPassword($user));
+//        dd($user->remember_token);
+//        dd($request->all());
+    }
+
 }

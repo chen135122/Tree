@@ -43,53 +43,33 @@
         <img src="/assets/img/demo/new-york-city-buildings-sunrise-morning-hd-wallpaper.jpg" data-src="/assets/img/demo/new-york-city-buildings-sunrise-morning-hd-wallpaper.jpg" data-src-retina="/assets/img/demo/new-york-city-buildings-sunrise-morning-hd-wallpaper.jpg" alt="" class="lazy">
         <!-- END Background Pic-->
         <!-- START Background Caption-->
-        {{--<div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">--}}
-            {{--<h2 class="semi-bold text-white">--}}
-                {{--Pages make it easy to enjoy what matters the most in the life</h2>--}}
-            {{--<p class="small">--}}
-                {{--images Displayed are solely for representation purposes only, All work copyright of respective owner, otherwise © 2013-2014 REVOX.--}}
-            {{--</p>--}}
-        {{--</div>--}}
-        <!-- END Background Caption-->
+    {{--<div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">--}}
+    {{--<h2 class="semi-bold text-white">--}}
+    {{--Pages make it easy to enjoy what matters the most in the life</h2>--}}
+    {{--<p class="small">--}}
+    {{--images Displayed are solely for representation purposes only, All work copyright of respective owner, otherwise © 2013-2014 REVOX.--}}
+    {{--</p>--}}
+    {{--</div>--}}
+    <!-- END Background Caption-->
     </div>
     <!-- END Login Background Pic Wrapper-->
     <!-- START Login Right Container-->
     <div class="login-container bg-white">
         <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-40">
             <img src="{{ config('app.site_logo') }}" alt="logo" data-src="{{ config('app.site_logo') }}" data-src-retina="{{ config('app.site_logo') }}" width="104" height="50">
-            <p class="p-t-35">{{trans('pages.button.sign_in')}}</p>
+            <p class="p-t-35">忘记密码</p>
             <!-- START Login Form -->
-            <form id="form-login" class="p-t-15" role="form" action="/admin/login" method="post">
+            <form id="form-login" class="p-t-15" role="form" action="/admin/forgetPassword" method="post">
                 <!-- START Form Control-->
                 {{ csrf_field() }}
                 <div class="form-group form-group-default">
-                    <label>{{trans('pages.button.login')}}</label>
+                    <label>邮箱</label>
                     <div class="controls">
-                        <input type="text" name="email" placeholder="{{trans('pages.table.user_name')}}" class="form-control" required>
+                        <input type="email" name="email" placeholder="email" class="form-control" required>
                     </div>
                 </div>
                 <!-- END Form Control-->
-                <!-- START Form Control-->
-                <div class="form-group form-group-default">
-                    <label>{{trans('pages.table.password')}}</label>
-                    <div class="controls">
-                        <input type="password" class="form-control" name="password" placeholder="{{trans('pages.table.password')}}" required>
-                    </div>
-                </div>
-                <!-- START Form Control-->
-                <div class="row">
-                    {{--<div class="col-md-6 no-padding">--}}
-                        {{--<div class="checkbox ">--}}
-                            {{--<input type="checkbox" value="1" id="checkbox1">--}}
-                            {{--<label for="checkbox1">Keep Me Signed in</label>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                    <div class="col-md-6 no-padding">
-                        <a href="/admin/forgetPassword" class="text-info small">忘记密码?</a>
-                    </div>
-                </div>
-                <!-- END Form Control-->
-                <button class="btn btn-primary btn-cons m-t-10" type="submit">{{trans('pages.button.sign_in')}}</button>
+                <button class="btn btn-primary btn-cons m-t-10" type="submit">重置密码</button>
             </form>
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
@@ -100,22 +80,22 @@
                     </ul>
                 </div>
             @endif
-            <!--END Login Form-->
+        <!--END Login Form-->
             {{--<div class="pull-bottom sm-pull-bottom">--}}
-                {{--<div class="m-b-30 p-r-80 sm-m-t-20 sm-p-r-15 sm-p-b-20 clearfix">--}}
-                    {{--<div class="col-sm-3 col-md-2 no-padding">--}}
-                        {{--<img alt="" class="m-t-5" data-src="/img/logo.png" data-src-retina="/img/logo.png" height="50" src="/img/logo.png" width="104">--}}
-                    {{--</div>--}}
-                    {{--<div class="col-sm-9 no-padding m-t-10">--}}
-                        {{--<p>--}}
-                            {{--<small>--}}
-                                {{--Create a pages account. If you have a facebook account, log into it for this--}}
-                                {{--process. Sign in with <a href="#" class="text-info">Facebook</a> or <a href="#"--}}
-                                                                                                       {{--class="text-info">Google</a>--}}
-                            {{--</small>--}}
-                        {{--</p>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
+            {{--<div class="m-b-30 p-r-80 sm-m-t-20 sm-p-r-15 sm-p-b-20 clearfix">--}}
+            {{--<div class="col-sm-3 col-md-2 no-padding">--}}
+            {{--<img alt="" class="m-t-5" data-src="/img/logo.png" data-src-retina="/img/logo.png" height="50" src="/img/logo.png" width="104">--}}
+            {{--</div>--}}
+            {{--<div class="col-sm-9 no-padding m-t-10">--}}
+            {{--<p>--}}
+            {{--<small>--}}
+            {{--Create a pages account. If you have a facebook account, log into it for this--}}
+            {{--process. Sign in with <a href="#" class="text-info">Facebook</a> or <a href="#"--}}
+            {{--class="text-info">Google</a>--}}
+            {{--</small>--}}
+            {{--</p>--}}
+            {{--</div>--}}
+            {{--</div>--}}
             {{--</div>--}}
         </div>
     </div>
@@ -276,11 +256,5 @@
 <script src="/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
 <!-- END VENDOR JS -->
 <script src="/pages/js/pages.min.js"></script>
-<script>
-    $(function()
-    {
-        $('#form-login').validate()
-    })
-</script>
 </body>
 </html>
