@@ -25,7 +25,8 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
     Route::get('/forgetPassword','HomeController@forgetPassword');
     Route::post('/forgetPassword','HomeController@forgetPasswordPost');
 
-    // 区域管理
+
+    Route::resource('users', 'UserController');
     Route::resource('domains', 'DomainController', ['except' => 'show']);
     Route::resource('roles', 'RoleController', ['except' => 'show']);
 
