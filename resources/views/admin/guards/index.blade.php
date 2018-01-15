@@ -19,7 +19,7 @@
                                 <!-- START PANEL -->
                                 <div class="panel panel-transparent">
                                     <div class="panel-heading">
-                                        <div class="panel-title">区域管理
+                                        <div class="panel-title"><h2>区域管理</h2>
                                         </div>
                                         <div class="tools">
                                             <a class="collapse" href="javascript:;"></a>
@@ -27,6 +27,8 @@
                                             <a class="reload" href="javascript:;"></a>
                                             <a class="remove" href="javascript:;"></a>
                                         </div>
+                                        <a href="{{ route('guards.create') }}" class="btn btn-info btn-cons m-b-10" type="button"><i class="fs-14 pg-plus"></i><span class="bold">添加</span>
+                                        </a>
                                     </div>
                                     <div class="panel-body">
                                         <div class="table-responsive">

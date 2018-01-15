@@ -31,16 +31,17 @@ class GuardController extends Controller
 
     public function store(GuardRequest $request)
     {
-        $data = $request->only(['name', 'description', 'user_id']);
+        $data = $request->only(['name', 'description']);
 
         Guard::create($data);
 
-        return back()->with('status', '创建成功');
+        return back()->withErrors(['name' => '修改成功']);
     }
 
 
     public function show(Guard $guard)
     {
+        dd($guard);
         return view('admin.guards.show', compact('guard'));
     }
 
@@ -53,11 +54,10 @@ class GuardController extends Controller
 
     public function update(GuardRequest $request, Guard $guard)
     {
-        $data = $request->only(['name', 'description', 'user_id']);
-
+        $data = $request->only(['name', 'description']);
         $guard->update($data);
 
-        return back()->with('status', '修改成功');
+        return back()->withErrors(['name' => '修改成功']);
     }
 
     public function destroy(Guard $guard)
