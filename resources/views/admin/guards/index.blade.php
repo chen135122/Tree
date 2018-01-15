@@ -213,31 +213,51 @@
                 <!-- START JUMBOTRON -->
                 <div class="jumbotron lg vertical center bg-white column-w4 vertical-bottom" data-pages="parallax">
                     <div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20 full-height">
-                        <div class="inner text-center p-t-50 m-t-80 full-height">
-                            <img class="sm-image-responsive-height" src="assets/img/demo/icons_hero.png" data-src="assets/img/demo/icons_hero.png" data-src-retina="assets/img/demo/icons_hero2x.png" alt="" width="612" height="69">
-                            <div class="m-b-10">
-                                <h2 class=" p-t-10 inline">Carefully hand crafted icons exclusively only on pages</h2>
-                            </div>
-                            <div class="input-group transparent col-md-4 center-margin">
-                                <input type="text" class="form-control" placeholder="Search for icon - home, camera, world etc." id="icon-filter" name="icon-filter">
-                                <span class="input-group-addon ">
-                                <i class="pg-search"></i>
-                            </span>
-                            </div>
-                            <div class="m-t-20 m-b-40 ">
-                                <p class="small hint-text">Pages Pixel perfect icons / Font awesome / line icons</p>
-                            </div>
-                            <div class="input-group col-md-4 center-margin ">
-                                <div class="col-md-7 b-grey b-r">
-                                    <p class="hinted-text text-left p-t-15 p-b-t-15">Built upon a 14x14px Grid System.
-                                        <br>Vector Font icons</p>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- START PANEL -->
+                                <div class="panel panel-transparent">
+                                    <div class="panel-heading">
+                                        <div class="panel-title">区域管理
+                                        </div>
+                                        <div class="tools">
+                                            <a class="collapse" href="javascript:;"></a>
+                                            <a class="config" data-toggle="modal" href="#"></a>
+                                            <a class="reload" href="javascript:;"></a>
+                                            <a class="remove" href="javascript:;"></a>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-condensed" id="condensedTable">
+                                                <thead>
+                                                <tr>
+                                                    <!-- NOTE * : Inline Style Width For Table Cell is Required as it may differ from user to user
+                                                                        Comman Practice Followed
+                                                                        -->
+                                                    <th style="width:30%">区域名</th>
+                                                    <th style="width:30%">区域的描述</th>
+                                                    <th style="width:20%">创建时间</th>
+                                                    <th style="width:20%">修改时间</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td class="v-align-middle semi-bold">First tour</td>
+                                                    <td class="v-align-middle">Simple but not simpler</td>
+                                                    <td class="v-align-middle semi-bold">Wonders can be true. Believe in your dreams!</td>
+                                                    <td class="v-align-middle semi-bold">Wonders can be true. Believe in your dreams!</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-5">
-                                    <p class="hinted-text text-left p-t-15 p-b-t-15 p-l-10">Svg files available
-                                        <br>Pixel Perfect</p>
-                                </div>
+                                <!-- END PANEL -->
                             </div>
                         </div>
+
                     </div>
                 </div>
 
