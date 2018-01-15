@@ -12,7 +12,10 @@ class GuardController extends Controller
 
     public function index()
     {
-        return view('admin.guards.index');
+        $guards = Guard::latest()->get();
+
+
+        return view('admin.guards.index', compact('guards'));
     }
 
     /**
@@ -59,6 +62,7 @@ class GuardController extends Controller
 
     public function destroy(Guard $guard)
     {
+        // 删除之前验证是否用用户存在这个部门
         $guard->delete();
 
         return back()->with('status', '删除成功');

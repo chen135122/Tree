@@ -236,21 +236,35 @@
                                                     <!-- NOTE * : Inline Style Width For Table Cell is Required as it may differ from user to user
                                                                         Comman Practice Followed
                                                                         -->
-                                                    <th style="width:30%">区域名</th>
-                                                    <th style="width:30%">区域的描述</th>
+                                                    <th style="width:20%">区域名</th>
+                                                    <th style="width:20%">区域的描述</th>
                                                     <th style="width:20%">创建时间</th>
                                                     <th style="width:20%">修改时间</th>
+                                                    <th style="width:20%">操作</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <td class="v-align-middle semi-bold">First tour</td>
-                                                    <td class="v-align-middle">Simple but not simpler</td>
-                                                    <td class="v-align-middle semi-bold">Wonders can be true. Believe in your dreams!</td>
-                                                    <td class="v-align-middle semi-bold">Wonders can be true. Believe in your dreams!</td>
-                                                </tr>
+                                                @foreach ($guards as $guard)
+                                                    <tr>
+                                                        <td class="v-align-middle semi-bold">{{ $guard->name }}</td>
+                                                        <td class="v-align-middle">{{ $guard->description }}</td>
+                                                        <td class="v-align-middle semi-bold">{{ $guard->created_at }}</td>
+                                                        <td class="v-align-middle semi-bold">{{ $guard->updated_at }}</td>
+                                                        <td class="v-align-middle semi-bold">
+                                                            <a href="{{ route('guards.edit', ['guard' => $guard]) }}"  class="btn btn-primary ">编辑</a>
+                                                            <button data-id="{{ $guard->id }}" class="btn btn-danger delete_btn">删除</button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                                 </tbody>
                                             </table>
+
+
+                                            <form method="post" id="delete_form">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                            </form>
+
                                         </div>
                                     </div>
                                 </div>
@@ -284,4 +298,15 @@
         </div>
         <!-- END PAGE CONTENT WRAPPER -->
     </div>
+@endsection
+
+@section('script')
+    <script>
+        var delete_url = "{{ route('guards.index') }}";
+        $('.delete_btn').click(function(){
+            var id = $(this).data('id');
+            var url = delete_url + '/' + id;
+            $('#delete_form').attr('action', url).submit();
+        });
+    </script>
 @endsection
