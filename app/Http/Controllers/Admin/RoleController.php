@@ -19,35 +19,37 @@ class RoleController extends Controller
 
     public function create()
     {
-        $permissions = Permission::where('guard_name', 'admin')->get();
+        $permissions = Permission::all();
+
         return view('admin.roles.create', compact('permissions'));
     }
 
     public function store(RoleRequest $request)
     {
-        $roleData = $request->only(['name', 'guard_name']);
+        $roleData = $request->only(['name']);
 
         $role = Role::create($roleData);
+        // 赋予角色权限
+        $role->permissions()->attach($request->input('permission_id'));
 
-        array_map(function($item) use ($role){
-            $role->givePermissionTo($item['name']);
-        }, $request->input('permission'));
-
-        return back()->with('status', '创建角色成功');
+        return back()->withErrors(['name' => '创建角色成功']);
     }
 
 
     public function edit(Role $role)
     {
         $permissions = Permission::all();
+
         return view('admin.roles.edit', compact('role', 'permissions'));
     }
 
     public function update(RoleRequest $request, Role $role)
     {
-        $role->update($request->only(['name', 'guard_name']));
-        $role->syncPermissions($request->input('permission'));
-        return back()->with('status', '修改角色成功');
+        $role->update($request->only('name'));
+        // 赋予角色权限
+        $role->permissions()->sync($request->input('permission_id'));
+
+        return back()->withErrors(['name' => '修改角色成功']);
     }
 
     public function destroy(Role $role)

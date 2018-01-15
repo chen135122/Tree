@@ -27,8 +27,8 @@
                                             <a class="reload" href="javascript:;"></a>
                                             <a class="remove" href="javascript:;"></a>
                                         </div>
-                                        <a href="{{ route('roles.create') }}" class="btn btn-info btn-cons m-b-10" type="button"><i class="fs-14 pg-plus"></i><span class="bold">添加</span>
-                                        </a>
+                                        <button id="add_role" class="btn btn-info btn-cons m-b-10" type="button"><i class="fs-14 pg-plus"></i><span class="bold">添加</span>
+                                        </button>
                                     </div>
                                     <div class="panel-body">
                                         <div class="table-responsive">
@@ -51,7 +51,7 @@
                                                         <td class="v-align-middle semi-bold">{{ $role->created_at }}</td>
                                                         <td class="v-align-middle semi-bold">{{ $role->updated_at }}</td>
                                                         <td class="v-align-middle semi-bold">
-                                                            <a href="{{ route('roles.edit', ['roles' => $role]) }}"  class="btn btn-primary ">编辑</a>
+                                                            <button data-url="{{ route('roles.edit', ['roles' => $role]) }}"  class="btn btn-primary edit_btn">编辑</button>
                                                             <button data-id="{{ $role->id }}" class="btn btn-danger delete_btn">删除</button>
                                                         </td>
                                                     </tr>
@@ -108,5 +108,33 @@
             var url = delete_url + '/' + id;
             $('#delete_form').attr('action', url).submit();
         });
+
+        // 编辑角色
+        $('.edit_btn').on('click', function(){
+            var url = $(this).data('url');
+
+            layer.open({
+                type: 2,
+                title: '角色编辑',
+                maxmin: true,
+                shadeClose: true, //点击遮罩关闭层
+                area : ['800px' , '520px'],
+                content: url
+            });
+        });
+
+        // 添加角色
+        var add_url = "{{ route('roles.create') }}";
+        $('#add_role').click(function(){
+            layer.open({
+                type: 2,
+                title: '添加角色',
+                maxmin: true,
+                shadeClose: true, //点击遮罩关闭层
+                area : ['800px' , '520px'],
+                content: add_url
+            });
+        });
+
     </script>
 @endsection
