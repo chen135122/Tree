@@ -24,13 +24,14 @@ class RoleController extends Controller
 
     public function store(RoleRequest $request)
     {
-        $roleData = $request->only('name');
-        // 此处需要修改 TODO
-        $roleData['guard_name'] = 'admin';
+        $roleData = $request->only(['name', 'guard_name']);
+
         $role = Role::create($roleData);
+
         array_map(function($item) use ($role){
             $role->givePermissionTo($item['name']);
         }, $request->input('permission'));
+
         return back()->with('status', '创建角色成功');
     }
 
@@ -41,13 +42,13 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        $permissions = Permission::where('guard_name', 'admin')->get();
+        $permissions = Permission::all();
         return view('admin.roles.edit', compact('role', 'permissions'));
     }
 
     public function update(RoleRequest $request, Role $role)
     {
-        $role->update($request->only('name'));
+        $role->update($request->only(['name', 'guard_name']));
         $role->syncPermissions($request->input('permission'));
         return back()->with('status', '修改角色成功');
     }
