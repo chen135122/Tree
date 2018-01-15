@@ -38,14 +38,6 @@ class GuardController extends Controller
         return back()->withErrors(['name' => '修改成功']);
     }
 
-
-    public function show(Guard $guard)
-    {
-        dd($guard);
-        return view('admin.guards.show', compact('guard'));
-    }
-
-
     public function edit(Guard $guard)
     {
         return view('admin.guards.edit', compact('guard'));

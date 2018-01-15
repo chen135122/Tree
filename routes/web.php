@@ -24,7 +24,7 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
     Route::get('/test', 'HomeController@test');
 
 
-    // 权限管理
-    Route::resource('guards', 'GuardController');
+    // 区域管理
+    Route::resource('guards', 'GuardController', ['except' => 'show']);
 
 });
