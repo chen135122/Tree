@@ -27,4 +27,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    /**
+     * 一个用户是多个区域，
+     */
+    public function guards()
+    {
+        return $this->belongsToMany(Guard::class);
+    }
 }
