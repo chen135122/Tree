@@ -19,7 +19,6 @@ class PermissionsTableSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            $permission['guard_name'] = \App\Models\Guard::inRandomOrder()->first()->id;
             Permission::create($permission);
         }
     }

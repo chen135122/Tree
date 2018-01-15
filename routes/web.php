@@ -27,5 +27,6 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
 
     // 区域管理
     Route::resource('guards', 'GuardController', ['except' => 'show']);
+    Route::resource('roles', 'RoleController', ['except' => 'show']);
 
 });

@@ -26,7 +26,11 @@ class CreatePermissionTables extends Migration
         Schema::create($tableNames['roles'], function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('guard_name');
+            $table->string('guard_name')->comment('此字段不可信，请使用guard_id外键查询');
+
+            $table->integer('guard_id')->unsigned();
+            $table->foreign('guard_id')->references('id')->on('guards');
+
             $table->timestamps();
         });
 

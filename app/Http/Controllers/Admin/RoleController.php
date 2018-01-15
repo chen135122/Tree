@@ -12,7 +12,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::where('guard_name', 'admin')->get();
+        $roles = Role::latest()->get();
         return view('admin.roles.index', compact('roles'));
     }
 
@@ -35,10 +35,6 @@ class RoleController extends Controller
         return back()->with('status', '创建角色成功');
     }
 
-    public function show(Role $role)
-    {
-        return $role;
-    }
 
     public function edit(Role $role)
     {

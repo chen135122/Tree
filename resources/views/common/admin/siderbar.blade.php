@@ -55,11 +55,11 @@
                         <span class="icon-thumbnail">U</span>
                     </li>
                     <li class="">
-                        <a href="{{ url('admin/guards') }}">区域管理</a>
+                        <a href="{{ route('guards.index') }}">区域管理</a>
                         <span class="icon-thumbnail">G</span>
                     </li>
                     <li class="">
-                        <a href="calendar.html">角色管理</a>
+                        <a href="{{ route('roles.index') }}">角色管理</a>
                         <span class="icon-thumbnail">R</span>
                     </li>
                     <li class="">
