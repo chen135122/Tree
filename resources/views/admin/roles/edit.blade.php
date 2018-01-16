@@ -1,10 +1,10 @@
-@extends('layouts.admin')
+@extends('layouts.form')
 
 
 @section('container')
     <div class="page-container ">
         <!-- START HEADER -->
-        @include('common.admin.top')
+
         <!-- END HEADER -->
         <!-- START PAGE CONTENT WRAPPER -->
         <div class="page-content-wrapper ">
@@ -19,7 +19,7 @@
                                 <!-- START PANEL -->
                                 <div class="panel panel-transparent">
                                     <div class="panel-heading">
-                                        <div class="panel-title">区域管理
+                                        <div class="panel-title">角色编辑
                                         </div>
                                     </div>
                                     <div class="panel-body">
@@ -31,18 +31,28 @@
                                             </div>
                                         @endif
 
-                                        <form action="{{ route('guards.store') }}" method="post">
+                                        <form action="{{ route('roles.update', ['role' => $role]) }}" method="post">
                                             {{ csrf_field() }}
+                                            {{ method_field('PUT') }}
                                             <div class="form-group">
-                                                <label for="position" class="col-sm-3 control-label">区域名字</label>
+                                                <label for="position" class="col-sm-3 control-label">角色名字</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="name" placeholder="区域名字" value="{{ old('name') }}" required>
+                                                    <input type="text" class="form-control" name="name" placeholder="角色名字" value="{{ $role->name }}" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="name" class="col-sm-3 control-label">描述</label>
+                                                <label for="name" class="col-sm-3 control-label">权限列表</label>
                                                 <div class="col-sm-9">
-                                                    <textarea class="form-control" name="description" rows="6" placeholder="请填写描述">{{ old('description') }}</textarea>
+                                                    @foreach ($permissions as $permission)
+                                                        <div class="checkbox check-success checkbox-circle" style="display: inline-block">
+                                                            <input type="checkbox" name="permission_id[]"
+                                                                   value="{{ $permission->id }}"
+                                                                   id="{{ md5($permission->name) }}"
+                                                                   {{ $role->hasPermissionTo($permission->name)?'checked' : '' }}
+                                                            >
+                                                            <label for="{{ md5($permission->name) }}">{{ $permission->name }}</label>
+                                                        </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                             <br>
@@ -52,7 +62,7 @@
 
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <button class="btn btn-success" type="submit">添加</button>
+                                                    <button class="btn btn-success" type="submit">修改</button>
                                                 </div>
                                             </div>
                                         </form>

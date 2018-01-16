@@ -75,4 +75,9 @@ class HomeController extends Controller
 //        dd($request->all());
     }
 
+    public function upload(Request $request){
+//        dd($request->file('upload'));
+        $request->file('upload')->store('files');
+//        dd($request->all());
+    }
 }

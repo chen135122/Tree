@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGuardsTable extends Migration
+class CreateDomainsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateGuardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('guards', function (Blueprint $table) {
+        Schema::create('domains', function (Blueprint $table) {
             $table->increments('id');
 
             $table->string('name')->comment('区域的名字');
@@ -22,7 +22,7 @@ class CreateGuardsTable extends Migration
             $table->timestamps();
         });
 
-        DB::statement("ALTER TABLE `guards` comment '权限区域表，用户有多个区域，权限有一个区域字段'");
+        DB::statement("ALTER TABLE `domains` comment '区域表，用户有多个区域'");
     }
 
     /**
@@ -32,6 +32,6 @@ class CreateGuardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guards');
+        Schema::dropIfExists('domains');
     }
 }

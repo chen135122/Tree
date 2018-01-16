@@ -31,19 +31,18 @@
                                             </div>
                                         @endif
 
-                                        <form action="{{ route('guards.update', ['guard' => $guard]) }}" method="post">
+                                        <form action="{{ route('domains.store') }}" method="post">
                                             {{ csrf_field() }}
-                                            {{ method_field('PUT') }}
                                             <div class="form-group">
                                                 <label for="position" class="col-sm-3 control-label">区域名字</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="name" placeholder="区域名字" value="{{ $guard->name }}" required>
+                                                    <input type="text" class="form-control" name="name" placeholder="区域名字" value="{{ old('name') }}" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="name" class="col-sm-3 control-label">描述</label>
                                                 <div class="col-sm-9">
-                                                    <textarea class="form-control" name="description" rows="6" placeholder="请填写描述">{{ $guard->description }}</textarea>
+                                                    <textarea class="form-control" name="description" rows="6" placeholder="请填写描述">{{ old('description') }}</textarea>
                                                 </div>
                                             </div>
                                             <br>
@@ -53,7 +52,7 @@
 
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <button class="btn btn-success" type="submit">修改</button>
+                                                    <button class="btn btn-success" type="submit">添加</button>
                                                 </div>
                                             </div>
                                         </form>

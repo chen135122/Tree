@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- 也是后台布局，不要菜单，不要边栏，不要头部 -->
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -34,19 +35,8 @@
 </head>
 <body class="fixed-header dashboard">
 
-<!-- BEGIN 菜单-->
-@include('common.admin.siderbar')
-<!-- END SIDEBAR -->
-
 <!-- START 内容区 -->
 @yield('container')
-
-<!--START QUICKVIEW -->
-@include('common.admin.quickview')
-<!-- END QUICKVIEW-->
-<!-- START 搜索 -->
-@include('common.admin.search')
-
 
 
 <!-- BEGIN VENDOR JS -->
@@ -89,7 +79,5 @@
 <script src="{{ asset("assets/js/scripts.js") }}" type="text/javascript"></script>
 <!-- END PAGE LEVEL JS -->
 <script src="{{ asset('layer/layer.js') }}"></script>
-
-@yield('script')
 </body>
 </html>

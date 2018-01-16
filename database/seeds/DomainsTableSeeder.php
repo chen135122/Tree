@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class GuardsTableSeeder extends Seeder
+class DomainsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class GuardsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Guard::class, 3)->create();
+        factory(\App\Models\Domain::class, 3)->create();
     }
 }

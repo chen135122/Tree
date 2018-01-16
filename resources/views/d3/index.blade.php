@@ -49,45 +49,8 @@
 <script src="/js/d3.min.js"></script>
 <script>
 
-    var dataset = {
-        links: [
-            {source: 0, target: 1},
-            {source: 1, target: 2},
-            {source: 2, target: 1},
-            {source: 3, target: 2},
-        ],
-        nodes: [
-            {
-                name: "1",
-                title: '00001',
-                info:'2017-6-16交易1000元'
-            },
-            {
-                name: "2",
-                title: '00002',
-                info:'2017-6-16交易1000元'
-            },
-            {
-                name: "3",
-                title: '00003',
-                info:'2017-6-16交易1000元'
-            },
-            {
-                name: "4",
-                title: '00004',
-                info:'2017-6-16交易1000元'
-            },
-            {
-                name: "4",
-                title: '00004',
-                info:'2017-6-16交易1000元'
-            },
-        ],
-        circuit: 10,
-        account: 10,
-        transaction: 10
-    };
-    console.log({!! $dataset !!});
+    var dataset = {!! $dataset !!};
+    {{--console.log({!! $dataset !!});--}}
     var size = dataset.links.length;
 
 
@@ -138,7 +101,7 @@
     var path = t.data(dataset.links)
         .enter().append("path")
         .attr('id', function (d, i) {
-            return 'link' + (i + 1);
+            return 'link' + d.name + i;
         })
         .attr("class", function (d, i) {
             return 'link ' + ('link' + (i + 1));
@@ -150,8 +113,8 @@
             return "url(#arrow)";
         });
 
-    var txt = t.data(force.nodes()).enter().append('text').attr('dx', 35).style('font-size', '12px').append('textPath').attr('xlink:href', function (d) {
-        return '#link' + d.name;
+    var txt = t.data(dataset.links).enter().append('text').attr('dx', 35).style('font-size', '12px').append('textPath').attr('xlink:href', function (d,i) {
+        return '#link' + d.name + i;
     }).text(function (d) {
         return d.info;
     });
@@ -181,11 +144,12 @@
     var circle = textgroup.append("circle")
         .attr("r", 30)
         .attr('fill', function (d, i) {
-            if (i === size - 1) {
+            if (i === textgroup.size() - 1) {
                 return 'rgb(105, 139, 34)';
             }
             return 'rgb(100, 149, 237)';
-        }).call(d3.drag()
+        })
+        .call(d3.drag()
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended)).on('click', function (d, i) {

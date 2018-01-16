@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGuardUserTable extends Migration
+class CreateDomainUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateGuardUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('guard_user', function (Blueprint $table) {
-            $table->integer('guard_id')->unsigned();
-            $table->foreign('guard_id')->references('id')->on('guards');
+        Schema::create('domain_user', function (Blueprint $table) {
+            $table->integer('domain_id')->unsigned();
+            $table->foreign('domain_id')->references('id')->on('domains');
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
         });
 
-        DB::statement("ALTER TABLE `guard_user` comment '用户和区域多对多关联表'");
+        DB::statement("ALTER TABLE `domain_user` comment '用户和区域多对多关联表'");
     }
 
     /**
@@ -31,6 +31,6 @@ class CreateGuardUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guard_user');
+        Schema::dropIfExists('domain_user');
     }
 }

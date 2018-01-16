@@ -74,17 +74,22 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
                 $name++;
                 $pre = preg_split('/\|/',$array[$k]);
                 $next = preg_split('/\|/',$array[$k+1]);
-                $link = "{source:".$key[trim($pre[0],' ')].",target:".$key[trim($next[0],' ')]."},";
+                $link = "{source:".$key[trim($pre[0],' ')].",target:".$key[trim($next[0],' ')].",info:'".trim($next[2],' ')."交易".trim($next[1],' ')."',name:\"".($key[trim($pre[0],' ')]+1)."\"},";
 //                $node->name = $name;
 //                $node->title = trim($pre[0],' ');
 //                $node->info = trim($next[2],' ').'转账'.trim($next[1],' ');
-                $node = "{name:\"".$name."\",title:'".trim($pre[0],' ')."',info:'".trim($next[2],' ')."转账".trim($next[1],' ')."'},";
-                $nodes = $nodes.$node;
+//
                 $links = $links.$link;
 //                array_push($links,$link);
 //                array_push($nodes,$node);
             }
 //            dd(trim($re[0],' '));
+        }
+//        dd($key);
+        foreach ($key as $k => $v){
+            $node = "{name:\"".($v+1)."\",title:'".$k."',},";
+            $nodes = $nodes.$node;
+//            dd($v);
         }
 //        dd($links);
 //        dd($nodes);
@@ -97,8 +102,9 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
 //        $dataset = json_encode($dataset);
 //        dd($dataset);
 //        print_r($dataset);
-//        return $dataset;
+        return $dataset;
         return view('d3.index',compact('dataset'));
+
 
 //        dd($array);
 //        dd($links);
@@ -113,7 +119,16 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
 
 
     });
+    Route::get('/upload',function (){
+       return view('d3.upload');
+    });
+    Route::get('/file','HomeController@file');
+    Route::post('/upload','HomeController@upload');
     // 权限管理
     Route::resource('guards', 'GuardController');
+
+    Route::resource('users', 'UserController');
+    Route::resource('domains', 'DomainController', ['except' => 'show']);
+    Route::resource('roles', 'RoleController', ['except' => 'show']);
 
 });
