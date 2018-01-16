@@ -34,7 +34,7 @@ class HomeController extends Controller
                 return view('admin.home.index');
             }
         }else{
-            return redirect()->back()->withInput()->with('msg','该邮箱不存在！');
+            return view('admin.home.login');
         }
 
     }
@@ -50,6 +50,28 @@ class HomeController extends Controller
         $user = User::where('email',$request->get('email'))->first();
         Mail::to($user)->send(new ForgetPassword($user));
 //        dd($user->remember_token);
+//        dd($request->all());
+    }
+
+    public function resetPassword($email,$token){
+        return view('admin.home.reset',compact('email','token'));
+    }
+
+    public function reset(Request $request){
+        $result = User::where([
+            'email' => $request->get('email'),
+            'remember_token' => $request->get('token')
+        ])->update([
+            'password' => Hash::make($request->get('password')),
+            'remember_token' => str_random(10)
+        ]);
+        if($result){
+            return view('admin.home.login');
+        }else{
+            return view('errors.404');
+        }
+//        dd($result);
+//
 //        dd($request->all());
     }
 

@@ -35,7 +35,7 @@ class ForgetPassword extends Mailable
     {
         return $this->markdown('emails.forget.password')
             ->with([
-                'url' => url('/resetPassword').'/'.$this->user->remember_token
+                'url' => url('/admin/resetPassword').'/'.$this->user->email.'/'.$this->user->remember_token
             ]);
     }
 }
