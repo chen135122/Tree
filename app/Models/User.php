@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
@@ -29,10 +30,8 @@ class User extends Authenticatable
     ];
 
 
-    /**
-     * 一个用户是多个区域，
-     */
-    public function guards()
+
+    public function domains()
     {
         return $this->belongsToMany(Domain::class);
     }

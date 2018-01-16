@@ -11,18 +11,10 @@ class Domain extends Model
 
 
     /**
-     * 去个区域有多个用户
+     * 区域有多个用户
      */
     public function users()
     {
         return $this->belongsToMany(User::class);
-    }
-
-    /**
-     * 一个区域用多个角色
-     */
-    public function roles()
-    {
-        return $this->hasMany(Role::class);
     }
 }
