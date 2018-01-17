@@ -127,8 +127,10 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
     Route::post('/upload','HomeController@upload');
     // 权限管理
 
-    Route::resource('users', 'UserController');
-    Route::resource('domains', 'DomainController', ['except' => 'show']);
-    Route::resource('roles', 'RoleController', ['except' => 'show']);
+    Route::middleware('auth.admin')->group(function() {
+        Route::resource('users', 'UserController');
+        Route::resource('domains', 'DomainController', ['except' => 'show']);
+        Route::resource('roles', 'RoleController', ['except' => 'show']);
+    });
 
 });

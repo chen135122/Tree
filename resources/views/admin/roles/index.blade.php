@@ -1,6 +1,9 @@
 @extends('layouts.iframe')
 
 
+@section('style')
+    <link rel="stylesheet" href="{{ asset('layui/css/layui.css') }}">
+@endsection
 @section('container')
     <div class="wrapper wrapper-content animated fadeInRight">
         <!-- Panel Other -->
@@ -51,9 +54,11 @@
                                             <div class="keep-open btn-group" title="列">
                                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-th icon-th"></i><span class="caret"></span></button>
                                                 <ul class="dropdown-menu" role="menu">
-                                                    <li>
-                                                        <label><input type="checkbox" data-field="0" value="0" checked="checked">#</label>
-                                                    </li>
+                                                    @foreach ($roles_field as $field)
+                                                        <li>
+                                                            <label><input type="checkbox" data-field="{{ $field->id }}" value="{{ $field->id }}" checked="checked">{{ $field->field }}</label>
+                                                        </li>
+                                                    @endforeach
                                                 </ul>
                                             </div>
                                         </div>
@@ -62,6 +67,10 @@
                                     <div class="fixed-table-container" style="padding-bottom: 0px;">
                                         {{-- 数据渲染 --}}
                                         <div class="fixed-table-body">
+                                            <table class="layui-hide" id="data_table">
+
+                                            </table>
+
                                             <table class="table table-striped table-bordered table-hover dataTables-example">
                                                 <thead>
                                                 <tr>
@@ -107,11 +116,26 @@
 
 
 @section('script')
-    <script src="{{ asset('js/plugins/dataTables/jquery.dataTables.js') }}"></script>
-    <script src="{{ asset('js/plugins/dataTables/dataTables.bootstrap.js') }}"></script>
+    <script src="{{ asset('layui/layui.js') }}"></script>
     <script>
-        $(document).ready(function(){
-            $(".dataTables-example").dataTable();
+        layui.use('table', function(){
+            var table = layui.table;
+
+            table.render({
+                elem: '#data_table'
+                ,url:'/demo/table/user/'
+                ,width: 892
+                ,height: 332
+                ,cols: [[
+                    ,{field:'id', width:80, title: 'ID', sort: true, fixed: 'left'}
+                    ,{field:'username', width:80, title: '名字'}
+                    ,{field:'sex', width:80, title: '描述', sort: true}
+                    ,{field:'city', width:80, title: '创建'}
+                    ,{field:'sign', width: 80, title: '更新'}
+                    ,{field:'id', width:200, title: '操作', sort: true, fixed: 'right'}
+                ]]
+                ,page: true
+            });
         });
     </script>
 @endsection

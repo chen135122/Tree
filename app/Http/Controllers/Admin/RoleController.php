@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\RoleRequest;
+use App\Models\TableHeader;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -12,10 +14,22 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::latest()->get();
+        // 要显示的菜单
+        $roles_field = Auth::user()->fields()->where('group', 'roles')->get();
+        // 查询表格头部的数据
+        $language = 'Zh';
+        $table_header = TableHeader::where('route', 'roles.index')
+            ->select('json_data')
+            ->where('language', $language)
+            ->first();
 
-        return view('admin.roles.index', compact('roles'));
+        $table_header = json_decode($table_header->json_data);
+
+        dd($table_header);
+
+        return view('admin.roles.index', compact('roles_field'));
     }
+
 
     public function create()
     {

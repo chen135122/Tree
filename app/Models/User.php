@@ -36,8 +36,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Domain::class);
     }
 
-    public function fields()
+    public function fieldIndices()
     {
-        return $this->belongsToMany(Field::class);
+        return $this->belongsToMany(FieldIndex::class);
     }
 }

@@ -16,8 +16,8 @@ class CreateFieldsTable extends Migration
         Schema::create('fields', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('group')->comment('显示的菜单组,（使用路由名字区别）');
-            $table->string('field');
+            $table->string('table_name')->comment('表的名字');
+            $table->text('json_fields');
         });
 
         DB::statement("ALTER TABLE `fields` comment '用户数据显示列表的字段'");

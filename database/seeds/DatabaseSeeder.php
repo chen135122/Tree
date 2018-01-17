@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
 
         // 填充显示字段表
         $this->call(FieldsTableSeeder::class);
-        $this->call(FieldUserTableSeeder::class);
+        $this->call(FieldIndeicesTableSeeder::class);
+        // 字段翻译表
+        $this->call(FieldTranslateTableSeeder::class);
     }
 }

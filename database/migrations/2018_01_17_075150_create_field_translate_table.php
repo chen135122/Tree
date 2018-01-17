@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFieldUserTable extends Migration
+class CreateFieldTranslateTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,18 @@ class CreateFieldUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('field_user', function (Blueprint $table) {
+        Schema::create('field_translate', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('language')->comment('语言种类');
+            $table->text('json_fields')->comment('翻译的内容');
+
             $table->integer('field_id')->unsigned();
             $table->foreign('field_id')->references('id')->on('field_ids');
 
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->timestamps();
         });
 
-        DB::statement("ALTER TABLE `field_user` comment  '用户和字段显示的关联表'");
+        DB::statement("ALTER TABLE `field_translate` comment '字段翻译表'");
     }
 
     /**
@@ -31,6 +34,6 @@ class CreateFieldUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('field_user');
+        Schema::dropIfExists('field_translate');
     }
 }
