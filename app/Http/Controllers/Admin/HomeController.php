@@ -18,6 +18,11 @@ class HomeController extends Controller
         return view('admin.home.index');
     }
 
+    public function welcome()
+    {
+        return view('admin.home.welcome');
+    }
+
     public function getLogin(){
         return view('admin.home.login');
     }
