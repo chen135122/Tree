@@ -15,12 +15,12 @@ class CreateFieldsTable extends Migration
     {
         Schema::create('fields', function (Blueprint $table) {
             $table->increments('id');
-
             $table->string('table_name')->comment('表的名字');
-            $table->text('json_fields');
+            $table->text('field_name')->comment('表的字段');
+            $table->text('json_data')->comment('存字段所有语言版本的数据');
         });
 
-        DB::statement("ALTER TABLE `fields` comment '用户数据显示列表的字段'");
+        DB::statement("ALTER TABLE `fields` comment '表的字段翻译'");
     }
 
     /**

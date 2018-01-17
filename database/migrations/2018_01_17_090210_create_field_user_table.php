@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFieldIndexUserTable extends Migration
+class CreateFieldUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateFieldIndexUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('field_index_user', function (Blueprint $table) {
-            $table->integer('field_index_id')->unsigned();
-            $table->foreign('field_index_id')->references('id')->on('field_indices');
+        Schema::create('field_user', function (Blueprint $table) {
+            $table->integer('field_id')->unsigned();
+            $table->foreign('field_id')->references('id')->on('fields');
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
         });
 
-        DB::statement("ALTER TABLE `field_index_user` comment '用户选择要查看的列表列'");
+        DB::statement("ALTER TABLE `field_user` comment '用户选择显示的列'");
     }
 
     /**
@@ -31,6 +31,6 @@ class CreateFieldIndexUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('field_index_user');
+        Schema::dropIfExists('field_user');
     }
 }

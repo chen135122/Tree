@@ -9,8 +9,8 @@ class Field extends Model
     public $timestamps = false;
 
 
-    public function fieldTranslates()
+    public function users()
     {
-        return $this->hasMany(FieldTranslate::class);
+        return $this->belongsToMany(User::class);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\RoleRequest;
+use App\Models\FieldIndex;
 use App\Models\TableHeader;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,11 +19,11 @@ class RoleController extends Controller
         $roles_field = Auth::user()->fields()->where('group', 'roles')->get();
         // 查询表格头部的数据
         $language = 'Zh';
-        $table_header = TableHeader::where('route', 'roles.index')
+        $table_fields = Auth::user()->fieldIndices()->where('route', 'roles')
             ->select('json_data')
             ->where('language', $language)
             ->first();
-
+dd($table_fields);
         $table_header = json_decode($table_header->json_data);
 
         dd($table_header);
