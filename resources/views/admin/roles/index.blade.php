@@ -54,9 +54,15 @@
                                             <div class="keep-open btn-group" title="列">
                                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-th icon-th"></i><span class="caret"></span></button>
                                                 <ul class="dropdown-menu" role="menu">
-                                                    @foreach ($roles_field as $field)
+                                                    @foreach ($fields as $field)
                                                         <li>
-                                                            <label><input type="checkbox" data-field="{{ $field->id }}" value="{{ $field->id }}" checked="checked">{{ $field->field }}</label>
+                                                            <label>
+                                                                <input type="checkbox"
+                                                                       data-field="{{ $field['id'] }}"
+                                                                       value="{{ $field['id'] }}"
+                                                                       {{ $field['checked'] ? 'checked' : '' }}
+                                                                >
+                                                                {{ $field['title'] }}</label>
                                                         </li>
                                                     @endforeach
                                                 </ul>
@@ -82,21 +88,7 @@
                                                     <th>更新</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
-                                                    @foreach ($roles as $role)
-                                                        <tr class="gradeX">
-                                                            <td>
-                                                                <a href="{{ route('roles.edit', ['role' => $role]) }}" class="btn btn-outline btn-success"> <i class="fa fa-paste"></i> </a>
-                                                                <a type="button" class="btn btn-outline btn-danger">删除</a>
-                                                            </td>
-                                                            <td>{{ $role->id }}</td>
-                                                            <td>{{ $role->name }}</td>
-                                                            <td>{{ $role->description }}</td>
-                                                            <td class="center">{{ $role->created_at }}</td>
-                                                            <td class="center">{{ $role->updated_at }}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
+
                                             </table>
                                         </div>
                                     </div>
