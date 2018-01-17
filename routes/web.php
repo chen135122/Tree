@@ -19,7 +19,11 @@ Route::get('/', function () {
 Route::prefix('admin')->namespace('Admin')->group(function() {
 
     Route::get('/', 'HomeController@index');
+
     Route::get('/login', 'AuthController@getLogin');
+
+    Route::get('/welcome', 'HomeController@welcome');
+
     Route::post('/login', 'HomeController@login');
     Route::get('/test', 'HomeController@test');
     Route::get('/forgetPassword','HomeController@forgetPassword');
@@ -129,8 +133,6 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
     Route::get('/file','HomeController@file');
     Route::post('/upload','HomeController@upload');
     // 权限管理
-//    Route::resource('guards', 'GuardController');
-
     Route::resource('users', 'UserController');
     Route::resource('domains', 'DomainController', ['except' => 'show']);
     Route::resource('roles', 'RoleController', ['except' => 'show']);

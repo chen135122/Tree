@@ -18,6 +18,12 @@ class HomeController extends Controller
     {
         return view('admin.home.index');
     }
+    
+    public function welcome()
+    {
+        return view('admin.home.welcome');
+    }
+
 
     public function login(Request $request){
         $this->validate($request,[

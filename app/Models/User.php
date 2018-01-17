@@ -35,4 +35,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Domain::class);
     }
+
+    public function fields()
+    {
+        return $this->belongsToMany(Field::class);
+    }
 }

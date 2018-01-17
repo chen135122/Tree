@@ -27,7 +27,7 @@
     <div id="page-wrapper" class="gray-bg dashbard-1">
         @include('common.admin.header')
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="index_v1.html?v=4.0" frameborder="0" data-id="index_v1.html" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{{ url('admin/welcome') }}" frameborder="0" data-id="index_v1.html" seamless></iframe>
             </div>
         @include('common.admin.footer')
     </div>

@@ -16,5 +16,10 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesTableSeeder::class);
 
         $this->call(UsersTableSeeder::class);
+
+
+        // 填充显示字段表
+        $this->call(FieldsTableSeeder::class);
+        $this->call(FieldUserTableSeeder::class);
     }
 }
