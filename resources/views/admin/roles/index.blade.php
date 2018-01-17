@@ -76,20 +76,6 @@
                                             <table class="layui-hide" id="data_table">
 
                                             </table>
-
-                                            <table class="table table-striped table-bordered table-hover dataTables-example">
-                                                <thead>
-                                                <tr>
-                                                    <th>操作</th>
-                                                    <th>ID</th>
-                                                    <th>名字</th>
-                                                    <th>描述</th>
-                                                    <th>创建</th>
-                                                    <th>更新</th>
-                                                </tr>
-                                                </thead>
-
-                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -104,6 +90,12 @@
             </div>
         </div>
     </div>
+
+    <script type="text/html" id="operate">
+        <!-- 这里的 checked 的状态只是演示 -->
+        <a href="{{ url('admin/roles') }}/@{{d.id}}/edit" title="编辑" >编辑</a>
+        <button name="lock" value="@{{d.id}}">删除</button>
+    </script>
 @endsection
 
 
@@ -115,16 +107,17 @@
 
             table.render({
                 elem: '#data_table'
-                ,url:'/demo/table/user/'
-                ,width: 892
-                ,height: 332
+                ,url:'{{ url('api/roles') }}'
+                ,limit: 2
+                ,width: 'full'
+                ,height: 'full'
                 ,cols: [[
-                    ,{field:'id', width:80, title: 'ID', sort: true, fixed: 'left'}
-                    ,{field:'username', width:80, title: '名字'}
-                    ,{field:'sex', width:80, title: '描述', sort: true}
-                    ,{field:'city', width:80, title: '创建'}
-                    ,{field:'sign', width: 80, title: '更新'}
-                    ,{field:'id', width:200, title: '操作', sort: true, fixed: 'right'}
+                     {field:'id', width:80, title: 'ID', sort: true, fixed: 'left'}
+                    ,{field:'name', width:180, title: '名字'}
+                    ,{field:'description', width:380, title: '描述', sort: true}
+                    ,{field:'created_at', width:180, title: '创建', sort: true}
+                    ,{field:'updated_at', width: 180, title: '更新', sort: true}
+                    ,{field:'id', title:'操作', width:110, templet: '#operate', unresize: true,fixed: 'right'}
                 ]]
                 ,page: true
             });

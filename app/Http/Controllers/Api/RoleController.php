@@ -14,8 +14,8 @@ class RoleController extends ApiController
         // 要显示的菜单
         $roles = Role::latest()->paginate($limit);
 
-        dd($roles);
-
-        return $this->setCount()->toJson();
+        return $this->setExtendField('count', $roles->total())
+                    ->setData($roles->all())
+                    ->toJson();
     }
 }

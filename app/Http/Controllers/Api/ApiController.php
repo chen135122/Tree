@@ -13,8 +13,7 @@ class ApiController extends Controller
     protected $msg = 'SUCCESS';
     protected $data = [];
 
-
-    protected $count;
+    protected $extendField = [];
 
 
     public function created($msg = '资源创建成功', array $data = [])
@@ -80,8 +79,10 @@ class ApiController extends Controller
             'data' => $this->data
         ];
 
-        if (! is_null($this->count)) {
-            $response['count'] = $this->count;
+        if (! empty($this->extendField)) {
+            foreach ($this->extendField as $key => $value) {
+                $response[$key] = $value;
+            }
         }
 
         return $response;
@@ -108,9 +109,9 @@ class ApiController extends Controller
         return $this;
     }
 
-    public function setCount($count)
+    public function setExtendField($field, $value)
     {
-        $this->count = $count;
+        $this->extendField[$field] = $value;
 
         return $this;
     }

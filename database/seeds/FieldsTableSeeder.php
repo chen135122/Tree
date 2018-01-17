@@ -73,6 +73,13 @@ class FieldsTableSeeder extends Seeder
                 'table_name' => 'roles',
                 'field_name' => 'updated_at',
             ],
+            [
+                'json_data' => json_encode(
+                    ['zh' => '操作', 'en' => 'operate']
+                ),
+                'table_name' => 'roles',
+                'field_name' => '',
+            ],
         ];
     }
 }
