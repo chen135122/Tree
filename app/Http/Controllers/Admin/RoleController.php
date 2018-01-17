@@ -19,18 +19,14 @@ class RoleController extends Controller
 
     public function create()
     {
-        $permissions = Permission::all();
-
-        return view('admin.roles.create', compact('permissions'));
+        return view('admin.roles.create');
     }
 
     public function store(RoleRequest $request)
     {
-        $roleData = $request->only(['name']);
+        $roleData = $request->only(['name', 'description']);
 
         $role = Role::create($roleData);
-        // 赋予角色权限
-        $role->permissions()->attach($request->input('permission_id'));
 
         return back()->withErrors(['name' => '创建角色成功']);
     }
@@ -38,16 +34,12 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        $permissions = Permission::all();
-
-        return view('admin.roles.edit', compact('role', 'permissions'));
+        return view('admin.roles.edit', compact('role'));
     }
 
     public function update(RoleRequest $request, Role $role)
     {
-        $role->update($request->only('name'));
-        // 赋予角色权限
-        $role->permissions()->sync($request->input('permission_id'));
+        $role->update($request->only(['name', 'description']));
 
         return back()->withErrors(['name' => '修改角色成功']);
     }

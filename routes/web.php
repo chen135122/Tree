@@ -126,7 +126,6 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
     Route::get('/file','HomeController@file');
     Route::post('/upload','HomeController@upload');
     // 权限管理
-    Route::resource('guards', 'GuardController');
 
     Route::resource('users', 'UserController');
     Route::resource('domains', 'DomainController', ['except' => 'show']);

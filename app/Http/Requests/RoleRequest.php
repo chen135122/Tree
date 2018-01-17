@@ -25,7 +25,6 @@ class RoleRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'permission_id' => 'required'
         ];
     }
 
@@ -33,7 +32,6 @@ class RoleRequest extends FormRequest
     {
         return [
             'name.required' => '角色的名字不能为空',
-            'permission_id.required' => '至少赋予角色一个权限'
         ];
     }
 }
