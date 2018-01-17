@@ -1,95 +1,53 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-    <meta charset="utf-8" />
-    <title>@yield("title", "后台首页")</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
-    <link rel="apple-touch-icon" href="{{ asset("pages/ico/60.png") }}">
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset("pages/ico/76.png") }}">
-    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset("pages/ico/120.png") }}">
-    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset("pages/ico/152.png") }}">
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-touch-fullscreen" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta content="" name="description" />
-    <meta content="" name="author" />
-    <link href="{{ asset("assets/plugins/pace/pace-theme-flash.css") }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset("assets/plugins/boostrapv3/css/bootstrap.min.css") }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset("assets/plugins/font-awesome/css/font-awesome.css") }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset("assets/plugins/jquery-scrollbar/jquery.scrollbar.css") }}" rel="stylesheet" type="text/css" media="screen" />
-    <link href="{{ asset("assets/plugins/bootstrap-select2/select2.css") }}" rel="stylesheet" type="text/css" media="screen" />
-    <link href="{{ asset("assets/plugins/switchery/css/switchery.min.css") }}" rel="stylesheet" type="text/css" media="screen" />
-    <link href="{{ asset("assets/plugins/nvd3/nv.d3.min.css") }}" rel="stylesheet" type="text/css" media="screen" />
-    <link href="{{ asset("assets/plugins/mapplic/css/mapplic.css") }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset("assets/plugins/rickshaw/rickshaw.min.css") }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset("assets/plugins/bootstrap-datepicker/css/datepicker3.css") }}" rel="stylesheet" type="text/css" media="screen">
-    <link href="{{ asset("assets/plugins/jquery-metrojs/MetroJs.css") }}" rel="stylesheet" type="text/css" media="screen" />
-    <link href="{{ asset("pages/css/pages-icons.css") }}" rel="stylesheet" type="text/css">
-    <link class="main-stylesheet" href="{{ asset("pages/css/pages.css") }}" rel="stylesheet" type="text/css" />
-    <!--[if lte IE 9]>
-    <link href="{{ asset("assets/plugins/codrops-dialogFx/dialog.ie.css") }}" rel="stylesheet" type="text/css" media="screen" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>主页</title>
+    <!--[if lt IE 8]>
+    <meta http-equiv="refresh" content="0;ie.html" />
     <![endif]-->
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="{{ asset('css/bootstrap.min.css?v=3.3.5') }}" rel="stylesheet">
+    <link href="{{ asset('css/font-awesome.min.css?v=4.4.0') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.min.css?v=4.0.0') }}" rel="stylesheet">
 </head>
-<body class="fixed-header dashboard">
 
-<!-- BEGIN 菜单-->
-@include('common.admin.siderbar')
-<!-- END SIDEBAR -->
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+<div id="wrapper">
+    <!--左侧导航开始-->
+    @include('common.admin.nav')
+    <!--左侧导航结束-->
 
-<!-- START 内容区 -->
-@yield('container')
+    <!--右侧部分开始-->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        @include('common.admin.header')
+            <div class="row J_mainContent" id="content-main">
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="index_v1.html?v=4.0" frameborder="0" data-id="index_v1.html" seamless></iframe>
+            </div>
+        @include('common.admin.footer')
+    </div>
+    <!--右侧部分结束-->
 
-<!--START QUICKVIEW -->
-@include('common.admin.quickview')
-<!-- END QUICKVIEW-->
-<!-- START 搜索 -->
-@include('common.admin.search')
+    <!--右侧边栏开始-->
+    @include('common.admin.right-sidebar')
+    <!--右侧边栏结束-->
 
-
-
-<!-- BEGIN VENDOR JS -->
-<script src="{{ asset("assets/plugins/pace/pace.min.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/jquery/jquery-1.11.1.min.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/modernizr.custom.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/jquery-ui/jquery-ui.min.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/boostrapv3/js/bootstrap.min.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/jquery/jquery-easy.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/jquery-unveil/jquery.unveil.min.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/jquery-bez/jquery.bez.min.js") }}"></script>
-<script src="{{ asset("assets/plugins/jquery-ios-list/jquery.ioslist.min.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/jquery-actual/jquery.actual.min.js") }}"></script>
-<script src="{{ asset("assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js") }}"></script>
-<script type="text/javascript" src="{{ asset("assets/plugins/bootstrap-select2/select2.min.js") }}"></script>
-<script type="text/javascript" src="{{ asset("assets/plugins/classie/classie.js") }}"></script>
-<script src="{{ asset("assets/plugins/switchery/js/switchery.min.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/nvd3/lib/d3.v3.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/nvd3/nv.d3.min.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/nvd3/src/utils.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/nvd3/src/tooltip.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/nvd3/src/interactiveLayer.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/nvd3/src/models/axis.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/nvd3/src/models/line.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/nvd3/src/models/lineWithFocusChart.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/mapplic/js/hammer.js") }}"></script>
-<script src="{{ asset("assets/plugins/mapplic/js/jquery.mousewheel.js") }}"></script>
-<script src="{{ asset("assets/plugins/mapplic/js/mapplic.js") }}"></script>
-<script src="{{ asset("assets/plugins/rickshaw/rickshaw.min.js") }}"></script>
-<script src="{{ asset("assets/plugins/jquery-metrojs/MetroJs.min.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/jquery-sparkline/jquery.sparkline.min.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/skycons/skycons.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js") }}" type="text/javascript"></script>
-<!-- END VENDOR JS -->
-<!-- BEGIN CORE TEMPLATE JS -->
-<script src="{{ asset("pages/js/pages.min.js") }}"></script>
-<!-- END CORE TEMPLATE JS -->
-<!-- BEGIN PAGE LEVEL JS -->
-<script src="{{ asset("assets/js/dashboard.js") }}" type="text/javascript"></script>
-<script src="{{ asset("assets/js/scripts.js") }}" type="text/javascript"></script>
-<!-- END PAGE LEVEL JS -->
-<script src="{{ asset('layer/layer.js') }}"></script>
-
-@yield('script')
+    <!--mini聊天窗口开始-->
+    @include('common.admin.chat')
+</div>
+<script src="{{ asset('js/jquery.min.js?v=2.1.4') }}"></script>
+<script src="{{ asset('js/bootstrap.min.js?v=3.3.5') }}"></script>
+<script src="{{ asset('js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+<script src="{{ asset('js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ asset('js/plugins/layer/layer.min.js') }}"></script>
+<script src="{{ asset('js/hplus.min.js?v=4.0.0') }}"></script>
+<script src="{{ asset('js/contabs.min.js') }}"></script>
+<script src="{{ asset('js/plugins/pace/pace.min.js') }}"></script>
 </body>
+
 </html>

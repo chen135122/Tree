@@ -19,7 +19,7 @@ Route::get('/', function () {
 Route::prefix('admin')->namespace('Admin')->group(function() {
 
     Route::get('/', 'HomeController@index');
-    Route::get('/login', 'HomeController@getLogin');
+    Route::get('/login', 'AuthController@getLogin');
     Route::post('/login', 'HomeController@login');
     Route::get('/test', 'HomeController@test');
     Route::get('/forgetPassword','HomeController@forgetPassword');
@@ -30,7 +30,6 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
 //        \Illuminate\Support\Facades\Auth::logout();
 //    });
     Route::get('/d3',function (){
-//
         $data = file_get_contents('./common/data.erp');
         preg_match_all('/\{(\s*[\d\D]+\s*)\}/U', $data, $matches,true );
 //        dd($matches);
@@ -119,13 +118,18 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
 
 
     });
+    Route::get('/tree',function (){
+        $data = file_get_contents('./common/tree.erp');
+//        return $data;
+        return view('common.d3.tree');
+    });
     Route::get('/upload',function (){
        return view('d3.upload');
     });
     Route::get('/file','HomeController@file');
     Route::post('/upload','HomeController@upload');
     // 权限管理
-    Route::resource('guards', 'GuardController');
+//    Route::resource('guards', 'GuardController');
 
     Route::resource('users', 'UserController');
     Route::resource('domains', 'DomainController', ['except' => 'show']);

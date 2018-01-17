@@ -19,10 +19,6 @@ class HomeController extends Controller
         return view('admin.home.index');
     }
 
-    public function getLogin(){
-        return view('admin.home.login');
-    }
-
     public function login(Request $request){
         $this->validate($request,[
             'email' => 'required|min:6|email',
