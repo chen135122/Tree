@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -77,7 +78,12 @@ class HomeController extends Controller
 
     public function upload(Request $request){
 //        dd($request->file('upload'));
-        $request->file('upload')->store('files');
+//        $request->file('upload')->store('files');
 //        dd($request->all());
+    }
+
+    public function file(){
+        $file = Storage::allfiles();
+        dd($file);
     }
 }
