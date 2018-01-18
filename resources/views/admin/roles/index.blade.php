@@ -43,17 +43,18 @@
                                         {{-- 新增操作 --}}
                                         <div class="bars pull-left">
                                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
-                                                <a href="{{ route('roles.create') }}" class="btn btn-outline btn-default" title="新增">
+                                                <button id="add_btn" data-url="{{ route('roles.create') }}" class="btn btn-outline btn-default" title="新增">
                                                     <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
-                                                </a>
+                                                </button>
                                             </div>
                                         </div>
 
                                         {{-- 要选择显示的列 --}}
+
                                         <div class="columns columns-right btn-group pull-right">
                                             <div class="keep-open btn-group" title="列">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-th icon-th"></i><span class="caret"></span></button>
-                                                <ul class="dropdown-menu" role="menu">
+                                                <button type="button" class="btn btn-default" id="show_side_btn"><i class="glyphicon glyphicon-th icon-th"></i><span class="caret"></span></button>
+                                                <ul style="display: none" id="side_menu" class="dropdown-menu">
                                                     @foreach ($fields as $field)
                                                         <li>
                                                             <label>
@@ -74,7 +75,7 @@
                                     <div class="fixed-table-container" style="padding-bottom: 0px;">
                                         {{-- 数据渲染 --}}
                                         <div class="fixed-table-body">
-                                            <table class="layui-hide" id="data_table">
+                                            <table class="layui-hide" id="data_table" lay-filter="data_table">
 
                                             </table>
                                         </div>
@@ -92,10 +93,9 @@
         </div>
     </div>
 
-    <script type="text/html" id="operate">
-        <!-- 这里的 checked 的状态只是演示 -->
-        <button data-url="{{ url('admin/roles') }}/@{{d.id}}/edit" class="layui-btn layui-btn-xs edit_btn" ><i class="layui-icon"></i></button>
-        <button class="layui-btn layui-btn-xs layui-btn-danger" data-id="@{{d.id}}"><i class="layui-icon"></i></button>
+    <script type="text/html" id="tooBar">
+        <button class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon"></i></button>
+        <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon"></i></button>
     </script>
 @endsection
 
@@ -120,15 +120,49 @@
                             ,{field:'{{ $field['field_name'] }}', width:180, title: '{{ $field['title'] }}', sort:true}
                         @endif
                     @endforeach
-                    ,{field:'operate', title:'操作', width:110, templet: '#operate', unresize: true,fixed: 'right'}
+                    ,{field:'operate', title:'  ', width:110, toolbar: '#tooBar', unresize: true,fixed: 'right'}
                 ]]
                 ,page: true
             });
 
+            // 监听工具条事件
+            var roles_url = "{{ url('admin/roles') }}/";
+            table.on('tool(data_table)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+
+                var url = roles_url + data.id;
+                // 删除
+                if(layEvent === 'del'){
+                    $.post(url, {_method:'DELETE'}, function(res){
+                        layer.msg(res.msg);
+                        if (res.code == 200) {
+                            obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                        }
+                    });
+
+                } else if(layEvent === 'edit'){ //编辑
+                    //do something
+                    url += '/edit';
+
+                    layer.open({
+                        type: 2,
+                        title: '编辑',
+                        shadeClose: true,
+                        shade: 0.8,
+                        area: ['90%', '90%'],
+                        content: url //iframe的url
+                    });
+                }
+            });
+
+
         });
-    </script>
-    <script>
-        // 选择字段显示列表
+
+
+        // 更新显示列
         $('.field_checkbox').change(function(){
             var url = '{{ url('admin/fields/toggle') }}';
             var data = {id:$(this).val()};
@@ -136,21 +170,29 @@
             $.post(url, data, function(res){
                 layer.msg(res.msg);
             });
-        });
+        })
 
-        // 编辑弹出新层
-        $(document).on('click', '.edit_btn', function() {
+        // 新增
+        $('#add_btn').click(function(){
             var url = $(this).data('url');
-            //iframe层
-            console.log(11);
             layer.open({
                 type: 2,
-                title: '编辑',
+                title: '添加',
                 shadeClose: true,
                 shade: 0.8,
                 area: ['90%', '90%'],
                 content: url //iframe的url
             });
+        });
+
+        // 菜单
+        $('#show_side_btn').click(function(){
+            console.log($('#show_me'));
+            $('#side_menu').show();
+        });
+        // 关闭菜单
+        $('#side_menu').mouseleave(function(){
+            $(this).hide();
         });
     </script>
 @endsection
