@@ -52,7 +52,7 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         Route::resource('users', 'UserController');
         Route::resource('domains', 'DomainController', ['except' => 'show']);
         Route::resource('roles', 'RoleController', ['except' => 'show']);
-        Route::resource('permissions', 'PermissionController');
+        Route::resource('permissions', 'PermissionController', ['only' => ['index', 'edit', 'update']]);
 
         // 字段的开启或关闭
         Route::post('fields/toggle', 'FieldController@toggleField');

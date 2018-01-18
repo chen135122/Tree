@@ -10,7 +10,7 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $language = 'zh';
         // 要显示的菜单
@@ -37,7 +37,7 @@ class PermissionController extends Controller
     public function update(Request $request, Permission $permission)
     {
         $this->validate($request, [
-           'name' => 'required|unique:permissions,name'
+           'name' => "required|unique:permissions,name,{$permission->id}"
         ], [
             'name.required' => '权限名不能为空',
             'name.unique' => '权限名已经存在'

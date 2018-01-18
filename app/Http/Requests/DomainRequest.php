@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Domain;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Route;
 
 class DomainRequest extends FormRequest
 {
@@ -23,10 +25,17 @@ class DomainRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|unique:domains,name',
             'description' => 'required'
         ];
+
+        // 修改
+        if (request()->isMethod('PUT')) {
+            $rules['name'] .= ',' . request()->route('domain')->id;
+        }
+
+        return $rules;
     }
 
 

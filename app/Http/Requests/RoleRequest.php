@@ -23,9 +23,16 @@ class RoleRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|unique:roles,name',
         ];
+
+        // 修改
+        if (request()->isMethod('PUT')) {
+            $rules['name'] .= ',' . request()->route('role')->id;
+        }
+
+        return $rules;
     }
 
     public function messages()
