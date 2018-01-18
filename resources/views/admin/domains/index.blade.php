@@ -13,7 +13,7 @@
                 <h5>
                     <ul class="breadcrumb">
                         <li>
-                            <a href="{{ route('roles.index') }}">角色列表</a>
+                            <a href="{{ route('domains.index') }}">区域列表</a>
                         </li>
                         <li>
                             <a class="fa fa-refresh" href="javascript:location.href =location.href;"> 刷新</a>
@@ -43,7 +43,7 @@
                                         {{-- 新增操作 --}}
                                         <div class="bars pull-left">
                                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
-                                                <button id="add_btn" data-url="{{ route('roles.create') }}" class="btn btn-outline btn-default" title="新增">
+                                                <button id="add_btn" class="btn btn-outline btn-default" title="新增">
                                                     <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                                                 </button>
                                             </div>
@@ -113,14 +113,14 @@
     <script>
 
         // 有关表格重新渲染的都要写在里面
-        var api_roles = '{{ url('api/roles') }}';
+        var api_domains = '{{ url('api/domains') }}';
         layui.use('table', function(){
             var table = layui.table;
 
             // 显示的列表数据
             table.render({
                 elem: '#data_table'
-                ,url: api_roles
+                ,url: api_domains
                 ,limit: 10
                 ,width: 'full'
                 ,height: 'full'
@@ -145,14 +145,14 @@
 
 
             // 监听工具条事件
-            var roles_url = "{{ url('admin/roles') }}/";
+            var domains_url = "{{ url('admin/domains') }}/";
             table.on('tool(data_table)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
                 var data = obj.data; //获得当前行数据
                 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
                 var tr = obj.tr; //获得当前行 tr 的DOM对象
 
 
-                var url = roles_url + data.id;
+                var url = domains_url + data.id;
                 // 删除
                 if(layEvent === 'del'){
                     $.post(url, {_method:'DELETE'}, function(res){
@@ -176,7 +176,7 @@
                         cancel: function(index, layero){
                             layer.close(index);
 
-                            reloadTable(table, api_roles);
+                            reloadTable(table, api_domains);
                             return true;
                         }
                     });
@@ -185,7 +185,7 @@
 
             // 新增
             $('#add_btn').click(function(){
-                var url = $(this).data('url');
+                var url = domains_url + 'create';
                 layer.open({
                     type: 2,
                     title: '添加',
@@ -196,7 +196,7 @@
                     cancel: function(index, layero){
                         layer.close(index);
 
-                        reloadTable(table, api_roles);
+                        reloadTable(table, api_domains);
                         return true;
                     }
                 });
@@ -206,13 +206,13 @@
             // 搜索
             $('#search_btn').click(function(){
                 var _wd = $('#search_input').val();
-                reloadTable(table, api_roles, {wd:_wd});
+                reloadTable(table, api_domains, {wd:_wd});
             });
             // 回车搜索
             $('#search_input').keydown(function(e) {
                 if (e.keyCode == 13) {
                     var _wd = $(this).val();
-                    reloadTable(table, api_roles, {wd:_wd});
+                    reloadTable(table, api_domains, {wd:_wd});
                 }
             });
 

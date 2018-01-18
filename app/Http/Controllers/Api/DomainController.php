@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Domain;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
 
-class RoleController extends ApiController
+class DomainController extends ApiController
 {
     public function index(Request $request)
     {
         $limit = $request->input('limit', 10);
 
         // 要显示的菜单
-        $query = (new Role())->newQuery()->latest();
+        $query = (new Domain())->newQuery()->latest();
 
         // 是否有查询
         if ($request->has('wd')) {
@@ -24,7 +25,7 @@ class RoleController extends ApiController
         $roles = $query->paginate($limit);
 
         return $this->setExtendField('count', $roles->total())
-                    ->setData($roles->all())
-                    ->toJson();
+            ->setData($roles->all())
+            ->toJson();
     }
 }
