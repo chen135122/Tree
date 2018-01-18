@@ -21,16 +21,20 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
     Route::get('/', 'HomeController@index');
 
     Route::get('/login', 'AuthController@getLogin');
+    Route::post('/login', 'AuthController@login');
     Route::get('/getRegister', 'AuthController@getgetRegister');
+    Route::get('/forgetPassword','AuthController@forgetPassword');
+    Route::post('/forgetPassword','AuthController@forgetPasswordPost');
+    Route::get('/resetPassword/{email}/{token}','AuthController@resetPassword');
+    Route::post('/resetPassword','AuthController@reset');
 
     Route::get('/welcome', 'HomeController@welcome');
 
-    Route::post('/login', 'HomeController@login');
+
     Route::get('/test', 'HomeController@test');
-    Route::get('/forgetPassword','HomeController@forgetPassword');
-    Route::post('/forgetPassword','HomeController@forgetPasswordPost');
-    Route::get('/resetPassword/{email}/{token}','HomeController@resetPassword');
-    Route::post('/resetPassword','HomeController@reset');
+
+
+
 //    Route::get('/logout',function (){
 //        \Illuminate\Support\Facades\Auth::logout();
 //    });
