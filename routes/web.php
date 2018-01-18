@@ -39,13 +39,11 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
 //        \Illuminate\Support\Facades\Auth::logout();
 //    });
     Route::get('/d3/{name}','HomeController@circle');
-    Route::get('/tree',function (){
-        $data = file_get_contents('./common/tree.erp');
-//        return $data;
-        return view('common.d3.tree');
-    });
+    Route::get('/tree/{name}','HomeController@showTree');
     Route::get('/upload','HomeController@file');
     Route::get('/file','HomeController@file');
+    Route::get('/tree','HomeController@tree');
+    Route::post('/tree','HomeController@treePost');
     Route::post('/upload','HomeController@upload');
     // 权限管理
 
