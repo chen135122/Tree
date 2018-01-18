@@ -95,7 +95,6 @@
 
     <script type="text/html" id="tooBar">
         <button class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon"></i></button>
-        <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon"></i></button>
     </script>
 @endsection
 
