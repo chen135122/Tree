@@ -12,7 +12,14 @@ class RoleController extends ApiController
         $limit = $request->input('limit', 10);
 
         // 要显示的菜单
-        $roles = Role::latest()->paginate($limit);
+        $query = (new Role())->newQuery()->latest();
+
+        // 是否有查询
+        if ($request->has('wd')) {
+            $query->where('name', 'like', "%{$request->input('wd')}%");
+        }
+
+        $roles = $query->paginate($limit);
 
         return $this->setExtendField('count', $roles->total())
                     ->setData($roles->all())
