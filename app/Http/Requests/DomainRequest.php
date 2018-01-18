@@ -24,7 +24,7 @@ class DomainRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required|unique:domains,name',
             'description' => 'required|min:10'
         ];
     }
@@ -34,6 +34,7 @@ class DomainRequest extends FormRequest
     {
         return [
             'name.required' => '区域名字不能留空',
+            'name.unique' => '区域的名字已经存在',
             'description.required' => '区域描述不能留空',
             'description.min' => '区域描述不能少于10个字',
         ];
