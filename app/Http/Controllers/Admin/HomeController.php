@@ -139,4 +139,32 @@ class HomeController extends Controller
         return view('common.d3.upload',compact('files'));
 //        dd($files);
     }
+
+    public function tree(){
+        $files = Storage::allfiles('./trees');
+        foreach ($files as $key => $value){
+            $files[$key] = explode('/',$value)[1];
+//            dd($file);
+        }
+        return view('common.d3.tree',compact('files'));
+//        dd($files);
+    }
+
+    public function treePost(Request $request){
+        $file = $request->file('upload');
+//        dd($file->getClientOriginalName());
+        $result = Storage::exists('./trees/'.$file->getClientOriginalName());
+        if($result){
+            echo '<script>alert("该文件已经存在！")</script>';
+            return redirect()->back();
+        }else{
+            $request->file('upload')->storeAs('trees',$file->getClientOriginalName());
+            return redirect()->to('/admin/tree');
+        }
+    }
+
+    public function showTree($name){
+        return view('common.d3.show',compact('dataset'));
+    }
+
 }

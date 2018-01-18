@@ -56,7 +56,7 @@
                         <a class="J_menuItem" href="{{ url('/admin/upload') }}" data-index="0">环形图</a>
                     </li>
                     <li>
-                        <a class="J_menuItem" href="{{ route('domains.index') }}" data-index="0">树状图</a>
+                        <a class="J_menuItem" href="{{ url('/admin/tree') }}" data-index="0">树状图</a>
                     </li>
                 </ul>
 
