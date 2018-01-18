@@ -45,15 +45,16 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
     Route::get('/tree','HomeController@tree');
     Route::post('/tree','HomeController@treePost');
     Route::post('/upload','HomeController@upload');
+
+
     // 权限管理
-
-
     Route::middleware('auth.admin')->group(function() {
         Route::resource('users', 'UserController');
         Route::resource('domains', 'DomainController', ['except' => 'show']);
         Route::resource('roles', 'RoleController', ['except' => 'show']);
+        Route::resource('permissions', 'PermissionController');
 
-
+        // 字段的开启或关闭
         Route::post('fields/toggle', 'FieldController@toggleField');
     });
 
