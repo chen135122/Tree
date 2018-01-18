@@ -18,7 +18,7 @@
             <small>移动设备访问请扫描以下二维码：</small>
             <br>
             <br>
-            <img src="img/qr_code.png" width="100%" style="max-width:264px;">
+            <img src="/img/qr_code.png" width="100%" style="max-width:264px;">
             <br>
         </div>
         <div class="col-sm-5">
