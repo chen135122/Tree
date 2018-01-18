@@ -19,6 +19,9 @@ class CreateDomainsTable extends Migration
             $table->string('name')->comment('区域的名字');
             $table->string('description')->default('')->comment('区域的描述');
 
+            $table->integer('created_id')->nullable();
+            $table->integer('updated_id')->nullable();
+
             $table->timestamps();
         });
 

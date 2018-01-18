@@ -15,4 +15,5 @@ use Illuminate\Http\Request;
 
 Route::namespace('Api')->group(function(){
     Route::get('roles', 'RoleController@index');
+    Route::get('domains', 'DomainController@index');
 });
