@@ -32,12 +32,6 @@ class HomeController extends Controller
     }
 
 
-
-
-
-
-
-
     public function circle($name){
         $data = file_get_contents('./storage/files/'.$name);
         preg_match_all('/\{(\s*[\d\D]+\s*)\}/U', $data, $matches,true );
@@ -115,6 +109,7 @@ class HomeController extends Controller
     }
 
     public function upload(Request $request){
+        dd($request->all());
         $file = $request->file('upload');
         dd($file);
 //        dd($file->getClientOriginalName());
