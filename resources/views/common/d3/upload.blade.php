@@ -1,5 +1,39 @@
 @extends('layouts.iframe')
 
+@section('style')
+    <!--引入CSS-->
+    <link rel="stylesheet" type="text/css" href="/css/webuploader.css">
+    <style>
+        .file {
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+        }
+        .file input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .file:hover {
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+    </style>
+    <!--引入JS-->
+    <script type="text/javascript" src="/js/webuploader.js"></script>
+@stop
 
 @section('container')
     <div class="row">
@@ -51,14 +85,32 @@
         </div>
 
     </div>
+
     <div class="page-container ">
         <form id="upload-form" action="/admin/upload" method="post" enctype="multipart/form-data" >
             {{--<button class="btn btn-success btn-cons m-b-10" type="file"><i class="fa fa-cloud-upload"></i> <span class="bold">Upload</span>--}}
             {{--</button>--}}
             {{ csrf_field() }}
-            <input class="btn btn-success btn-cons m-b-10" type="file" id="upload" name="upload" required/> <br />
-            <input type="submit" value="Upload" />
+            <input  type="file" id="upload" name="upload" required/> <br />
+            <input class="btn btn-success btn-cons m-b-10" type="submit" value="Upload" />
         </form>
 
     </div>
+    {{--<script>--}}
+        {{--var uploader = WebUploader.create({--}}
+
+            {{--// swf文件路径--}}
+            {{--swf: BASE_URL + '/common/Uploader.swf',--}}
+
+            {{--// 文件接收服务端。--}}
+            {{--server: 'http://webuploader.duapp.com/server/fileupload.php',--}}
+
+            {{--// 选择文件的按钮。可选。--}}
+            {{--// 内部根据当前运行是创建，可能是input元素，也可能是flash.--}}
+            {{--pick: '#picker',--}}
+
+            {{--// 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！--}}
+            {{--resize: false--}}
+        {{--});--}}
+    {{--</script>--}}
 @endsection

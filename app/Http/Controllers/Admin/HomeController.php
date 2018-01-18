@@ -116,6 +116,7 @@ class HomeController extends Controller
 
     public function upload(Request $request){
         $file = $request->file('upload');
+        dd($file);
 //        dd($file->getClientOriginalName());
         $result = Storage::exists('./files/'.$file->getClientOriginalName());
         if($result){
