@@ -24,7 +24,7 @@ class RoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required|unique:roles,name',
         ];
     }
 
@@ -32,6 +32,7 @@ class RoleRequest extends FormRequest
     {
         return [
             'name.required' => '角色的名字不能为空',
+            'name.unique' => '角色的名字已经存在',
         ];
     }
 }

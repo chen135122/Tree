@@ -1,12 +1,6 @@
 ### Admin
 
 ```php
-                               fields_translate(字段翻译表)
-                                 A
-                                /
-                               / (一对多)
-                              /
-                             /
                           fields(字段表!每次创建用户，当要往多对多表插入菜单)
                          /
                         /

@@ -54,7 +54,7 @@
                                         <div class="columns columns-right btn-group pull-right">
                                             <div class="keep-open btn-group" title="列">
                                                 <button type="button" class="btn btn-default" id="show_side_btn"><i class="glyphicon glyphicon-th icon-th"></i><span class="caret"></span></button>
-                                                <ul style="display: none" id="side_menu" class="dropdown-menu">
+                                                <ul style="display: none;top:0px;" id="side_menu" class="dropdown-menu">
                                                     @foreach ($fields as $field)
                                                         <li>
                                                             <label>
@@ -75,7 +75,7 @@
                                     <div class="fixed-table-container" style="padding-bottom: 0px;">
                                         {{-- 数据渲染 --}}
                                         <div class="fixed-table-body">
-                                            <table class="layui-hide" id="data_table" lay-filter="data_table">
+                                            <table class="layui-hide" id="data_table" lay-filter="data_table" lay-id="data_table">
 
                                             </table>
                                         </div>
@@ -103,13 +103,14 @@
 @section('script')
     <script src="{{ asset('layui/layui.js') }}"></script>
     <script>
+        var api_roles = '{{ url('api/roles') }}';
         layui.use('table', function(){
             var table = layui.table;
 
             // 显示的列表数据
             table.render({
                 elem: '#data_table'
-                ,url:'{{ url('api/roles') }}'
+                ,url: api_roles
                 ,limit: 2
                 ,width: 'full'
                 ,height: 'full'
@@ -153,13 +154,47 @@
                         shadeClose: true,
                         shade: 0.8,
                         area: ['90%', '90%'],
-                        content: url //iframe的url
+                        content: url,
+                        cancel: function(index, layero){
+                            layer.close(index);
+
+                            reloadTable(table);
+                            return true;
+                        }
                     });
                 }
             });
 
+            // 新增
+            $('#add_btn').click(function(){
+                var url = $(this).data('url');
+                layer.open({
+                    type: 2,
+                    title: '添加',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['90%', '90%'],
+                    content: url,
+                    cancel: function(index, layero){
+                        layer.close(index);
+
+                        reloadTable(table);
+                        return true;
+                    }
+                });
+            });
+
 
         });
+
+        // 表格重载
+        function reloadTable(table)
+        {
+            table.reload('data_table', {
+                url: api_roles
+                ,where: {} //设定异步数据接口的额外参数
+            });
+        }
 
 
         // 更新显示列
@@ -172,18 +207,7 @@
             });
         })
 
-        // 新增
-        $('#add_btn').click(function(){
-            var url = $(this).data('url');
-            layer.open({
-                type: 2,
-                title: '添加',
-                shadeClose: true,
-                shade: 0.8,
-                area: ['90%', '90%'],
-                content: url //iframe的url
-            });
-        });
+
 
         // 菜单
         $('#show_side_btn').click(function(){
