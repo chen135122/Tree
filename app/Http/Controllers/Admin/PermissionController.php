@@ -6,6 +6,7 @@ use App\Models\Field;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
@@ -26,5 +27,25 @@ class PermissionController extends Controller
         }
 
         return view('admin.permissions.index', compact('fields'));
+    }
+
+    public function edit(Permission $permission)
+    {
+        return view('admin.permissions.edit', compact('permission'));
+    }
+
+    public function update(Request $request, Permission $permission)
+    {
+        $this->validate($request, [
+           'name' => 'required|unique:permissions,name'
+        ], [
+            'name.required' => '权限名不能为空',
+            'name.unique' => '权限名已经存在'
+        ]);
+
+        $data = $request->only(['name', 'description']);
+        $permission->update($data);
+
+        return back()->withErrors(['name' => '修改成功']);
     }
 }

@@ -9,10 +9,10 @@
                         <h5>
                             <ul class="breadcrumb">
                                 <li>
-                                    <a href="{{ route('domains.index') }}">区域列表</a>
+                                    <a href="{{ route('permissions.index') }}">权限列表</a>
                                 </li>
                                 <li>
-                                    <span>修改区域</span>
+                                    <span>修改权限</span>
                                 </li>
                                 <li>
                                     <a class="fa fa-refresh" href="javascript:location.href =location.href;"> 刷新</a>
@@ -28,7 +28,7 @@
                             </div>
                         @endif
 
-                        <form method="post" action="{{ route('domains.update', ['domain' => $domain]) }}" class="form-horizontal" id="thisform">
+                        <form method="post" action="{{ route('permissions.update', ['permission' => $permission]) }}" class="form-horizontal" id="thisform">
                             {{ csrf_field() }}
                             {{ method_field('PUT') }}
 
@@ -36,10 +36,10 @@
                                 <!--    -->
                                 <label for="name" class="col-sm-2 control-label">
                                     <span style="color:red;">*</span>
-                                    区域名
+                                    权限名
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" name="name" type="text" value="{{ $domain->name }}">
+                                    <input class="form-control" name="name" type="text" value="{{ $permission->name }}">
                                     <div id="tipinfo" style="color:red;" class="tipinfo">
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                     描述
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" name="description" type="text" value="{{ $domain->description }}">
+                                    <input class="form-control" name="description" type="text" value="{{ $permission->description }}">
                                 </div>
                                 <!--    -->
                             </div>

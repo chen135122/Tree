@@ -120,7 +120,7 @@
                     @foreach ($fields as $key => $field)
                         ,{field:'{{ $field['field_name'] }}', width:180, title: '{{ $field['title'] }}', sort:true}
                     @endforeach
-                    ,{field:'operate', title:'  ', width:110, toolbar: '#tooBar', unresize: true,fixed: 'right'}
+                    ,{field:'operate', title:'  ', width:60, toolbar: '#tooBar', unresize: true,fixed: 'right'}
                 ]]
                 ,page: true
                 ,done: function(){
