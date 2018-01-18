@@ -12,52 +12,60 @@ class FieldsTableSeeder extends Seeder
      */
     public function run()
     {
+        $users = \App\Models\User::all()->pluck('id');
 
-        foreach ($this->getModels() as $data) {
-
-            $instance = new $data['model'];
-
-            $columns = $this->getTableColumns($instance);
-            $data = $this->transformData($columns, $data['group']);
-            Field::insert($data);
+        foreach ($this->getData() as $data) {
+            $field = Field::create($data);
+            // 默认每个用户都显示列
+            $field->users()->attach($users);
         }
     }
 
-    protected function getModels()
+    protected function getData()
     {
         return [
             [
-                'model' => \Spatie\Permission\Models\Role::class,
-                'group' => 'roles'
+                'json_data' => json_encode(
+                    ['zh' => '名字', 'en' => 'name']
+                ),
+                'table_name' => 'roles',
+                'field_name' => 'name',
             ],
             [
-                'model' => \Spatie\Permission\Models\Permission::class,
-                'group' => 'permissions'
+                'json_data' => json_encode(
+                    ['zh' => '描述', 'en' => 'description']
+                ),
+                'table_name' => 'roles',
+                'field_name' => 'description',
             ],
             [
-                'model' => \App\Models\User::class,
-                'group' => 'users'
+                'json_data' => json_encode(
+                    ['zh' => '创建时间', 'en' => 'created time']
+                ),
+                'table_name' => 'roles',
+                'field_name' => 'created_at',
+            ],
+            [
+                'json_data' => json_encode(
+                    ['zh' => '修改时间', 'en' => 'updated time']
+                ),
+                'table_name' => 'roles',
+                'field_name' => 'updated_at',
+            ],
+            [
+                'json_data' => json_encode(
+                    ['zh' => '创建人', 'en' => 'created person']
+                ),
+                'table_name' => 'roles',
+                'field_name' => 'created_id',
+            ],
+            [
+                'json_data' => json_encode(
+                    ['zh' => '修改人', 'en' => 'updated person']
+                ),
+                'table_name' => 'roles',
+                'field_name' => 'updated_at',
             ]
         ];
-    }
-
-    protected function getTableColumns($instance)
-    {
-        $columns = $instance->getConnection()->getSchemaBuilder()->getColumnListing($instance->getTable());
-
-        return $columns;
-    }
-
-    protected function transformData(array $columns, $group)
-    {
-        $data = [];
-        foreach ($columns as $column) {
-            $data[] = [
-                'field' => $column,
-                'group' => $group
-            ];
-        }
-
-        return $data;
     }
 }

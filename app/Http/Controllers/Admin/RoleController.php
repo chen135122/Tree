@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\RoleRequest;
+use App\Models\Field;
+use App\Models\FieldIndex;
+use App\Models\TableHeader;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -12,10 +16,23 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::latest()->get();
+        $language = 'zh';
+        // 要显示的菜单
+        $roles_field = Field::where('table_name', 'roles')->get();
 
-        return view('admin.roles.index', compact('roles'));
+        $fields = [];
+        foreach ($roles_field as $field) {
+            $fields[] = [
+                'id' => $field->id,
+                'field_name' => $field->field_name,
+                'title' => json_decode($field->json_data)->$language,
+                'checked' => $field->users()->where('id', Auth::id())->exists()
+            ];
+        }
+
+        return view('admin.roles.index', compact('fields'));
     }
+
 
     public function create()
     {
@@ -52,4 +69,5 @@ class RoleController extends Controller
             return ['msg' => '删除失败', 'code' => 401];
         }
     }
+
 }
