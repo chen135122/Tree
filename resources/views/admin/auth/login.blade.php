@@ -39,15 +39,16 @@
                     <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势四</li>
                     <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势五</li>
                 </ul>
-                <strong>还没有账号？ <a href="#">立即注册&raquo;</a></strong>
+                <strong>还没有账号？ <a href="{{ url('/admin/') }}">立即注册&raquo;</a></strong>
             </div>
         </div>
         <div class="col-sm-5">
-            <form method="post" action="index.html">
+            <form method="post" action="/admin/login">
+                {{ csrf_field() }}
                 <h4 class="no-margins">登录：</h4>
                 <p class="m-t-md">登录到H+后台主题UI框架</p>
-                <input type="text" class="form-control uname" placeholder="用户名" />
-                <input type="password" class="form-control pword m-b" placeholder="密码" />
+                <input type="email" class="form-control uname" name="email" placeholder="邮箱" />
+                <input type="password" class="form-control pword m-b" name="password" placeholder="密码" />
                 <a href="">忘记密码了？</a>
                 <button class="btn btn-success btn-block">登录</button>
             </form>
