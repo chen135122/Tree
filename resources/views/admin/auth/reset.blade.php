@@ -43,14 +43,14 @@
             </div>
         </div>
         <div class="col-sm-5">
-            <form method="post" action="/admin/login">
+            <form method="post" action="/admin/resetPassword">
                 {{ csrf_field() }}
-                <h4 class="no-margins">登录：</h4>
+                <h4 class="no-margins">重置密码：</h4>
                 <p class="m-t-md">登录到H+后台主题UI框架</p>
-                <input type="email" class="form-control uname" name="email" placeholder="邮箱" />
+                <input type="hidden" name="token" placeholder="" value="{{ $token }}" class="form-control" required>
+                <input type="hidden" name="email" placeholder="" value="{{ $email }}" class="form-control" required>
                 <input type="password" class="form-control pword m-b" name="password" placeholder="密码" />
-                <a href="/admin/forgetPassword">忘记密码了？</a>
-                <button class="btn btn-success btn-block">登录</button>
+                <button class="btn btn-success btn-block">确认重置</button>
             </form>
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
