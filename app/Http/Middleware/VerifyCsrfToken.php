@@ -13,6 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
-        'admin/fields/toggle'
+        'admin/fields/toggle',
+        'admin/roles/*',
     ];
 }

@@ -63,6 +63,8 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
+        // 先移除当前角色的所有权限
+        $role->permissions()->detach();
         if ($role->delete()) {
             return ['msg' => '删除成功', 'code' => 200];
         } else {
