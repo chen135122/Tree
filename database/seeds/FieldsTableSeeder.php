@@ -64,7 +64,7 @@ class FieldsTableSeeder extends Seeder
                     ['zh' => '修改人', 'en' => 'updated person']
                 ),
                 'table_name' => 'roles',
-                'field_name' => 'updated_at',
+                'field_name' => 'updated_id',
             ]
         ];
     }

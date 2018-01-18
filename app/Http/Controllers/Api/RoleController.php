@@ -16,7 +16,9 @@ class RoleController extends ApiController
 
         // 是否有查询
         if ($request->has('wd')) {
-            $query->where('name', 'like', "%{$request->input('wd')}%");
+            $query->where('name', 'like', "%{$request->input('wd')}%")
+                ->orWhere('id', 'like', "%{$request->input('wd')}%")
+                ->orWhere('description', 'like', "%{$request->input('wd')}%");
         }
 
         $roles = $query->paginate($limit);

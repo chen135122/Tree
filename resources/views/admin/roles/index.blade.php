@@ -59,7 +59,7 @@
                                                         <li>
                                                             <label>
                                                                 <input type="checkbox"
-                                                                       data-field="{{ $field['id'] }}"
+                                                                       data-field="{{ $field['field_name'] }}"
                                                                        value="{{ $field['id'] }}"
                                                                        class="field_checkbox"
                                                                        {{ $field['checked'] ? 'checked' : '' }}
@@ -74,7 +74,7 @@
                                     </div>
 
                                     <div class="input-group" style="float: right;">
-                                        <input type="text" placeholder="请输入查询关键字" class="input-sm form-control" id="search_input" value="">
+                                        <input type="text" placeholder="请输入查询关键字,ID | 名字 | 描述" class="input-sm form-control" id="search_input" value="">
                                         <span class="input-group-btn">
                                             <button type="button" id="search_btn" class="btn btn-sm btn-primary"> 搜索</button>
                                         </span>
@@ -127,14 +127,22 @@
                 ,cols: [[
                     {field:'id', width:80, title: 'ID', sort: true, fixed: 'left'}
                     @foreach ($fields as $key => $field)
-                        @if ($field['checked'])
-                            ,{field:'{{ $field['field_name'] }}', width:180, title: '{{ $field['title'] }}', sort:true}
-                        @endif
+                        ,{field:'{{ $field['field_name'] }}', width:180, title: '{{ $field['title'] }}', sort:true}
                     @endforeach
                     ,{field:'operate', title:'  ', width:110, toolbar: '#tooBar', unresize: true,fixed: 'right'}
                 ]]
                 ,page: true
+                ,done: function(){
+                    // 隐藏该隐藏的列
+                    @foreach ($fields as $field)
+                        @if (! $field['checked'])
+                            changeTableStatus("{{ $field['field_name'] }}");
+                            console.log(1);
+                        @endif
+                    @endforeach
+                }
             });
+
 
             // 监听工具条事件
             var roles_url = "{{ url('admin/roles') }}/";
@@ -200,8 +208,50 @@
                 var _wd = $('#search_input').val();
                 reloadTable(table, api_roles, {wd:_wd});
             });
+            // 回车搜索
+            $('#search_input').keydown(function(e) {
+                if (e.keyCode == 13) {
+                    var _wd = $(this).val();
+                    reloadTable(table, api_roles, {wd:_wd});
+                }
+            });
 
         });
+
+
+        // 更新显示列
+        $('.field_checkbox').change(function(){
+            var url = '{{ url('admin/fields/toggle') }}';
+            var data = {id:$(this).val()};
+            var field = $(this).data('field');
+
+            $.post(url, data, function(res){
+                layer.msg(res.msg);
+                if (res.code == 0) {
+                    changeTableStatus(field);
+                }
+            });
+        })
+
+        // 菜单
+        $('#show_side_btn').click(function(){
+            console.log($('#show_me'));
+            $('#side_menu').show();
+        });
+        // 关闭菜单
+        $('#side_menu').mouseleave(function(){
+            $(this).hide();
+        });
+
+
+        // 显示或者隐藏表格
+        function changeTableStatus(field)
+        {
+            // 隐藏头
+            var dom = "th[data-field="+ field +"], td[data-field="+ field +"]";
+            console.log(dom);
+            $(dom).toggle();
+        }
 
         // 表格重载
         function reloadTable(table, url, parameters)
@@ -216,28 +266,5 @@
                 ,where: parameters //设定异步数据接口的额外参数
             });
         }
-
-
-        // 更新显示列
-        $('.field_checkbox').change(function(){
-            var url = '{{ url('admin/fields/toggle') }}';
-            var data = {id:$(this).val()};
-
-            $.post(url, data, function(res){
-                layer.msg(res.msg);
-            });
-        })
-
-
-
-        // 菜单
-        $('#show_side_btn').click(function(){
-            console.log($('#show_me'));
-            $('#side_menu').show();
-        });
-        // 关闭菜单
-        $('#side_menu').mouseleave(function(){
-            $(this).hide();
-        });
     </script>
 @endsection
