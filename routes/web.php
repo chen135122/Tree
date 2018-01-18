@@ -139,6 +139,9 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         Route::resource('users', 'UserController');
         Route::resource('domains', 'DomainController', ['except' => 'show']);
         Route::resource('roles', 'RoleController', ['except' => 'show']);
+
+
+        Route::post('fields/toggle', 'FieldController@toggleField');
     });
 
 });

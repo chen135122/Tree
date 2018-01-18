@@ -60,6 +60,7 @@
                                                                 <input type="checkbox"
                                                                        data-field="{{ $field['id'] }}"
                                                                        value="{{ $field['id'] }}"
+                                                                       class="field_checkbox"
                                                                        {{ $field['checked'] ? 'checked' : '' }}
                                                                 >
                                                                 {{ $field['title'] }}</label>
@@ -93,8 +94,8 @@
 
     <script type="text/html" id="operate">
         <!-- 这里的 checked 的状态只是演示 -->
-        <a href="{{ url('admin/roles') }}/@{{d.id}}/edit" title="编辑" >编辑</a>
-        <button name="lock" value="@{{d.id}}">删除</button>
+        <button data-url="{{ url('admin/roles') }}/@{{d.id}}/edit" class="layui-btn layui-btn-xs edit_btn" ><i class="layui-icon"></i></button>
+        <button class="layui-btn layui-btn-xs layui-btn-danger" data-id="@{{d.id}}"><i class="layui-icon"></i></button>
     </script>
 @endsection
 
@@ -105,6 +106,7 @@
         layui.use('table', function(){
             var table = layui.table;
 
+            // 显示的列表数据
             table.render({
                 elem: '#data_table'
                 ,url:'{{ url('api/roles') }}'
@@ -112,14 +114,42 @@
                 ,width: 'full'
                 ,height: 'full'
                 ,cols: [[
-                     {field:'id', width:80, title: 'ID', sort: true, fixed: 'left'}
-                    ,{field:'name', width:180, title: '名字'}
-                    ,{field:'description', width:380, title: '描述', sort: true}
-                    ,{field:'created_at', width:180, title: '创建', sort: true}
-                    ,{field:'updated_at', width: 180, title: '更新', sort: true}
-                    ,{field:'id', title:'操作', width:110, templet: '#operate', unresize: true,fixed: 'right'}
+                    {field:'id', width:80, title: 'ID', sort: true, fixed: 'left'}
+                    @foreach ($fields as $key => $field)
+                        @if ($field['checked'])
+                            ,{field:'{{ $field['field_name'] }}', width:180, title: '{{ $field['title'] }}', sort:true}
+                        @endif
+                    @endforeach
+                    ,{field:'operate', title:'操作', width:110, templet: '#operate', unresize: true,fixed: 'right'}
                 ]]
                 ,page: true
+            });
+
+        });
+    </script>
+    <script>
+        // 选择字段显示列表
+        $('.field_checkbox').change(function(){
+            var url = '{{ url('admin/fields/toggle') }}';
+            var data = {id:$(this).val()};
+
+            $.post(url, data, function(res){
+                layer.msg(res.msg);
+            });
+        });
+
+        // 编辑弹出新层
+        $(document).on('click', '.edit_btn', function() {
+            var url = $(this).data('url');
+            //iframe层
+            console.log(11);
+            layer.open({
+                type: 2,
+                title: '编辑',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['90%', '90%'],
+                content: url //iframe的url
             });
         });
     </script>

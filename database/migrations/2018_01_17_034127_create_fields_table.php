@@ -16,7 +16,7 @@ class CreateFieldsTable extends Migration
         Schema::create('fields', function (Blueprint $table) {
             $table->increments('id');
             $table->string('table_name')->comment('表的名字');
-            $table->text('field_name')->comment('表的字段');
+            $table->string('field_name')->comment('表的字段');
             $table->text('json_data')->comment('存字段所有语言版本的数据');
         });
 

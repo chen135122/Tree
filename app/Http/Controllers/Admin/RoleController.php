@@ -22,9 +22,9 @@ class RoleController extends Controller
 
         $fields = [];
         foreach ($roles_field as $field) {
-
             $fields[] = [
                 'id' => $field->id,
+                'field_name' => $field->field_name,
                 'title' => json_decode($field->json_data)->$language,
                 'checked' => $field->users()->where('id', Auth::id())->exists()
             ];
@@ -69,4 +69,5 @@ class RoleController extends Controller
             return ['msg' => '删除失败', 'code' => 401];
         }
     }
+
 }
