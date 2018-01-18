@@ -72,6 +72,14 @@
                                         </div>
 
                                     </div>
+
+                                    <div class="input-group" style="float: right;">
+                                        <input type="text" placeholder="请输入查询关键字" class="input-sm form-control" id="search_input" value="">
+                                        <span class="input-group-btn">
+                                            <button type="button" id="search_btn" class="btn btn-sm btn-primary"> 搜索</button>
+                                        </span>
+                                    </div>
+
                                     <div class="fixed-table-container" style="padding-bottom: 0px;">
                                         {{-- 数据渲染 --}}
                                         <div class="fixed-table-body">
@@ -103,6 +111,8 @@
 @section('script')
     <script src="{{ asset('layui/layui.js') }}"></script>
     <script>
+
+        // 有关表格重新渲染的都要写在里面
         var api_roles = '{{ url('api/roles') }}';
         layui.use('table', function(){
             var table = layui.table;
@@ -111,7 +121,7 @@
             table.render({
                 elem: '#data_table'
                 ,url: api_roles
-                ,limit: 2
+                ,limit: 10
                 ,width: 'full'
                 ,height: 'full'
                 ,cols: [[
@@ -158,7 +168,7 @@
                         cancel: function(index, layero){
                             layer.close(index);
 
-                            reloadTable(table);
+                            reloadTable(table, api_roles);
                             return true;
                         }
                     });
@@ -178,21 +188,32 @@
                     cancel: function(index, layero){
                         layer.close(index);
 
-                        reloadTable(table);
+                        reloadTable(table, api_roles);
                         return true;
                     }
                 });
             });
 
 
+            // 搜索
+            $('#search_btn').click(function(){
+                var _wd = $('#search_input').val();
+                reloadTable(table, api_roles, {wd:_wd});
+            });
+
         });
 
         // 表格重载
-        function reloadTable(table)
+        function reloadTable(table, url, parameters)
         {
+            url = url || '';
+            parameters = parameters || {};
+
+            // 获取当前页
+            console.log(table);
             table.reload('data_table', {
-                url: api_roles
-                ,where: {} //设定异步数据接口的额外参数
+                url: url
+                ,where: parameters //设定异步数据接口的额外参数
             });
         }
 
