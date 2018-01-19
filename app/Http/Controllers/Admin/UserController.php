@@ -76,7 +76,13 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        //
+        // 先移除当前用户所有角色
+        $user->roles()->detach();
+        if ($user->delete()) {
+            return ['msg' => '删除成功', 'code' => 200];
+        } else {
+            return ['msg' => '删除失败', 'code' => 401];
+        }
     }
 
     protected function createUser(array $data)

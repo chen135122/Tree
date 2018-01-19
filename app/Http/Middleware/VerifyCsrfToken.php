@@ -16,5 +16,6 @@ class VerifyCsrfToken extends Middleware
         'admin/fields/toggle',
         'admin/roles/*',
         'admin/domains/*',
+        'admin/users/*',
     ];
 }

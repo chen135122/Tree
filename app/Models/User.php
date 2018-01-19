@@ -30,7 +30,6 @@ class User extends Authenticatable
     ];
 
 
-
     public function domains()
     {
         return $this->belongsToMany(Domain::class);
