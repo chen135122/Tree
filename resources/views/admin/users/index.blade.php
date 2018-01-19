@@ -113,7 +113,7 @@
     <script>
 
         // 有关表格重新渲染的都要写在里面
-        var api_domains = '{{ url('api/domains') }}';
+        var api_domains = '{{ url('api/users') }}';
         layui.use('table', function(){
             var table = layui.table;
 

@@ -17,4 +17,5 @@ Route::namespace('Api')->group(function(){
     Route::get('roles', 'RoleController@index');
     Route::get('domains', 'DomainController@index');
     Route::get('permissions', 'PermissionController@index');
+    Route::get('users', 'UserController@index');
 });

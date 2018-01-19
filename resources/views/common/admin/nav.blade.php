@@ -37,6 +37,9 @@
                 </a>
                 <ul class="nav nav-second-level">
                     <li>
+                        <a class="J_menuItem" href="{{ route('users.index') }}" data-index="0">用户管理</a>
+                    </li>
+                    <li>
                         <a class="J_menuItem" href="{{ route('roles.index') }}" data-index="0">角色管理</a>
                     </li>
                     <li>

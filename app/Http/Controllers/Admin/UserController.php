@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $language = 'zh';
         // 要显示的菜单
-        $roles_field = Field::where('table_name', 'permissions')->get();
+        $roles_field = Field::where('table_name', 'users')->get();
 
         $fields = [];
         foreach ($roles_field as $field) {
@@ -31,7 +31,7 @@ class UserController extends Controller
             ];
         }
 
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index', compact('fields'));
     }
 
     /**
