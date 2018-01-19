@@ -137,7 +137,6 @@
                     @foreach ($fields as $field)
                         @if (! $field['checked'])
                             changeTableStatus("{{ $field['field_name'] }}");
-                            console.log(1);
                         @endif
                     @endforeach
                 }

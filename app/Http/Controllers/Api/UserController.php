@@ -20,7 +20,7 @@ class UserController extends ApiController
             $wd = $request->input('wd');
             $query->where('name', 'like', "%{$wd}%")
                 ->orWhere('id', 'like', "%{$wd}%")
-                ->orWhere('description', 'like', "%{$wd}%");
+                ->orWhere('email', 'like', "%{$wd}%");
         }
 
         $users = $query->paginate($limit);
