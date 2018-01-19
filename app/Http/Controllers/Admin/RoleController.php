@@ -72,4 +72,11 @@ class RoleController extends Controller
         }
     }
 
+
+    public function assign()
+    {
+
+        return view('admin.roles.assign');
+    }
+
 }

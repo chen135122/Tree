@@ -128,8 +128,8 @@
                 ,width: '220'
                 ,height: '500'
                 ,cols: [[
-                    {field:'name', title:'角色', width:220}
-                    ,{field:'name', title:'角色', width:220}
+                    {field:'id', width:180, title: 'ID', sort:true}
+                    ,{field:'name', width:180, title: '名字', sort:true}
                 ]]
                 ,page: true
                 ,done: function(){
