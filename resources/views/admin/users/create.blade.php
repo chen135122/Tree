@@ -9,10 +9,10 @@
                         <h5>
                             <ul class="breadcrumb">
                                 <li>
-                                    <a href="{{ route('domains.index') }}">区域列表</a>
+                                    <a href="{{ route('users.index') }}">用户列表</a>
                                 </li>
                                 <li>
-                                    <span>新增区域</span>
+                                    <span>新增用户</span>
                                 </li>
                                 <li>
                                     <a class="fa fa-refresh" href="javascript:location.href =location.href;"> 刷新</a>
@@ -28,14 +28,14 @@
                             </div>
                         @endif
 
-                            <form method="post" action="{{ route('domains.store') }}" class="form-horizontal" >
+                            <form method="post" action="{{ route('users.store') }}" class="form-horizontal" >
                                 {{ csrf_field() }}
 
                                 <div class="form-group">
                                     <!--    -->
                                     <label for="name" class="col-sm-2 control-label">
                                         <span style="color:red;">*</span>
-                                        区域名
+                                        用户名
                                     </label>
                                     <div class="col-sm-10">
                                         <input class="form-control" name="name" type="text" value="{{ old('name') }}">
@@ -48,10 +48,21 @@
                                 <div class="form-group">
                                     <!--    -->
                                     <label for="description" class="col-sm-2 control-label">
-                                        描述
+                                        邮箱
                                     </label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" name="description" type="text" value="{{ old('description') }}">
+                                        <input class="form-control" name="email" type="email" value="{{ old('email') }}">
+                                    </div>
+                                    <!--    -->
+                                </div>
+
+                                <div class="form-group">
+                                    <!--    -->
+                                    <label for="description" class="col-sm-2 control-label">
+                                        密码
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" name="password" type="text" value="{{ old('password', '123456') }}">
                                     </div>
                                     <!--    -->
                                 </div>

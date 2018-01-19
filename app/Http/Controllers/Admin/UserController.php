@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\UserRequest;
 use App\Models\Field;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -37,13 +38,18 @@ class UserController extends Controller
 
     public function create()
     {
-        //
+        return view('admin.users.create');
     }
 
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $user = $this->createUser($request->all());
+
+        // 发送注册邮件
+        $this->created($user);
+
+        return back()->withErrors(['name' => '注册成功']);
     }
 
 
@@ -63,5 +69,19 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    protected function createUser(array $data)
+    {
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+        ]);
+    }
+
+    protected function created($user)
+    {
+        // 发送邮件
     }
 }
