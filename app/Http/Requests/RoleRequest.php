@@ -29,7 +29,7 @@ class RoleRequest extends FormRequest
 
         // 修改
         if (request()->isMethod('PUT')) {
-            $rules['name'] .= ',' . request()->route('role')->id;
+            $rules['name'] .= ',' . $this->route('role')->id;
         }
 
         return $rules;

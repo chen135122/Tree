@@ -45,6 +45,9 @@
                     <li>
                         <a class="J_menuItem" href="{{ route('permissions.index') }}" data-index="0">权限管理</a>
                     </li>
+                    <li>
+                        <a class="J_menuItem" href="{{ route('permissions.index') }}" data-index="0">权限分配</a>
+                    </li>
                 </ul>
 
             </li>

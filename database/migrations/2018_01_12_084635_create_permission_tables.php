@@ -21,6 +21,7 @@ class CreatePermissionTables extends Migration
             $table->string('guard_name');
 
             $table->string('route');
+            $table->string('group')->comment('权限的分组');
             $table->string('description')->nullable();
             $table->timestamps();
         });

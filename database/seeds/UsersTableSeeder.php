@@ -26,7 +26,7 @@ class UsersTableSeeder extends Seeder
 
                 // 给予角色
                 $count = mt_rand(1, count($roles_id));
-                $user->roles()->attach($domains_id->random($count));
+                $user->roles()->attach($roles_id->random($count));
             }
         );
     }

@@ -48,4 +48,10 @@ class PermissionController extends Controller
 
         return back()->withErrors(['name' => '修改成功']);
     }
+
+    public function assign()
+    {
+        // 权限分配
+        return view('admin.permissions.assign');
+    }
 }

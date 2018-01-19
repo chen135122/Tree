@@ -30,6 +30,14 @@ class RolesTableSeeder extends Seeder
             ],
         ];
 
+        $roles = [];
+        for ($i = 0; $i < 25; $i ++) {
+            $roles[] = [
+                'role' => ['name' => str_random(10)],
+                'ids' => Permission::all()->pluck('id')
+            ];
+        }
+
         foreach ($roles as $role) {
             $currRole = Role::create($role['role']);
             $currRole->permissions()->attach($role['ids']);

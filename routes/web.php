@@ -52,6 +52,8 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         Route::resource('users', 'UserController');
         Route::resource('domains', 'DomainController', ['except' => 'show']);
         Route::resource('roles', 'RoleController', ['except' => 'show']);
+        // 权限分配
+        Route::get('permissions/assign', 'PermissionController@assign');
         Route::resource('permissions', 'PermissionController', ['only' => ['index', 'edit', 'update']]);
 
         // 字段的开启或关闭

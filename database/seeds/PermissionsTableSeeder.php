@@ -13,9 +13,9 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         $permissions = [
-            ['name' => '增加区域', 'route' => 'guards.store'],
-            ['name' => '修改区域', 'route' => 'guards.update'],
-            ['name' => '删除区域', 'route' => 'guards.destroy']
+            ['name' => '增加区域', 'route' => 'guards.store', 'group' => 'domain'],
+            ['name' => '修改区域', 'route' => 'guards.update', 'group' => 'domain'],
+            ['name' => '删除区域', 'route' => 'guards.destroy', 'group' => 'domain']
         ];
 
         foreach ($permissions as $permission) {

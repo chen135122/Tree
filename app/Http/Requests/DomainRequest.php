@@ -32,7 +32,7 @@ class DomainRequest extends FormRequest
 
         // 修改
         if (request()->isMethod('PUT')) {
-            $rules['name'] .= ',' . request()->route('domain')->id;
+            $rules['name'] .= ',' . $this->route('domain')->id;
         }
 
         return $rules;

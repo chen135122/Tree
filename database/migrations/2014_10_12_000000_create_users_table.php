@@ -20,6 +20,10 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('avatar');
             $table->integer('status')->default(0);
+
+            $table->integer('created_id')->nullable();
+            $table->integer('updated_id')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });
