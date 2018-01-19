@@ -59,11 +59,11 @@
                                     <div class="fixed-table-container" style="padding-bottom: 0px;">
                                         {{-- 数据渲染 --}}
                                         <div class="fixed-table-body">
-                                            <table class="layui-hide" id="data_table">
+                                            <table class="layui-hide" id="data_table" lay-filter="roles_table">
 
                                             </table>
 
-                                            <table class="layui-hide" id="users_table">
+                                            <table class="layui-hide" id="users_table" lay-filter="users_table">
 
                                             </table>
                                         </div>
@@ -80,12 +80,6 @@
             </div>
         </div>
     </div>
-
-    <script type="text/html" id="tooBar">
-        <span data-id="@{{ d.id }}">
-            @{{d.name}}
-        </span>
-    </script>
 @endsection
 
 
@@ -93,62 +87,70 @@
     <script src="{{ asset('layui/layui.js') }}"></script>
     <script>
 
+        // !!!!!!!!!!! role_id
+        var _role_id = null;
         // 有关表格重新渲染的都要写在里面
-        var api_permissions = '{{ url('api/roles') }}';
-        layui.use('table', function(){
+        var api_roles = '{{ url('api/roles') }}';
+        layui.use(['table', 'layer'], function(){
             var table = layui.table;
 
             // 显示的列表数据
             table.render({
                 elem: '#data_table'
-                ,url: api_permissions
+                ,url: api_roles
                 ,limit: 20
                 ,width: '220'
                 ,height: '500'
                 ,cols: [[
-                    {field:'name', title:'角色', width:220, toolbar: '#tooBar'}
+                    {field:'name', title:'角色', width:220, event:'selectRole'}
                 ]]
                 ,page: true
-                ,done: function(){
-                    // 绑定单击事件
-                    $('td[data-field=name]').click(function(){
-                        // 背景色
-                        $(this).parent().addClass('clickActive').siblings().removeClass('clickActive');
-                        alert($(this).find('span').data('id'));
-                    });
-
-                }
             });
-
             // 用户数据的表格
+            var api_users = '{{ url('api/roles/assign/users') }}';
             table.render({
                 elem: '#users_table'
-                ,url: api_permissions
-                ,limit: 20
-                ,width: '220'
+                ,url: api_users
+                ,where: {role_id:_role_id}
+                ,width: 'full'
                 ,height: '500'
                 ,cols: [[
-                    {field:'id', width:180, title: 'ID', sort:true}
-                    ,{field:'name', width:180, title: '名字', sort:true}
+                    {type:'checkbox'}
+                    ,{field:'id', width:180, title: 'ID', sort:true}
+                    ,{field:'name', width:180, title: '用户', sort:true}
                 ]]
-                ,page: true
-                ,done: function(){
-                }
             });
 
 
-            // 搜索
-            $('#search_btn').click(function(){
-                var _wd = $('#search_input').val();
-                reloadTable(table, api_permissions, {wd:_wd});
-            });
-            // 回车搜索
-            $('#search_input').keydown(function(e) {
-                if (e.keyCode == 13) {
-                    var _wd = $(this).val();
-                    reloadTable(table, api_permissions, {wd:_wd});
+            // 选择角色的事件
+            table.on('tool(roles_table)', function(obj){
+                if (obj.event == 'selectRole') {
+                    // 选中的颜色状态
+                    obj.tr.addClass('clickActive').siblings().removeClass('clickActive');
+                    // 用 role_id 重新渲染 users 表格
+                    _role_id = obj.data.id;
+                    reloadTable(table, 'users_table',api_users, {role_id:_role_id})
                 }
             });
+            // 选择用户的事件
+            table.on('checkbox(users_table)', function(obj) {
+                if (_role_id == null) {
+                    layer.msg('请先选择一个角色', function(){});
+                    reloadTable(table, 'users_table',api_users)
+                    return true;
+                }
+
+                var users = table.checkStatus('users_table').data;
+                // 请求后台修改
+                var url = "{{ url('api/roles/assign') }}";
+                var data = {'users':users,role_id:_role_id};
+                console.log(data);
+                $.post(url, data, function(res){
+                    // 不做处理
+                });
+            });
+
+
 
         });
 
@@ -156,16 +158,18 @@
 
 
         // 表格重载
-        function reloadTable(table, url, parameters)
+        function reloadTable(table, table_id , url, parameters)
         {
             url = url || '';
             parameters = parameters || {};
 
             // 获取当前页
-            console.log(table);
-            table.reload('data_table', {
+            table.reload(table_id, {
                 url: url
                 ,where: parameters //设定异步数据接口的额外参数
+                ,done: function(res, curr, count){
+                    console.log('数据表格重载完成');
+                }
             });
         }
     </script>

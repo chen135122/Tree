@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Spatie\Permission\Models\Role;
 
 class UserController extends ApiController
 {
@@ -28,5 +30,41 @@ class UserController extends ApiController
         return $this->setExtendField('count', $users->total())
             ->setData($users->all())
             ->toJson();
+    }
+
+    public function roleAssignUsersIndex(Request $request)
+    {
+        $role_id = $request->input('role_id');
+
+        // 要显示的菜单
+        $users = (new User())->newQuery()->latest()->get();
+
+        foreach ($users as $user) {
+            // 加上 checker 状态
+            $user->LAY_CHECKED = $user->roles()->where('id', $role_id)->exists();
+        }
+
+
+        return $this->setExtendField('count', $users->count())
+            ->setData($users->all())
+            ->toJson();
+    }
+
+    public function assignRole(Request $request)
+    {
+        // 获取所有用户
+        $users = $request->input('users');
+        $users_id = collect($users)->pluck('id');
+        // 生成一个数组值都是App\Models\User
+        $user_models = array_fill(0, count($users_id), ['model_type' => 'App\Models\User']);
+        // 两个数组合并 方便调用 sync 一次性导入
+        $data = $users_id->combine($user_models);
+
+        // 获取当前角色 ID
+        $role = Role::find($request->input('role_id'));
+        // 同步数据角色
+        $role->users()->sync($data->all());
+
+        return $this->toJson();
     }
 }

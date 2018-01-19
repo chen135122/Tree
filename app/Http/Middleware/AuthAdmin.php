@@ -16,8 +16,6 @@ class AuthAdmin
      */
     public function handle($request, Closure $next)
     {
-
-        dump('b');
         // 登录用户
         Auth::loginUsingId(1);
 
