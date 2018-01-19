@@ -9,10 +9,10 @@
                         <h5>
                             <ul class="breadcrumb">
                                 <li>
-                                    <a href="{{ route('domains.index') }}">区域列表</a>
+                                    <a href="{{ route('users.index') }}">用户列表</a>
                                 </li>
                                 <li>
-                                    <span>修改区域</span>
+                                    <span>编辑用户</span>
                                 </li>
                                 <li>
                                     <a class="fa fa-refresh" href="javascript:location.href =location.href;"> 刷新</a>
@@ -28,46 +28,58 @@
                             </div>
                         @endif
 
-                        <form method="post" action="{{ route('domains.update', ['domain' => $domain]) }}" class="form-horizontal" id="thisform">
-                            {{ csrf_field() }}
-                            {{ method_field('PUT') }}
+                            <form method="post" action="{{ route('users.update', ['user' => $user]) }}" class="form-horizontal" >
+                                {{ csrf_field() }}
+                                {{ method_field('PUT') }}
 
-                            <div class="form-group">
-                                <!--    -->
-                                <label for="name" class="col-sm-2 control-label">
-                                    <span style="color:red;">*</span>
-                                    区域名
-                                </label>
-                                <div class="col-sm-10">
-                                    <input class="form-control" name="name" type="text" value="{{ $domain->name }}">
-                                    <div id="tipinfo" style="color:red;" class="tipinfo">
+                                <div class="form-group">
+                                    <!--    -->
+                                    <label for="name" class="col-sm-2 control-label">
+                                        <span style="color:red;">*</span>
+                                        用户名
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" name="name" type="text" value="{{ $user->name }}">
+                                        <div id="tipinfo" style="color:red;" class="tipinfo">
+                                        </div>
+                                    </div>
+                                    <!--    -->
+                                </div>
+
+                                <div class="form-group">
+                                    <!--    -->
+                                    <label for="description" class="col-sm-2 control-label">
+                                        邮箱
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" name="email" type="email" value="{{ $user->email }}">
+                                    </div>
+                                    <!--    -->
+                                </div>
+
+                                <div class="form-group">
+                                    <!--    -->
+                                    <label for="description" class="col-sm-2 control-label">
+                                        密码
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" name="password" type="text">
+                                    </div>
+                                    <!--    -->
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">
+
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-w-m btn-info">修改</button>
+                                        <button type="reset" class="btn btn-w-m btn-info">重置</button>
                                     </div>
                                 </div>
-                                <!--    -->
-                            </div>
-
-                            <div class="form-group">
-                                <!--    -->
-                                <label for="description" class="col-sm-2 control-label">
-                                    描述
-                                </label>
-                                <div class="col-sm-10">
-                                    <input class="form-control" name="description" type="text" value="{{ $domain->description }}">
-                                </div>
-                                <!--    -->
-                            </div>
-
-                            <div class="form-group">
-                                <label for="description" class="col-sm-2 control-label">
-
-                                </label>
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-w-m btn-info">修改</button>
-                                </div>
-                            </div>
 
 
-                        </form>
+                            </form>
                     </div>
                 </div>
             </div>

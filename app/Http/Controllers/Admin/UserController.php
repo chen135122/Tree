@@ -56,13 +56,21 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        //
+        return view('admin.users.edit', compact('user'));
     }
 
 
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        //
+        $data = $request->only(['name', 'email']);
+        // 如果存在密码
+        if (! is_null($request->input('password'))) {
+            $data['password'] = bcrypt($request->input('password'));
+        }
+
+        $user->update($data);
+
+        return back()->withErrors(['name' => '修改成功']);
     }
 
 

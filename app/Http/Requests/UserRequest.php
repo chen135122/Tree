@@ -28,6 +28,7 @@ class UserRequest extends FormRequest
         if (request()->isMethod('PUT')) {
             $rules['name'] .= ',' . $this->route('user')->id;
             $rules['email'] .= ',' . $this->route('user')->id;
+            $rules['password'] = 'nullable|min:6';
         }
 
         return $rules;
