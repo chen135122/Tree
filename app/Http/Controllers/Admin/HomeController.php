@@ -160,7 +160,80 @@ class HomeController extends Controller
     }
 
     public function showTree($name){
-        return view('common.d3.show',compact('dataset'));
+//        return view('common.d3.show',compact('dataset'));
+        $data = file_get_contents('./storage/trees/'.$name);
+//        $data = str_replace("\r\n", '', $data);
+        $array = explode('Tree',$data);
+        $datas = array();
+//        dd($array);
+//dd($data);
+
+        foreach ($array  as $k => $v){
+            if($v == ""){
+                array_splice($array,$k,1);
+            }else{
+                preg_match_all('/\{(\s*[\s\S]+\s*)\}/',$v,$value,true);
+//                dd($value);
+                $arr = explode('Node',trim($value[1][0]));
+                foreach ($arr as $n => $z){
+                    if($z == ''){
+                        array_splice($arr,$n,1);
+                    }else{
+                        preg_match_all('/\{(\s*[\s\S]+\s*)\}/',$z,$item,true);
+                        array_push($datas,trim($item[0][0]));
+                    }
+                }
+//                dd($arr);
+            }
+        }
+//        dd($datas);
+//        \tName[\s\S]+?\n
+        $tree = "";
+        foreach ($datas as $list){
+//            dd($list);
+            preg_match_all("/\t\TO[\s\S]+\{[\s\S]+\}\r\n/U",$list,$result,PREG_PATTERN_ORDER);
+//            dd($result);
+//            dd($list, $result);
+            preg_match_all("/\t\TO[\s\S]+\}\r\n/U",$list,$result,PREG_PATTERN_ORDER);
+            preg_match_all("/\t\Name[\s\S]+\r\n/U",$list,$j,true);
+            preg_match_all("/\t\Value[\s\S]+\r\n/U",$list,$l,true);
+            $k = explode('Name',$j[0][0]);
+            $m = explode('Value',$l[0][0]);
+            $childrens = "";
+            $z = $result[0];
+            foreach ($z as $a => $b){
+//                dd($b);
+                preg_match_all("/\t\TO[\s\S]+\r\n/U",$b,$c,true);
+//                dd($c);
+//                dd($c[0][0]);
+                $h = explode('|',$c[0][0]);
+                $g = explode("TO",$h[0]);
+//                dd($g);
+//                dd($h);
+                preg_match_all("/\t\{[\s\S]+\}\r\n/U",$b,$d,true);
+//                dd($d);
+                $e = explode("\r\n",trim($d[0][0]));
+                $children = "";
+                for($i = 1;$i<count($e)-1;$i++){
+                    $f = explode('|',$e[$i]);
+//                    dd($f[0]);
+                    $child = "{name:'".trim($f[0])."',money:'".trim($f[1])."',datetime:'".trim($f[2])."'},";
+                    $children = $children.$child;
+//                    array_push($children,$child);
+                }
+                $node = "{name:'".trim($g[1])."',money:'".trim($h[1])."',datetime:'".trim($h[2])."',children:[".$children."]},";
+                $childrens = $childrens.$node;
+//                return $node;
+//                dd($e);
+            }
+            $nodes = "{name:'".trim($k[1])."',money:'".trim($m[1])."',children:[".$childrens."]},";
+            $tree = $tree.$nodes;
+//            return  $nodes;
+
+        }
+        $trees = "{name:'',children:[".$tree."]}";
+//        return $trees;
+        return view('common.d3.show',compact('trees'));
     }
 
 }

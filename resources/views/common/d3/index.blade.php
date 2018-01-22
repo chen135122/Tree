@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title></title>
     <style>
+
+        body {
+            overflow: hidden;
+        }
+
         path.link {
             fill: none;
             stroke-width: 1px;
@@ -45,12 +50,14 @@
         <a href="javascript:void(0)" id="init">初始启动</a>
         <a href="javascript:void(0)" id="group">交易分组</a>
     </div>
+
+</div>
+<div id="container">
+
 </div>
 <script src="/js/d3.min.js"></script>
 <script>
-
     var dataset = {!! $dataset !!};
-
     var size = dataset.links.length;
 
 
@@ -59,10 +66,12 @@
     var color = d3.scaleOrdinal(d3.schemeCategory20);
     var force = d3.forceSimulation()
         .nodes(dataset.nodes)
-        .force("link", d3.forceLink(dataset.links).distance(150))
-        .force("charge", d3.forceManyBody(-1500).strength(-1550))
+        .force("link", d3.forceLink(dataset.links).distance(100))
+        .force("charge", d3.forceManyBody(-1500).strength(-1550).distanceMin(-100).distanceMax(-500))
         .force("center", d3.forceCenter(w / 2, h / 2));
 
+    var zoom = d3.zoom().scaleExtent([1, 10])
+        .on('zoom', zoomed);
 
 
     force.on('tick', tick);
@@ -75,9 +84,13 @@
     //     .on("tick", tick)
     //     .start();
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#container").append("svg")
         .attr("width", w)
-        .attr("height", h);
+        .attr("height", h)
+        .attr("preserveAspectRatio", "xMidYMid meet")
+        .append('g')
+        .attr('transform', 'translate(0,0)')
+        .call(zoom);
 
     document.getElementById("count").innerHTML = "资金运转交易链(共计" + dataset.circuit + "个环路,涉及账户" + dataset.account + "个,交易" + dataset.transaction + "笔)";
 
@@ -115,17 +128,18 @@
         .attr("marker-end", function (d) {
             return "url(#arrow)";
         });
-
-    var txt = t.data(dataset.links).enter().append('text').attr('dx', 35).style('font-size', '12px').append('textPath').attr('class',function (d,i) {
-        return 'link'+d.name;
+    var ts = false;
+    var txt = t.data(dataset.links).enter().append('text').attr('dx', 35).style('font-size', '12px').append('textPath').attr('class', function (d, i) {
+        return 'link' + d.name;
     }).attr('xlink:href', function (d, i) {
         return '#link' + d.name + i;
     }).text(function (d) {
         return d.info;
     });
     txt.style('display', 'none');
+
     function dragstarted(d) {
-        if (!d3.event.active) force.alphaTarget(5.3).restart();
+        if (!d3.event.active) force.alphaTarget(0.3).restart();
         d.fx = d.x;
         d.fy = d.y;
         console.log(d);
@@ -168,7 +182,9 @@
     d3.select(document).on('click', function (d, i) {
         if (d3.event.target.nodeName !== 'circle' && d3.event.target.nodeName !== 'path' && d3.event.target.nodeName !== 'text') {
             d3.selectAll('path').style('stroke-width', 1);
-            txt.style('display', 'none');
+            if(!ts){
+                txt.style('display', 'none');
+            }
         }
     });
 
@@ -202,6 +218,36 @@
     var t = false;
     var time;
     var start = document.getElementById('start');
+    var k = 1;
+    var sx = 0;
+    var sy = 0;
+
+    // function opens() {
+    //     var transform = d3.zoomTransform(svg.node());
+    //     var x = 0;
+    //     var y = 0;
+    //     if (sx === 0 && sy === 0) {
+    //         sx = w;
+    //         sy = h;
+    //         x = 0;
+    //         y = 0;
+    //     } else {
+    //         x = sx/2;
+    //         y = sy/2;
+    //         sx = x;
+    //         sy = y;
+    //     }
+    //
+    //
+    //     var direction = -1;
+    //     k = k >= 10 ? 10 : k;
+    //     zoomed(x * direction, y * direction, k);
+    //     ++k;
+    // }
+    //
+    // function closes() {
+    //
+    // }
 
     function startAnimation() {
 
@@ -214,6 +260,7 @@
             txt.style('display', 'none');
             start.innerText = '停止动画';
             t = true;
+            ts = true;
             time = setInterval(function () {
                 if (index < pathSize) {
                     path._groups[0][index].style.display = 'inline';
@@ -224,7 +271,7 @@
                     start.innerText = '开始动画';
                     t = false;
                     index = 0;
-
+                    ts = false;
                 }
             }, 1000);
 
@@ -232,6 +279,7 @@
             clearInterval(time);
             start.innerText = '开始动画';
             t = false;
+            ts = false;
             index = 0;
             path.style('display', 'inline');
             txt.style('display', 'none');
@@ -251,13 +299,26 @@
                 + d.target.y + i * 5;
         });
 
-        circle.attr("cx",function(d){return d.x;})
-            .attr("cy",function(d){return d.y;});
+        circle.attr("cx", function (d) {
+            return d.x;
+        })
+            .attr("cy", function (d) {
+                return d.y;
+            });
 
         text.attr("transform", function (d) {
             return "translate(" + d.x + "," + d.y + ")";
         });
     }
+
+    function zoomed(x, y, k) {
+        svg.attr("transform",
+            "translate(" + d3.event.transform.x + "," + d3.event.transform.y + ")" +
+            "scale(" + d3.event.transform.k + ")"
+        );
+    }
+
+
 </script>
 </body>
 </html>
