@@ -509,7 +509,9 @@
                     sending: noop,
                     sendingmultiple: noop,
                     success: function(file) {
+                        document.location.reload();
                         return file.previewElement.classList.add("dz-success");
+
                     },
                     successmultiple: noop,
                     canceled: function(file) {

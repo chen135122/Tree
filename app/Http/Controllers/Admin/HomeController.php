@@ -109,17 +109,21 @@ class HomeController extends Controller
     }
 
     public function upload(Request $request){
-        dd($request->all());
-        $file = $request->file('upload');
-        dd($file);
+//        echo (int)$request->hasFile('file');
+//        exit;
+
+//        $file = $request->file('file');
+
+//        return $_FILES['file']['name'];
+//        dd($file);
 //        dd($file->getClientOriginalName());
-        $result = Storage::exists('./files/'.$file->getClientOriginalName());
+        $result = Storage::exists('./files/'.$_FILES['file']['name']);
         if($result){
-            echo '<script>alert("该文件已经存在！")</script>';
+//            echo '<script>alert("该文件已经存在！")</script>';
             return redirect()->back();
         }else{
-            $request->file('upload')->storeAs('files',$file->getClientOriginalName());
-            return redirect()->to('/admin/upload');
+            $request->file('file')->storeAs('files',$_FILES['file']['name']);
+            return redirect()->back();
         }
 //        dd($result);
 //
@@ -147,15 +151,16 @@ class HomeController extends Controller
     }
 
     public function treePost(Request $request){
-        $file = $request->file('upload');
+//        return $_FILES['file']['name'];
+//        $file = $request->file('file');
 //        dd($file->getClientOriginalName());
-        $result = Storage::exists('./trees/'.$file->getClientOriginalName());
+        $result = Storage::exists('./trees/'.$_FILES['file']['name']);
         if($result){
-            echo '<script>alert("该文件已经存在！")</script>';
+//            echo '<script>alert("该文件已经存在！")</script>';
             return redirect()->back();
         }else{
-            $request->file('upload')->storeAs('trees',$file->getClientOriginalName());
-            return redirect()->to('/admin/tree');
+            $request->file('file')->storeAs('trees',$_FILES['file']['name']);
+            return redirect()->back();
         }
     }
 
