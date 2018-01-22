@@ -49,12 +49,20 @@
                         <div class="example-wrap">
                             <div class="example">
                                 <div class="bootstrap-table">
-                                    <div class="input-group" style="float: right;">
-                                        <input type="text" placeholder="请输入查询关键字,ID | 名字 | 描述" class="input-sm form-control" id="search_input" value="">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="role_txt">
                                         <span class="input-group-btn">
-                                            <button type="button" id="search_btn" class="btn btn-sm btn-primary"> 搜索</button>
+                                            <button id="search_role" type="button" class="btn btn-primary">搜索角色
+                                        </button>
                                         </span>
                                     </div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="user_txt">
+                                        <span class="input-group-btn">
+                                            <button id="search_user" type="button" class="btn btn-primary">搜索用户
+                                        </button> </span>
+                                    </div>
+
 
                                     <div class="fixed-table-container" style="padding-bottom: 0px;">
                                         {{-- 数据渲染 --}}
@@ -149,9 +157,20 @@
                     // 不做处理
                 });
             });
-
-
-
+            // 搜索选择数据
+            $('#search_user').click(function(){
+                var user = $('#user_txt').val();
+                // 重载表格
+                reloadTable(table, 'users_table', api_users, {wd:user});
+            });
+            // 搜索角色
+            $('#search_role').click(function(){
+                var role = $('#role_txt').val();
+                // 重载表格
+                reloadTable(table, 'data_table', api_roles, {wd:role});
+                // 把选择的 _role_id 变为空
+                _role_id = null;
+            });
         });
 
 

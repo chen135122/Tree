@@ -32,12 +32,23 @@ class UserController extends ApiController
             ->toJson();
     }
 
+    /**
+     * 用户分配角色页面获取的数据，需加上 LAY_CHECKED 字段
+     */
     public function roleAssignUsersIndex(Request $request)
     {
         $role_id = $request->input('role_id');
 
         // 要显示的菜单
-        $users = (new User())->newQuery()->latest()->get();
+        $query = (new User())->newQuery();
+
+        if ($request->has('wd')) {
+            $wd = $request->input('wd');
+            $query->where('name', 'like', "%{$wd}%")
+                ->orWhere('id', 'like', "%{$wd}%")
+                ->orWhere('email', 'like', "%{$wd}%");
+        }
+        $users = $query->latest()->get();
 
         foreach ($users as $user) {
             // 加上 checker 状态
@@ -50,6 +61,9 @@ class UserController extends ApiController
             ->toJson();
     }
 
+    /**
+     * 授予用户角色
+     */
     public function assignRole(Request $request)
     {
         // 获取所有用户
