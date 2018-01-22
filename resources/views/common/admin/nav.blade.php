@@ -29,34 +29,34 @@
                 <div class="logo-element">H+
                 </div>
             </li>
-            <li>
-                <a href="#">
-                    <i class="fa fa-wrench"></i>
-                    <span class="nav-label">系统设置</span>
-                    <span class="fa arrow"></span>
-                </a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a class="J_menuItem" href="{{ route('users.index') }}" data-index="0">用户管理</a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="{{ route('roles.index') }}" data-index="0">角色管理</a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="{{ route('domains.index') }}" data-index="0">区域管理</a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="{{ route('permissions.index') }}" data-index="0">权限管理</a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="{{ url('admin/roles/assign') }}" data-index="0">角色分配</a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="{{ url('admin/permissions/assign') }}" data-index="0">权限分配</a>
-                    </li>
-                </ul>
+            {{--<li>--}}
+                {{--<a href="#">--}}
+                    {{--<i class="fa fa-wrench"></i>--}}
+                    {{--<span class="nav-label">系统设置</span>--}}
+                    {{--<span class="fa arrow"></span>--}}
+                {{--</a>--}}
+                {{--<ul class="nav nav-second-level">--}}
+                    {{--<li>--}}
+                        {{--<a class="J_menuItem" href="{{ route('users.index') }}" data-index="0">用户管理</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                        {{--<a class="J_menuItem" href="{{ route('roles.index') }}" data-index="0">角色管理</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                        {{--<a class="J_menuItem" href="{{ route('domains.index') }}" data-index="0">区域管理</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                        {{--<a class="J_menuItem" href="{{ route('permissions.index') }}" data-index="0">权限管理</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                        {{--<a class="J_menuItem" href="{{ url('admin/roles/assign') }}" data-index="0">角色分配</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                        {{--<a class="J_menuItem" href="{{ url('admin/permissions/assign') }}" data-index="0">权限分配</a>--}}
+                    {{--</li>--}}
+                {{--</ul>--}}
 
-            </li>
+            {{--</li>--}}
             <li>
                 <a href="#">
                     <i class="fa fa-picture-o"></i>
