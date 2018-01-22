@@ -2,7 +2,6 @@
 
 
 @section('container')
-    测试
     {{--<div class="row  border-bottom white-bg dashboard-header">--}}
         {{--<div class="col-sm-12">--}}
             {{--<blockquote class="text-warning" style="font-size:14px">您是否需要自己做一款后台、会员中心等等的，但是又缺乏html等前端知识…--}}
