@@ -18,4 +18,9 @@ Route::namespace('Api')->group(function(){
     Route::get('domains', 'DomainController@index');
     Route::get('permissions', 'PermissionController@index');
     Route::get('users', 'UserController@index');
+
+    // 分配角色
+    Route::post('roles/assign', 'UserController@assignRole');
+    // 用户列表，有参数 role_id
+    Route::get('roles/assign/users', 'UserController@roleAssignUsersIndex');
 });

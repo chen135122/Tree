@@ -49,14 +49,16 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
 
     // 权限管理
     Route::middleware('auth.admin')->group(function() {
-        Route::resource('users', 'UserController');
-        Route::resource('domains', 'DomainController', ['except' => 'show']);
-        Route::resource('roles', 'RoleController', ['except' => 'show']);
+        // 角色分配
+        Route::get('roles/assign', 'RoleController@assign');
         // 权限分配
         Route::get('permissions/assign', 'PermissionController@assign');
-        Route::resource('permissions', 'PermissionController', ['only' => ['index', 'edit', 'update']]);
 
-        // 字段的开启或关闭
+        Route::resource('users', 'UserController', ['except' => 'show']);
+        Route::resource('domains', 'DomainController', ['except' => 'show']);
+        Route::resource('roles', 'RoleController', ['except' => 'show']);
+        Route::resource('permissions', 'PermissionController', ['only' => ['index', 'edit', 'update']]);
+        // 列表页显示字段的开启或关闭
         Route::post('fields/toggle', 'FieldController@toggleField');
     });
 
