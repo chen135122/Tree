@@ -50,7 +50,7 @@
 </head>
 <body>
 <div id="main">
-
+    <a href="javascript:parent.history.go(-1)" >返回上一页</a>
 </div>
 <script src="/js/d3.min.js"></script>
 <script>

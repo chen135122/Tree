@@ -44,6 +44,7 @@
 <div id="main">
     <div id="count"></div>
     <div id="menu">
+        <a href="javascript:parent.history.go(-1)">返回上一页</a>
         <a href="./d3_v4.html">首页</a>
         <a href="javascript:void(0)" id="start" onclick="startAnimation()">开始动画</a>
         <a href="javascript:void(0)" id="save">保存位置</a>
@@ -57,6 +58,7 @@
 </div>
 <script src="/js/d3.min.js"></script>
 <script>
+
     var dataset = {!! $dataset !!};
     var size = dataset.links.length;
 
