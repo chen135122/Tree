@@ -40,9 +40,13 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
 //    });
     Route::get('/d3/{name}','HomeController@circle');
     Route::get('/tree/{name}','HomeController@showTree');
+    Route::get('/delete/{name}','HomeController@delete');
     Route::get('/upload','HomeController@file');
     Route::get('/file','HomeController@file');
     Route::get('/tree','HomeController@tree');
+    Route::get('/circle/{file}/{page}','HomeController@page');
+    Route::get('/file/{page?}','HomeController@tree');
+    Route::get('/showTree/{file}/{data}','HomeController@showNewTree');
     Route::post('/tree','HomeController@treePost');
     Route::post('/upload','HomeController@upload');
 
@@ -62,4 +66,19 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
         Route::post('fields/toggle', 'FieldController@toggleField');
     });
 
+});
+
+Route::get('/test1',function (\Illuminate\Http\Request $request){
+    $data = [
+        'age' => 8
+    ];
+   $validator = \Illuminate\Support\Facades\Validator::make($data, [
+       'age' => 'Numeric|size:8'
+   ]);
+
+   if ($validator->fails()) {
+       dd($validator->errors()->first());
+   }
+
+   dd('pass');
 });

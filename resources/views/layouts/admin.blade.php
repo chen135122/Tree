@@ -38,7 +38,7 @@
     <!--右侧边栏结束-->
 
     <!--mini聊天窗口开始-->
-    @include('common.admin.chat')
+    {{--@include('common.admin.chat')--}}
 </div>
 <script src="{{ asset('js/jquery.min.js?v=2.1.4') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js?v=3.3.5') }}"></script>
