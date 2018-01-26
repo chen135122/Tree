@@ -583,6 +583,7 @@ class HomeController extends Controller
 //        dd($data);
 //        dd($page);
 //        dd($files);
+        return view('common.d3.tree',compact('data','page','sum'));
         if(count($data)>0){
             return view('common.d3.tree',compact('data','page','sum'));
         }else{
