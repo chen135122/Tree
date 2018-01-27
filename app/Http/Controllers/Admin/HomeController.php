@@ -38,7 +38,7 @@ class HomeController extends Controller
         $start2 = $pre2[0];
         $start2 =$start2[$trees];
 //        dd($start2);
-        if(count($start2)>0){
+        if(isset($start2)){
 //            dd(1);
             $all = (object)array();
             $all->allGroup = count($start2);
@@ -165,7 +165,7 @@ class HomeController extends Controller
         $start = $pre[0];
         $start = $start[$page];
 //        dd($start);
-        if($start>0){
+        if(isset($start)){
             $keys = array();
             $circles = (object)array();
             $circles->group = count($start);
