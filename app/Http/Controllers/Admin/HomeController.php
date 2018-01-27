@@ -165,7 +165,7 @@ class HomeController extends Controller
         $start = $pre[0];
         $start = $start[$page];
 //        dd($start);
-        if(count($start)>0){
+        if($start>0){
             $keys = array();
             $circles = (object)array();
             $circles->group = count($start);
