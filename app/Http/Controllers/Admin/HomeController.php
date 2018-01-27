@@ -41,7 +41,7 @@ class HomeController extends Controller
         if(isset($start2)){
 //            dd(1);
             $all = (object)array();
-            $all->allGroup = count($start2);
+//            $all->allGroup = count($start2);
             $all->allMoney = 0;
             $all->countsSum = 0;
             $charts = array();
@@ -165,10 +165,11 @@ class HomeController extends Controller
         $start = $pre[0];
         $start = $start[$page];
 //        dd($start);
+//        dd(count($start));
         if(isset($start)){
             $keys = array();
             $circles = (object)array();
-            $circles->group = count($start);
+//            $circles->group = count($start);
             $circles->sumAccount = 0;
             $circles->sumMoney = 0;
             if ($end = $start){
@@ -290,6 +291,7 @@ class HomeController extends Controller
 //        dd($links);
 //        dd($nodes);
 //                dd($name);
+//                dd($circles);
                 $dataset = "{links:[".$links."],circuit:[".$circuits."],nodes:[".$nodes."],account:".count($key).",transaction:".$name."}";
 //                return $dataset;
                 return view('common.d3.index',compact('dataset'));
@@ -302,6 +304,7 @@ class HomeController extends Controller
                 array_push($keys,$circle);
                 $circles->accounts = $keys;
             }
+
             return view('common.d3.circle',compact('circles','name'));
 //            dd($circles);
 //            dd($keys);
