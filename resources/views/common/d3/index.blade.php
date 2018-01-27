@@ -35,72 +35,54 @@
             font-size: 14px;
         }
 
-        #container {
-
-        }
-
         #slider {
             position: fixed;
             left: 20px;
             bottom: 50%;
-            margin-bottom: -205px;
-            width: 40px;
-            height: 420px;
-            z-index: 100;
-            overflow: hidden;
-
-        }
-
-        .slider {
-            position: relative;
-            margin-top:20px;
-            bottom: 0;
+            margin-bottom: -200px;
             width: 20px;
             height: 400px;
-            left: 10px;
-            background: #e8edf2;
-            border-radius: 10px;
-
-            overflow: hidden;
+            z-index: 100;
         }
 
-        .slider > .slider-segment {
-            top:10px;
-            background-color: #d6dbe0;
-            border-radius: 50%;
-            float: left;
-            height: 6px;
-            margin: 100px 7px 0 7px;
-            width: 6px;
-        }
+        /*.slider-segment {*/
+        /*background-color: #d6dbe0;*/
+        /*border-radius: 50%;*/
+        /*height: 6px;*/
+        /*margin: 120px 7px 0 7px;*/
+        /*width: 6px;*/
+        /*}*/
 
-        .slider-handle {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 20px;
-            height: 200px;
-            background: rgb(100, 149, 237);
-            border-radius: 10px;
-            z-index: 120;
+        /*.slider-handle {*/
+        /*position: absolute;*/
+        /*left: 0;*/
+        /*bottom: 0;*/
+        /*width: 20px;*/
+        /*height: 50%;*/
+        /*background: rgb(100, 149, 237);*/
+        /*border-radius: 10px;*/
+        /*}*/
 
-        }
-
-        #slider > a {
-            position: absolute;
-            display: inline-block;
-            bottom: 180px;
-            left: 5px;
-            width: 30px;
-            height: 30px;
+        #slider a {
+            /*position: absolute;*/
+            /*display: inline-block;*/
+            /*bottom: 50%;*/
+            /*margin-bottom: -15px;*/
+            /*left: -5px;*/
+            /*width: 30px;*/
+            /*height: 30px;*/
             transition: all 0.1s;
             background: rgb(41, 112, 237);
-            border-radius: 50%;
-            z-index: 220;
+            /*border-radius: 50%;*/
+            /*z-index: 220;*/
         }
 
-        #slider > a:hover {
+        #slider a:hover {
             background: rgb(12, 84, 237);
+        }
+
+        #slider .ui-slider-range {
+            background: rgb(100, 149, 237);
         }
 
         #ring {
@@ -193,18 +175,23 @@
         }
 
         .circle {
-            fill:rgb(100, 149, 237);
+            fill: rgb(100, 149, 237);
         }
+
         .circle1 {
-            fill:rgb(105, 139, 34);
+            fill: rgb(105, 139, 34);
         }
+
         .circle2 {
-            fill:red;
+            fill: red;
         }
+
         /*path.link.resolved {*/
         /*stroke-dasharray: 0,2 1;*/
         /*}*/
+
     </style>
+    <link rel="stylesheet" href="/css/flat-ui.css"/>
 </head>
 <body>
 <div id="main">
@@ -217,13 +204,12 @@
 </div>
 
 <div id="slider">
-    <a href="javascript:void(0)"></a>
-    <div class="slider">
-        <div class="slider-handle"></div>
-        <div class="slider-segment"></div>
-        <div class="slider-segment"></div>
-        <div class="slider-segment"></div>
-    </div>
+    <!--<div class="slider-segment"></div>-->
+    <!--<div class="slider-segment"></div>-->
+    <!--<div class="slider-segment"></div>-->
+    <!--<div class="slider-handle"></div>-->
+    <!--<a href="javascript:void(0)"></a>-->
+    <div id="vertical-slider" style="height: 400px;"></div>
 </div>
 <div id="container">
 
@@ -354,222 +340,17 @@
         <!--</div>-->
     </div>
 </div>
-
-<script src="/js/d3.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-<script>
+<script src="/js/flat-ui.min.js"></script>
+<script src="/js/d3.min.js"></script>
 
+<script>
     var dataset = {!! $dataset !!};
 
-    // var dataset = {
-    //     links: [{source: 0, target: 1, info: '2016/12/5 15:20:30交易2500000', name: "1"}, {
-    //         source: 1,
-    //         target: 2,
-    //         info: '2016/12/5 15:25:42交易2500000',
-    //         name: "2"
-    //     }, {source: 2, target: 1, info: '2016/12/5 15:27:40交易2500000', name: "3"}, {
-    //         source: 1,
-    //         target: 2,
-    //         info: '2016/12/5 15:32:02交易2500000',
-    //         name: "2"
-    //     }, {source: 2, target: 1, info: '2016/12/5 15:33:59交易2500000', name: "3"}, {
-    //         source: 1,
-    //         target: 0,
-    //         info: '2016/12/5 15:38:49交易2500000',
-    //         name: "2"
-    //     }, {source: 0, target: 3, info: '2016/12/6 15:00:11交易2500000', name: "1"}, {
-    //         source: 3,
-    //         target: 2,
-    //         info: '2016/12/6 15:05:01交易2500000',
-    //         name: "4"
-    //     }, {source: 2, target: 3, info: '2016/12/6 15:06:51交易2500000', name: "3"}, {
-    //         source: 3,
-    //         target: 2,
-    //         info: '2016/12/6 15:10:41交易2500000',
-    //         name: "4"
-    //     }, {source: 2, target: 3, info: '2016/12/6 15:11:52交易2500000', name: "3"}, {
-    //         source: 3,
-    //         target: 0,
-    //         info: '2016/12/6 15:15:49交易2500000',
-    //         name: "4"
-    //     }, {source: 0, target: 4, info: '2016/12/7 15:29:35交易2500000', name: "1"}, {
-    //         source: 4,
-    //         target: 2,
-    //         info: '2016/12/7 15:33:37交易2500000',
-    //         name: "5"
-    //     }, {source: 2, target: 4, info: '2016/12/7 15:34:29交易2500000', name: "3"}, {
-    //         source: 4,
-    //         target: 2,
-    //         info: '2016/12/7 15:38:57交易2500000',
-    //         name: "5"
-    //     }, {source: 2, target: 4, info: '2016/12/7 15:39:45交易2500000', name: "3"}, {
-    //         source: 4,
-    //         target: 0,
-    //         info: '2016/12/7 15:47:42交易2500000',
-    //         name: "5"
-    //     }, {source: 0, target: 5, info: '2016/12/8 15:20:12交易2500000', name: "1"}, {
-    //         source: 5,
-    //         target: 2,
-    //         info: '2016/12/8 15:39:25交易2500000',
-    //         name: "6"
-    //     }, {source: 2, target: 5, info: '2016/12/8 15:40:26交易2500000', name: "3"}, {
-    //         source: 5,
-    //         target: 2,
-    //         info: '2016/12/8 15:43:59交易2500000',
-    //         name: "6"
-    //     }, {source: 2, target: 5, info: '2016/12/8 15:44:40交易2500000', name: "3"}, {
-    //         source: 5,
-    //         target: 0,
-    //         info: '2016/12/8 15:48:40交易2500000',
-    //         name: "6"
-    //     }, {source: 0, target: 6, info: '2016/12/9 15:34:08交易2500000', name: "1"}, {
-    //         source: 6,
-    //         target: 2,
-    //         info: '2016/12/9 15:37:56交易2500000',
-    //         name: "7"
-    //     }, {source: 2, target: 6, info: '2016/12/9 15:39:06交易2500000', name: "3"}, {
-    //         source: 6,
-    //         target: 2,
-    //         info: '2016/12/9 15:45:28交易2500000',
-    //         name: "7"
-    //     }, {source: 2, target: 6, info: '2016/12/9 15:47:05交易2500000', name: "3"}, {
-    //         source: 6,
-    //         target: 0,
-    //         info: '2016/12/9 15:52:45交易2500000',
-    //         name: "7"
-    //     }, {source: 2, target: 7, info: '2016/12/5 15:05:58交易2500000', name: "3"}, {
-    //         source: 7,
-    //         target: 0,
-    //         info: '2016/12/5 15:16:31交易2500000',
-    //         name: "8"
-    //     }, {source: 0, target: 1, info: '2016/12/5 15:20:30交易2500000', name: "1"}, {
-    //         source: 1,
-    //         target: 2,
-    //         info: '2016/12/5 15:25:42交易2500000',
-    //         name: "2"
-    //     }, {source: 2, target: 8, info: '2016/12/6 14:53:43交易2500000', name: "3"}, {
-    //         source: 8,
-    //         target: 0,
-    //         info: '2016/12/6 14:57:50交易2500000',
-    //         name: "9"
-    //     }, {source: 0, target: 3, info: '2016/12/6 15:00:11交易2500000', name: "1"}, {
-    //         source: 3,
-    //         target: 2,
-    //         info: '2016/12/6 15:05:01交易2500000',
-    //         name: "4"
-    //     }, {source: 2, target: 9, info: '2016/12/7 15:22:27交易2500000', name: "3"}, {
-    //         source: 9,
-    //         target: 0,
-    //         info: '2016/12/7 15:27:03交易2500000',
-    //         name: "10"
-    //     }, {source: 0, target: 4, info: '2016/12/7 15:29:35交易2500000', name: "1"}, {
-    //         source: 4,
-    //         target: 2,
-    //         info: '2016/12/7 15:33:37交易2500000',
-    //         name: "5"
-    //     }, {source: 2, target: 10, info: '2016/12/8 15:12:16交易2500000', name: "3"}, {
-    //         source: 10,
-    //         target: 0,
-    //         info: '2016/12/8 15:16:56交易2500000',
-    //         name: "11"
-    //     }, {source: 0, target: 5, info: '2016/12/8 15:20:12交易2500000', name: "1"}, {
-    //         source: 5,
-    //         target: 2,
-    //         info: '2016/12/8 15:39:25交易2500000',
-    //         name: "6"
-    //     }, {source: 11, target: 12, info: '2016/12/12 12:37:26交易3500000', name: "12"}, {
-    //         source: 12,
-    //         target: 2,
-    //         info: '2016/12/12 15:28:31交易3500000',
-    //         name: "13"
-    //     }, {source: 2, target: 12, info: '2016/12/12 15:53:08交易3500000', name: "3"}, {
-    //         source: 12,
-    //         target: 11,
-    //         info: '2016/12/12 15:59:58交易3500000',
-    //         name: "13"
-    //     }, {source: 13, target: 14, info: '2016/12/3 13:35:54交易27161', name: "14"}, {
-    //         source: 14,
-    //         target: 15,
-    //         info: '2016/12/3 13:39:13交易27159.5',
-    //         name: "15"
-    //     }, {source: 15, target: 13, info: '2016/12/3 13:42:16交易27159.5', name: "16"}, {
-    //         source: 13,
-    //         target: 14,
-    //         info: '2016/12/6 19:50:29交易36683.5',
-    //         name: "14"
-    //     }, {source: 14, target: 15, info: '2016/12/6 19:51:55交易36680.5', name: "15"}, {
-    //         source: 15,
-    //         target: 13,
-    //         info: '2016/12/6 19:53:05交易36680.5',
-    //         name: "16"
-    //     }, {source: 13, target: 14, info: '2016/12/8 7:51:02交易20220.5', name: "14"}, {
-    //         source: 14,
-    //         target: 15,
-    //         info: '2016/12/8 7:52:54交易20197.5',
-    //         name: "15"
-    //     }, {source: 15, target: 13, info: '2016/12/8 8:00:21交易20197.5', name: "16"}, {
-    //         source: 13,
-    //         target: 14,
-    //         info: '2016/12/9 10:05:45交易9339.5',
-    //         name: "14"
-    //     }, {source: 14, target: 15, info: '2016/12/9 10:06:53交易9316.5', name: "15"}, {
-    //         source: 15,
-    //         target: 13,
-    //         info: '2016/12/9 10:09:49交易9316.5',
-    //         name: "16"
-    //     }, {source: 13, target: 14, info: '2016/12/11 8:22:59交易21160.5', name: "14"}, {
-    //         source: 14,
-    //         target: 15,
-    //         info: '2016/12/11 8:24:20交易21157.5',
-    //         name: "15"
-    //     }, {source: 15, target: 13, info: '2016/12/11 8:25:38交易21157.5', name: "16"}, {
-    //         source: 13,
-    //         target: 14,
-    //         info: '2016/12/13 8:10:44交易10311.5',
-    //         name: "14"
-    //     }, {source: 14, target: 15, info: '2016/12/13 8:12:11交易10300.5', name: "15"}, {
-    //         source: 15,
-    //         target: 13,
-    //         info: '2016/12/13 8:13:25交易10300.5',
-    //         name: "16"
-    //     }, {source: 15, target: 13, info: '2016/12/9 8:44:45交易9443', name: "16"}, {
-    //         source: 13,
-    //         target: 14,
-    //         info: '2016/12/9 10:05:45交易9339.5',
-    //         name: "14"
-    //     }, {source: 14, target: 15, info: '2016/12/9 10:06:53交易9316.5', name: "15"}, {
-    //         source: 14,
-    //         target: 15,
-    //         info: '2016/12/9 8:43:42交易9443',
-    //         name: "15"
-    //     }, {source: 15, target: 13, info: '2016/12/9 8:44:45交易9443', name: "16"}, {
-    //         source: 13,
-    //         target: 14,
-    //         info: '2016/12/9 10:05:45交易9339.5',
-    //         name: "14"
-    //     },],
-    //     nodes: [{name: "1", title: '1467615008',}, {name: "2", title: '455849016',}, {
-    //         name: "3",
-    //         title: '229383403',
-    //     }, {name: "4", title: '455664117',}, {name: "5", title: '868996948',}, {
-    //         name: "6",
-    //         title: '455870454',
-    //     }, {name: "7", title: '455947695',}, {name: "8", title: '455805368',}, {
-    //         name: "9",
-    //         title: '1272504903',
-    //     }, {name: "10", title: '455757123',}, {name: "11", title: '455741250',}, {
-    //         name: "12",
-    //         title: '828159124',
-    //     }, {name: "13", title: '72729',}, {name: "14", title: '9771103',}, {name: "15", title: '6751989',}, {
-    //         name: "16",
-    //         title: '285146751',
-    //     },],
-    //     circuit: 18,
-    //     account: 16,
-    //     transaction: 74
-    // };
     var size = dataset.links.length;
 
+    var array = [];
+    var arrayCopy = [];
 
     var w = window.innerWidth,
         h = window.innerHeight;
@@ -665,6 +446,7 @@
         d.fy = null;
     }
 
+    var gc = false;
     var textgroup = svg.append("g").selectAll("circle")
         .data(force.nodes())
         .enter()
@@ -674,7 +456,7 @@
         .attr('id', function (d) {
             return 'circle-' + d.name;
         })
-        .attr('class',function (d,i) {
+        .attr('class', function (d, i) {
             return 'circle';
         })
         .attr("r", 30)
@@ -682,35 +464,67 @@
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended)).on('click', function (d, i) {
-            d3.selectAll('path').style('stroke-width', 1).style('display', 'none');
-            d3.selectAll('defs path').style('stroke-width', 1).style('display', 'inline');
-            d3.selectAll('.link' + d.name).style('stroke-width', '3px').style('display', 'inline');
-            var name = d.name;
-
-            var temp;
-            for (var j = 0; j < dataset.links.length; j++) {
-                if (name === dataset.links[j].name) {
-                    for (var i = 0; i < d.target.length; i++) {
-                        if (i === 0) {
-                            d3.selectAll('.link-' + name + '-' + d.target[i].name).style('stroke-width', '3px').style('display', 'inline');
-                            temp = d.target[i].name;
-                        } else {
-                            d3.selectAll('.link-' + temp + '-' + d.target[i].name).style('stroke-width', '3px').style('display', 'inline');
-                            temp = d.target[i].name;
+            if (animation === false) {
+                if (op) {
+                    var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                    console.log(1);
+                    op = false;
+                    //  gs = false;
+                }
+                $("#info").css("visibility", "hidden");
+                $("#info").css("height", "0");
+                $("#info>.content").html("");
+                d3.selectAll('path').style('stroke-width', 1).style('display', 'none');
+                d3.selectAll('defs path').style('stroke-width', 1).style('display', 'inline');
+                d3.selectAll('.link' + d.name).style('stroke-width', '3px').style('display', 'inline');
+                console.log(d);
+                var o = d3.selectAll('.link')._groups[0];
+                //
+                for (var i = 0; i < o.length; i++) {
+                    for (var j = 0; j < d.source.length; j++) {
+                        console.log(o[i].className.baseVal)
+                        if (o[i].className.baseVal.indexOf('link1-' + d.source[j].name + '-' + d.name) !== -1) {
+                            $(o[i]).css({
+                                'stroke-width': '3px',
+                                'display': 'inline'
+                            })
                         }
                     }
                 }
             }
+
+
+            // console.log(dataset.nodes)
+
+//             var name = d.name;
+// // 获取
+//             var temp;
+//             for (var j = 0; j < dataset.links.length; j++) {
+//                 if (name === dataset.links[j].name) {
+//                     for (var i = 0; i < d.target.length; i++) {
+//                         if (i === 0) {
+//                             d3.selectAll('.link-' + name + '-' + d.target[i].name).style('stroke-width', '3px').style('display', 'inline');
+//                             temp = d.target[i].name;
+//                         } else {
+//                             d3.selectAll('.link-' + temp + '-' + d.target[i].name).style('stroke-width', '3px').style('display', 'inline');
+//                             temp = d.target[i].name;
+//                         }
+//                     }
+//                 }
+//             }
+
             //d3.selectAll('marker').attr("markerWidth", 2).attr("markerHeight", 2).attr('refX',30).attr('refY',-1);
         });
-
+    var tmp = null;
+    var ids = 0;
     var path = t.data(dataset.links)
         .enter().append("path")
         .attr('id', function (d, i) {
             return 'link' + d.name + i;
         })
         .attr("class", function (d, i) {
-            return 'link link' + d.name + ' link-' + d.name + '-' + d.target.name;
+            return 'link link' + d.name + ' link-' + d.name + '-' + d.target.name + ' link-' + d.name + '-' + d.target.name + '-' + i + ' link1-' + d.name + '-' + d.target.name;
         })
         .attr('stroke', function (d, i) {
             return color(i);
@@ -718,27 +532,85 @@
         .attr("marker-end", function (d) {
             return "url(#arrow)";
         });
-
+    var animation = false;
     var gs = false;
     d3.select(document).on('click', function (d, i) {
 
-        if (d3.event.target.nodeName !== 'circle' && d3.event.target.nodeName !== 'path' && d3.event.target.nodeName !== 'text' && d3.event.target.nodeName !== 'LI' && d3.event.target.nodeName !== 'DIV' && d3.event.target.nodeName !== 'A') {
-            d3.selectAll('path').style('stroke-width', 1).style('display', 'inline');
-            $("#info").css("visibility", "hidden");
-            $("#info").css("height", "0");
-            $("#info>.content").html("");
-            if(gs){
-                var id = d3.select(".circle2").attr('class').indexOf('circle2');
-                d3.select(".circle2").attr('class',d3.select(".circle2").attr('class').substring(0,id));
-                gs = false;
+        if (animation === false) {
+            if (d3.event.target.nodeName !== 'circle' && d3.event.target.nodeName !== 'path' && d3.event.target.nodeName !== 'text' && d3.event.target.nodeName !== 'LI' && d3.event.target.nodeName !== 'DIV' && d3.event.target.nodeName !== 'A' && d3.event.target.id !== 'vertical-slider') {
+
+
+                if (animation === false) {
+                    d3.selectAll('path').style('stroke-width', 1).style('display', 'inline');
+                    $("#info").css("visibility", "hidden");
+                    $("#info").css("height", "0");
+                    $("#info>.content").html("");
+                }
+                if (op) {
+                    var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                    console.log(1);
+                    op = false;
+                    //  gs = false;
+                }
+
+                // d3.select("#circle-" + name).classed(d3.select("#circle-" + name).attr('class').substring(0,-8), true);
+                // if (!ts) {
+                //     txt.style('display', 'none');
+                // }
+            }
+        }
+
+    });
+
+    var tems;
+    for (var g = 0; g < dataset.circuit.length; g++) {
+        var u = dataset.circuit[g].target;
+        var f = d3.select('.link' + dataset.circuit[g].name)._groups[0];
+        var os = {
+            obj: f[0],
+            name: dataset.circuit[g].name,
+            sub: null,
+            money: null,
+            datetime: null,
+            count: g
+        };
+        array.push(os);
+        for (var h = 0; h < u.length; h++) {
+            if (h === 0) {
+                var b = d3.selectAll('.link-' + dataset.circuit[g].name + '-' + u[h].name)._groups[0];
+                console.log(b);
+                for (var y = 0; y < b.length; y++) {
+                    var os = {
+                        obj: b[y],
+                        name: null,
+                        sub: u[h].name,
+                        money: u[h].money,
+                        datetime: u[h].datetime,
+                        count: null
+                    };
+                    array.push(os);
+                }
+                tems = u[h].name;
+            } else {
+                var b = d3.selectAll('.link-' + tems + '-' + u[h].name)._groups[0];
+                tems = u[h].name;
+                for (var y = 0; y < b.length; y++) {
+//                    console.log(u[h])
+                    var os = {
+                        obj: b[y],
+                        name: null,
+                        sub: u[h].name,
+                        money: u[h].money,
+                        datetime: u[h].datetime,
+                        count: null
+                    };
+                    array.push(os);
+                }
             }
 
-            // d3.select("#circle-" + name).classed(d3.select("#circle-" + name).attr('class').substring(0,-8), true);
-            // if (!ts) {
-            //     txt.style('display', 'none');
-            // }
         }
-    });
+    }
 
     var text = textgroup.append("text")
         .style('font-size', '12px')
@@ -749,51 +621,173 @@
         .attr('dy', '.4em')
         .style('fill', 'white')
         .html(function (d) {
-            if (d.title.length > 4) {
-                return '<tspan x="0" y="' + (-7) + '">' + d.title.substring(0, 4) + '</tspan><tspan x="0" y="' + 10 + '">' + d.title.substr(4) + '</tspan>';
+            if (d.title.length > 5) {
+                return '<tspan x="0" y="' + (-7) + '">' + d.title.substring(0, 5) + '</tspan><tspan x="0" y="' + 10 + '">' + d.title.substr(5) + '</tspan>';
             }
             return '<tspan>' + d.title + '</tspan>';
         });
-
+    var gf = 0;
+    var bi = 0;
+    var op = false;
+    var ss = false;
+    var gid = 0;
+    var move = 0;
     var svg2 = d3.select("#ring").append('ul');
     var g = svg2.selectAll('ul').data(dataset.circuit).enter().append('li').style('color', function (d, i) {
         return color(i);
     }).text(function (d, i) {
         return 'ring' + (i + 1);
-    }).on('click', function (d, j) {
-        d3.selectAll('path').style('stroke-width', '1px');
-        $("#info>.content").html("");
-        $("#info").css("visibility", "visible");
-        $("#info").css("height", "150px");
-        var name = d.name;
-        var temp;
-        for (var j = 0; j < dataset.links.length; j++) {
-            if (name === dataset.links[j].name) {
+    }).on('click', function (d, k) {
+        if (animation === false) {
+            d3.selectAll('path').style('stroke-width', 1).style('display', 'none');
+            d3.selectAll('defs path').style('stroke-width', 1).style('display', 'inline');
 
+            $("#info>.content").html("");
+            if (op) {
+
+                $("#info").css("visibility", "hidden");
+                $("#info").css("height", "0");
+                $("#info>.content").html("");
+                var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                op = false;
+
+            }
+            if (op === false) {
+                $("#info>.content").html("");
+                $("#info").css("visibility", "visible");
+                $("#info").css("height", "150px");
+
+
+                var name = d.name;
+                var tst = d.target.length - 1;
                 d3.select("#circle-" + name).classed("circle2", true);
-                gs = true;
-                for (var i = 0; i < d.target.length; i++) {
-                    if (i === 0) {
-                        d3.selectAll('.link-' + name + '-' + d.target[i].name).style('stroke-width', '3px').style('display', 'inline');
-                        temp = d.target[i].name;
-                        $("#info>.content").append("<div><div><span>" + name + "</span></div><div><span>" + d.target[i].name + "</span></div><div><span>¥" + d.target[i].money + "</span></div><div><span>" + d.target[i].datetime + "</span></div></div>")
-                    } else {
-                        d3.selectAll('.link-' + temp + '-' + d.target[i].name).style('stroke-width', '3px').style('display', 'inline');
-                        $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + d.target[i].name + "</span></div><div><span>¥" + d.target[i].money + "</span></div><div><span>" + d.target[i].datetime + "</span></div></div>")
-                        temp = d.target[i].name;
-                    }
+                var temp;
 
+
+//                if (gf < k ) {
+//                    ++gf;
+//                } else if (gf > k) {
+//                    --gf;
+//                } else if (gf === k) {
+//                    gf = k;
+//                } else if (gf <= 0) {
+//                    gf = 0;
+//                }
+                console.log(d.target);
+
+                for (var j = 0; j < array.length; j++) {
+                    if (name === array[j].name && k === array[j].count) {
+
+                        var count = 0;
+
+                        var i = j + 1;
+                        try {
+                            while (array[i].name === null) {
+
+                                op = true;
+                                if (count === 0) {
+                                    $(array[i].obj).css('stroke-width', '3px').css('display', 'inline');
+                                    temp = (array[i].name === null ? array[i].sub : array[i].name);
+//                                    if (array[index].name === null) {
+//                                        console.log(array[index].sub);
+//
+//                                    } else {
+//                                        var id = index + 1;
+//                                        if (id < array.length) {
+//                                            $("#info>.content").append("<div><div><span>" + array[index].name + "</span></div><div><span>" + array[id].sub + "</span></div><div><span>¥" + array[id].money + "</span></div><div><span>" + array[id].datetime + "</span></div></div>");
+//                                            tiw = array[id].sub;
+//                                        }
+//                                    }
+
+                                    $("#info>.content").append("<div><div><span>" + name + "</span></div><div><span>" + temp + "</span></div><div><span>¥" + array[i + 1].money + "</span></div><div><span>" + array[i + 1].datetime + "</span></div></div>")
+                                } else {
+                                    $(array[i].obj).css('stroke-width', '3px').css('display', 'inline');
+                                    if (temp !== (array[i].name === null ? array[i].sub : array[i].name)) {
+                                        $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + (array[i].name === null ? array[i].sub : array[i].name) + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+                                        temp = (array[i].name === null ? array[i].sub : array[i].name);
+                                    }
+                                }
+
+
+                                count++;
+
+                                i++;
+                                if (array[i].name !== null) {
+                                    break;
+                                }
+                            }
+                        } catch (e) {
+
+                        }
+
+                        count = 0;
+                        break;
+                    }
+                    //break;
                 }
+
+
+//                if (bi === 0) {
+//
+//                } else {
+//                    for (var j = bi; j < array.length; j++) {
+//                        if (name === array[j].name) {
+//                            var count = 0;
+//                            for (var i = j + 1; array[i].sub !== null; i++) {
+//                                op = true;
+//                                if (count === 0) {
+//                                    $(array[i].obj).css('stroke-width', '3px').css('display', 'inline');
+//                                    temp = (array[i].name === null ? array[i].sub : array[i].name);
+//                                    $("#info>.content").append("<div><div><span>" + name + "</span></div><div><span>" + temp + "</span></div><div><span>¥" + array[i + 1].money + "</span></div><div><span>" + array[i + 1].datetime + "</span></div></div>")
+//                                } else {
+//                                    $(array[i].obj).css('stroke-width', '3px').css('display', 'inline');
+//                                    $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + (array[i].name === null ? array[i].sub : array[i].name) + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+//                                    temp = (array[i].name === null ? array[i].sub : array[i].name);
+//                                }
+//                                count++;
+//                            }
+//                            count = 0;
+//                            bi = j;
+//                        }
+//                        break;
+//                    }
+//                }
+
+//                bi = 0;
+//                for (var j = 0; j < dataset.links.length; j++) {
+//
+//                    var tar = dataset.links[j].target.source;
+//
+//                    if (name === dataset.links[j].name) {
+//                        console.log(d.target)
+//                        console.log(dataset.links[j])
+//                        for (var i = 0; i < d.target.length; i++) {
+//                            op = true;
+//                            if (i === 0) {
+//                                d3.select('.link-' + name + '-' + d.target[i].name).style('stroke-width', '3px').style('display', 'inline');
+//                                temp = d.target[i].name;
+//                                $("#info>.content").append("<div><div><span>" + name + "</span></div><div><span>" + d.target[i].name + "</span></div><div><span>¥" + d.target[i].money + "</span></div><div><span>" + d.target[i].datetime + "</span></div></div>")
+//                            } else {
+//                                d3.select('.link-' + temp + '-' + d.target[i].name).style('stroke-width', '3px').style('display', 'inline');
+//                                $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + d.target[i].name + "</span></div><div><span>¥" + d.target[i].money + "</span></div><div><span>" + d.target[i].datetime + "</span></div></div>")
+//                                temp = d.target[i].name;
+//                            }
+//                        }
+//                        break;
+//                    }
+//                }
             }
         }
+
 
         //  txt.style('display', 'none');
 
         // d3.selectAll('.link-' + d.name).style('stroke-width', 3).style('display', 'inline');
     });
 
+
     var t1 = false;
-    var time;
     var start = document.getElementById('start');
     var k = 1;
     var sx = 0;
@@ -854,138 +848,333 @@
     // function closes() {
     //
     // }
-    var speed = 100;
+    var speed = 500;
     var start1 = false;
+    var kk = false;
     $("#start").click(function () {
         start1 = true;
-        startAnimation(speed, false);
+
+        startAnimation(speed, gs = false);
     });
 
-    $("#slider>.slider").mousedown(function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var y = e.offsetY;
+    $.fn.addSliderSegments = function (amount, orientation) {
+        return this.each(function () {
+            if (orientation == "vertical") {
+                var output = ''
+                    , i;
+                for (i = 1; i <= amount - 2; i++) {
+                    output += '<div class="ui-slider-segment" style="top:' + 100 / (amount - 1) * i + '%;"></div>';
+                }
+                ;
+                $(this).prepend(output);
+            } else {
+                var segmentGap = 100 / (amount - 1) + "%"
+                    , segment = '<div class="ui-slider-segment" style="margin-left: ' + segmentGap + ';"></div>';
+                $(this).prepend(segment.repeat(amount - 2));
+            }
+        });
+    };
+    var ftime = true;
+    var time = null;
+    var $verticalSlider = $("#vertical-slider");
+    if ($verticalSlider.length) {
+        $verticalSlider.slider({
+            min: 1,
+            max: 5,
+            value: 3,
+            orientation: "vertical",
+            range: "min",
+            slide: function (event, ui) {
+                if (time !== null || ftime === false) {
+                    if (ui.value === 5) {
+                        t1 = false;
+                        gs = true;
+                        start1 = false;
+                        startAnimation(speed = 100, true);
+                    }
+                    if (ui.value === 4) {
+                        t1 = false;
+                        gs = true;
+                        start1 = false;
+                        startAnimation(speed = 300, true);
+                    }
+                    if (ui.value === 3) {
+                        t1 = false;
+                        gs = true;
+                        start1 = false;
+                        startAnimation(speed = 500, true);
+                    }
+                    if (ui.value === 2) {
+                        t1 = false;
+                        gs = true;
+                        start1 = false;
+                        startAnimation(speed = 800, true);
+                    }
+                    if (ui.value === 1) {
+                        t1 = false;
+                        gs = true;
+                        start1 = false;
+                        startAnimation(speed = 1000, true);
+                    }
+                    ftime = false;
+                }
+            }
+        }).addSliderSegments($verticalSlider.slider("option").max, "vertical");
+    }
+    //    $("#slider").click(function (e) {
+    //        e.preventDefault();
+    //        e.stopPropagation();
+    //        var y = e.offsetY;
+    //
+    //    });
 
-        if (y > 0 && y < 50) {
-            t1 = false;
-            startAnimation(speed = 100, true);
-            $("#slider>a").css("bottom", 380);
-            $(".slider-handle ").css("height", 400);
-        }
-        if (y > 50 && y < 100) {
-            t1 = false;
-            startAnimation(speed = 300, true);
-            $("#slider>a").css("bottom", 280);
-            $(".slider-handle ").css("height", 300);
-        }
-        if (y > 100 && y < 150) {
-            t1 = false;
-            startAnimation(speed = 300, true);
-            $("#slider>a").css("bottom", 280);
-            $(".slider-handle ").css("height", 300);
-        }
-        if (y > 150 && y < 200) {
-            t1 = false;
-            startAnimation(speed = 500, true);
-            $("#slider>a").css("bottom", 180);
-            $(".slider-handle ").css("height", 200);
-        }
-        if (y > 200 && y < 250) {
-            t1 = false;
-            startAnimation(speed = 500, true);
-            $("#slider>a").css("bottom", 180);
-            $(".slider-handle ").css("height", 200);
-        }
-        if (y > 250 && y < 300) {
-            t1 = false;
-            startAnimation(speed = 800, true);
-            $("#slider>a").css("bottom", 80);
-            $(".slider-handle ").css("height", 100);
-        }
-        if (y > 300 && y < 350) {
-            t1 = false;
-            startAnimation(speed = 800, true);
-            $("#slider>a").css("bottom", 80);
-            $(".slider-handle ").css("height", 100);
-        }
-        if (y > 350 && y < 400) {
-            t1 = false;
-            startAnimation(speed = 1000, true);
-            $("#slider>a").css("bottom", 0);
-            $(".slider-handle ").css("height", 0);
-        }
+    var index = 0;
+    var it = 0;
+    var sets;
+    var temp;
+    var counts = 0;
+    var n = 0;
 
-    });
+    var nsn;
+
+    //    function out(obj, count) {
+    //        //console.log(counts);
+    //        if (counts < count) {
+    //            if (obj.name === dataset.links[counts].name) {
+    //                console.log(d3.selectAll('.link-' + obj.name + '-' + obj.target + counts));
+    //                d3.select('.link-' + obj.name + '-' + obj.target + counts).style('stroke-width', '3px').style('display', 'inline');
+    //                counts++;
+    //                out(obj, count);
+    //            }
+    //            //$(obj[counts]).css('stroke-width', '3px').css('display', 'inline');
+    //
+    //        } else {
+    //            counts = 0;
+    //        }
+    //    }
+    //
+    //    function outs(cir, count) {
+    //        if (n < count) {
+    //
+    //            if (n === 0) {
+    //                // for (var i = 0; i < dataset.links.length; i++) {
+    //                //     if (cir.name === dataset.links[i].name) {
+    //                //         d3.selectAll('.link-' + cir.name + '-' + cir.target[n].name + i).style('stroke-width', '3px').style('display', 'inline');
+    //                //     }
+    //                // }
+    //                out({
+    //                    name: cir.name,
+    //                    target: cir.target[n].name,
+    //                }, dataset.links.length);
+    //                // var c = d3.selectAll('.link-' + cir.name + '-' + cir.target[n].name)._groups[0];
+    //                // out(c, c.length);
+    //                temp = cir.target[n].name;
+    //                $("#info>.content").append("<div><div><span>" + cir.name + "</span></div><div><span>" + cir.target[n].name + "</span></div><div><span>¥" + cir.target[n].money + "</span></div><div><span>" + cir.target[n].datetime + "</span></div></div>");
+    //
+    //            } else {
+    //                // for (var i = 0; i < dataset.links.length; i++) {
+    //                //     if (cir.name === dataset.links[i].name) {
+    //                //         d3.selectAll('.link-' + temp + '-' + cir.target[n].name + i).style('stroke-width', '3px').style('display', 'inline');
+    //                //     }
+    //                // }
+    //                out({
+    //                    name: temp,
+    //                    target: cir.target[n].name,
+    //                }, dataset.links.length);
+    //                // var c = d3.selectAll('.link-' + temp + '-' + cir.target[n].name)._groups[0];
+    //                // out(c, c.length);
+    //                $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + cir.target[n].name + "</span></div><div><span>¥" + cir.target[n].money + "</span></div><div><span>" + cir.target[n].datetime + "</span></div></div>");
+    //                temp = cir.target[n].name;
+    //            }
+    //            n++;
+    //            outs(cir, count);
+    //        } else {
+    //            n = 0;
+    //        }
+    //
+    //    }
+
+
+    var tiw;
+
+    var trigger = false;
+
+    var str = array[0].name;
+    console.log(str);
 
     function startAnimation(speed, target, self) {
-        if(start1===true){
-            $("#info>.content").html("");
+
+        if (op) {
+            var id = d3.select(".circle2").attr('class').indexOf('circle2');
+            d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+            console.log(1);
+            op = false;
+            //  gs = false;
+        }
+        if (start1 === false) {
+            clearInterval(time);
+            //$("#info>.content").html("");
+            start1 = true;
         }
 
         var pathSize = dataset.circuit.length;
-        var index = 0;
-        var it = 0;
 
-        if (t1 === false && start1) {
-            clearInterval(time);
-            if (target === false) {
-                path.style('display', 'none');
-                //txt.style('display', 'none');
-            }
-            start.innerText = '停止动画';
-            t1 = true;
-            ts = true;
-            start1 = false;
+
+        if (t1 === false && start1 === true) {
+
+//            if (gs) {
+//                clearInterval(time);
+//            }
+
             time = setInterval(function () {
-                if (index < pathSize) {
-                    //  path._groups[0][index].style.display = 'inline';
+                console.log(speed);
+                if (target === false && trigger === false) {
+                    path.style('display', 'none');
+                    $("#info>.content").html("");
+                }
+                start.innerText = '停止动画';
+                t1 = true;
+                ts = true;
+                ftime = false;
+                if (index < array.length) {
                     $("#info").css("visibility", "visible");
                     $("#info").css("height", "150px");
-                    var cir = dataset.circuit[index];
 
-                    d3.select("#circle-" + cir.name).classed("circle2", true);
-                    gs = true;
-                    var temp;
-                    var sets = setInterval(function () {
-                        if (it < cir.target.length) {
-                            if (it === 0) {
-                                d3.selectAll('.link-' + cir.name + '-' + cir.target[it].name).style('stroke-width','3px').style('display', 'inline');
-                                temp = cir.target[it].name;
-                                $("#info>.content").append("<div><div><span>" + cir.name + "</span></div><div><span>" + cir.target[it].name + "</span></div><div><span>¥" + cir.target[it].money + "</span></div><div><span>" + cir.target[it].datetime + "</span></div></div>")
-                            } else {
-                                d3.selectAll('.link-' + temp + '-' + cir.target[it].name).style('stroke-width','3px').style('display', 'inline');
-                                $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + cir.target[it].name + "</span></div><div><span>¥" + cir.target[it].money + "</span></div><div><span>" + cir.target[it].datetime + "</span></div></div>")
-                                temp = cir.target[it].name;
+                    for (var i = 0; i < dataset.circuit.length; i++) {
+                        // gs = false;
+
+                        if (dataset.circuit[i].name === array[index].name) {
+                            d3.select("#circle-" + array[index].name).classed("circle2", true);
+                            if (str !== array[index].name) {
+                                var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                                if (id !== -1) {
+                                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                                }
+
+                                ss = false;
                             }
-
-                            it++;
-                        } else {
-                            clearInterval(sets);
+                            str = array[index].name;
                         }
 
+                    }
 
-                    }, speed);
+
+                    if (array[index].name === null) {
+                        console.log(array[index].sub);
+                        if (tiw !== array[index].sub) {
+                            $("#info>.content").append("<div><div><span>" + tiw + "</span></div><div><span>" + array[index].sub + "</span></div><div><span>¥" + array[index].money + "</span></div><div><span>" + array[index].datetime + "</span></div></div>");
+                            tiw = array[index].sub;
+                        }
+                    } else {
+                        var id = index + 1;
+                        if (id < array.length) {
+                            $("#info>.content").append("<div><div><span>" + array[index].name + "</span></div><div><span>" + array[id].sub + "</span></div><div><span>¥" + array[id].money + "</span></div><div><span>" + array[id].datetime + "</span></div></div>");
+                            tiw = array[id].sub;
+                        }
+                    }
+                    $("#info>.content")[0].scrollTop = $("#info>.content")[0].scrollHeight;
+
+                    console.log($("#info>.content>div").length);
+
+                    trigger = true;
+                    animation = true;
+                    // var cir = dataset.circuit[index];
+
+                    gs = false;
+
+                    //   gc = true;
+                    $(array[index].obj).css('stroke-width', '3px').css('display', 'inline');
+                    // var sets = setInterval(function () {
+                    //     // outs(cir, cir.target.length);
+                    //
+                    //     if (it < cir.target.length) {
+                    //         if (it === 0) {
+                    //             d3.selectAll('.link-' + cir.name + '-' + cir.target[it].name).style('stroke-width', '3px').style('display', 'inline');
+                    //             temp = cir.target[it].name;
+                    //             $("#info>.content").append("<div><div><span>" + cir.name + "</span></div><div><span>" + cir.target[it].name + "</span></div><div><span>¥" + cir.target[it].money + "</span></div><div><span>" + cir.target[it].datetime + "</span></div></div>")
+                    //
+                    //         } else if (it > 0) {
+                    //             d3.selectAll('.link-' + temp + '-' + cir.target[it].name).style('stroke-width', '3px').style('display', 'inline');
+                    //             temp = cir.target[it].name;
+                    //             $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + cir.target[it].name + "</span></div><div><span>¥" + cir.target[it].money + "</span></div><div><span>" + cir.target[it].datetime + "</span></div></div>")
+                    //         }
+                    //         it++;
+                    //     } else {
+                    //         clearInterval(sets);
+                    //         it = 0;
+                    //     }
+                    //     it++;
+                    // }, speed);
+
+                    //  clearInterval(sets);
 
 
                     index++;
+
+
                 } else {
-                    clearInterval(time);
+                    ftime = true;
+                    gs = true;
                     start.innerText = '开始动画';
+                    animation = false;
                     t1 = false;
+                    trigger = false;
                     index = 0;
+                    it = 0;
                     ts = false;
                     start1 = false;
+                    clearInterval(time);
+                    time = null;
+                    ss = true;
+//                    $("#info").css("visibility", "hidden");
+//                    $("#info").css("height", "0");
+//                    path.style('stroke-width', '1px');
+                    var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                    if (id !== -1) {
+                        d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                    }
                 }
             }, speed);
 
         } else {
             clearInterval(time);
-            start.innerText = '开始动画';
-            t1 = false;
-            ts = false;
-            start1 = false;
-            index = 0;
-            path.style('display', 'inline');
+            ftime = true;
+            time = null;
+            animation = false;
+//            path.style('stroke-width', '1px');
+            if (gs) {
+                $("#info>.content").html("");
+                path.style('stroke-width', '1px');
+                $("#info").css("visibility", "hidden");
+                $("#info").css("height", "0");
+                var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                if (id !== -1) {
+                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                }
+                gs = false;
+                ss = true;
+            }
+
+            if (t1) {
+                trigger = false;
+                start.innerText = '开始动画';
+                t1 = false;
+                ts = false;
+                start1 = false;
+                index = 0;
+                path.style('display', 'inline').style('stroke-width', '1px');
+                $("#info>.content").html("");
+                $("#info").css("visibility", "hidden");
+                $("#info").css("height", "0");
+                var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                if (id !== -1) {
+                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                }
+                ss = true;
+                t1 = false;
+            }
+
+
             // txt.style('display', 'none');
         }
 

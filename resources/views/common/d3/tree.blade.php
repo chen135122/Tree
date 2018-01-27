@@ -102,57 +102,59 @@
                             <div class="col-sm-8">
 
                             </div>
-                            <div class="col-sm-4">
-                                <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-                                    <ul class="pagination">
-                                        @if($page != 1)
-                                            <li class="paginate_button previous" aria-controls="DataTables_Table_0"
-                                                tabindex="0" id="DataTables_Table_0_previous">
-                                                <a href="{{ url('admin/file/'.($page-1)) }}" target="_self">
-                                                    上一页
-                                                </a>
-                                            </li>
-                                        @else
-                                            <li class="paginate_button previous disabled" aria-controls="DataTables_Table_0"
-                                                tabindex="0" id="DataTables_Table_0_previous">
-                                                <a href="{{ url('admin/file/'.($page-1)) }}" target="_self">
-                                                    上一页
-                                                </a>
-                                            </li>
-                                        @endif
-                                        @for($i=1;$i<=ceil($sum/5);$i++)
-                                            @if($page == $i)
-                                                <li class="paginate_button active" aria-controls="DataTables_Table_0" tabindex="0">
-                                                    <a>
-                                                        {{ $i }}
+                            @if($sum>0)
+                                <div class="col-sm-4">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                        <ul class="pagination">
+                                            @if($page > 1)
+                                                <li class="paginate_button previous" aria-controls="DataTables_Table_0"
+                                                    tabindex="0" id="DataTables_Table_0_previous">
+                                                    <a href="{{ url('admin/file/'.($page-1)) }}" target="_self">
+                                                        上一页
                                                     </a>
                                                 </li>
                                             @else
-                                                <li class="paginate_button " aria-controls="DataTables_Table_0" tabindex="0">
-                                                    <a href="{{ url('admin/file/'.$i) }}" target="_self">
-                                                        {{ $i }}
+                                                <li class="paginate_button previous disabled" aria-controls="DataTables_Table_0"
+                                                    tabindex="0" id="DataTables_Table_0_previous">
+                                                    <a>
+                                                        上一页
                                                     </a>
                                                 </li>
                                             @endif
-                                        @endfor
-                                        @if($page != ceil($sum/5))
-                                            <li class="paginate_button next" aria-controls="DataTables_Table_0" tabindex="0"
-                                                id="DataTables_Table_0_next">
-                                                <a href="{{ url('/admin/file/'.($page+1)) }}" target="_self">
-                                                    下一页
-                                                </a>
-                                            </li>
-                                        @else
-                                                <li class="paginate_button next disabled" aria-controls="DataTables_Table_0" tabindex="0"
+                                            @for($i=1;$i<=ceil($sum/5);$i++)
+                                                @if($page == $i)
+                                                    <li class="paginate_button active" aria-controls="DataTables_Table_0" tabindex="0">
+                                                        <a>
+                                                            {{ $i }}
+                                                        </a>
+                                                    </li>
+                                                @else
+                                                    <li class="paginate_button " aria-controls="DataTables_Table_0" tabindex="0">
+                                                        <a href="{{ url('admin/file/'.$i) }}" target="_self">
+                                                            {{ $i }}
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            @endfor
+                                            @if($page < ceil($sum/5))
+                                                <li class="paginate_button next" aria-controls="DataTables_Table_0" tabindex="0"
                                                     id="DataTables_Table_0_next">
                                                     <a href="{{ url('/admin/file/'.($page+1)) }}" target="_self">
                                                         下一页
                                                     </a>
                                                 </li>
-                                        @endif
-                                    </ul>
+                                            @else
+                                                <li class="paginate_button next disabled" aria-controls="DataTables_Table_0" tabindex="0"
+                                                    id="DataTables_Table_0_next">
+                                                    <a>
+                                                        下一页
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
 
                         {{--<div class="btn-group">--}}

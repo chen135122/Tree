@@ -576,6 +576,7 @@ class HomeController extends Controller
 ////            dd($file);
 //        }
         $sum = count($files);
+//        dd($sum);
         $data = array();
         for ($i = ($page-1)*$size;$i<($page*$size>$sum?$sum:$page*$size);$i++){
             array_push($data,explode('/',$files[$i])[1]);
