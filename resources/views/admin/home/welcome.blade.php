@@ -66,7 +66,7 @@
                 <div class="ibox float-e-margins"  style="height: 100%">
                     <div class="ibox-content text-center p-md"  style="height: 100%">
                         <div style="height: 100%;margin-top: 20%">
-                            <span class="text-navy"><h1>数据流可视化系统</h1></span>
+                            <span class="text-navy"><h1>数据流向可视化分析系统</h1></span>
                             <h1>DataFlow</h1>
                         </div>
                         {{--<h2><span class="text-navy">H+ 后台主题UI框架</span>--}}
