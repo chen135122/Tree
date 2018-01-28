@@ -49,6 +49,7 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
     Route::get('/showTree/{file}/{data}','HomeController@showNewTree');
     Route::post('/tree','HomeController@treePost');
     Route::post('/upload','HomeController@upload');
+    Route::get('/index','HomeController@backIndex');
 
 
     // 权限管理

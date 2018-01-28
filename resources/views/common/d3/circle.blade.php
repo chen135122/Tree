@@ -70,11 +70,11 @@
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
-                            <th>
+                            <th colspan="7">
                                 共计{{ $circles->group }}组,涉及{{ $circles->sumAccount }}账户,{{ substr(explode('.',$circles->sumMoney)[0],0,strlen(explode('.',$circles->sumMoney)[0])-4) }}万元
                             </th>
                             <tr>
-                                <th>序号</th>
+                                <th style="width: 100px">序号</th>
                                 <th>账号</th>
                                 <th>环路</th>
                                 <th>账号数</th>

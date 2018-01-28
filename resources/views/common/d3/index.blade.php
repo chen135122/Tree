@@ -197,8 +197,8 @@
 <div id="main">
     <div id="count"></div>
     <div id="menu">
-        <a href="javascript:parent.history.go(-1)">向上一步</a>
-        <a href="./d3_v4.html">首页</a>
+        {{--<a href="javascript:parent.history.go(-1)">向上一步</a>--}}
+        <a href="{{ url('/admin/index') }}">首页</a>
         <a href="javascript:void(0)" id="start">开始动画</a>
     </div>
 </div>

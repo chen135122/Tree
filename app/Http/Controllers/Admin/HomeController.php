@@ -31,6 +31,9 @@ class HomeController extends Controller
         return Hash::make('123456');
     }
 
+    public function backIndex(){
+        return view('common.d3.backIndex');
+    }
 
     public function showNewTree($name,$trees){
         $data = file_get_contents('./storage/files/'.$name);

@@ -70,11 +70,11 @@
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
-                            <th>
+                            <th colspan="6">
                                 共计{{ $all->allGroup }}组,涉及{{ $all->countsSum }}账户,{{ substr($all->allMoney,0,strlen($all->allMoney)-4) }}万元
                             </th>
                             <tr>
-                                <th>序号</th>
+                                <th style="width: 100px">序号</th>
                                 <th>组数</th>
                                 <th>账号数</th>
                                 <th>总金额(万)</th>
