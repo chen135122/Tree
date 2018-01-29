@@ -314,7 +314,7 @@
             var name = $(this).attr("value");
 //            alert($(this).attr("value"));
             swal({
-                title: "您确定要删除这条信息吗",
+                title: "您确定要删除该文件吗",
                 text: "删除后将无法恢复，请谨慎操作！",
                 type: "warning",
                 showCancelButton: true,
@@ -324,7 +324,7 @@
             }, function () {
 //                alert(name);
                 window.location.href="/admin/delete/"+name;
-                swal("删除成功！", "您已经永久删除了这条信息。", "success");
+                swal("删除成功！", "您已经永久删除了该文件。", "success");
             });
         });
     </script>
