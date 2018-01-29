@@ -50,7 +50,8 @@
 </head>
 <body>
 <div id="main">
-    <a href="{{ url('/admin/index') }}" >首页</a>
+    <a href="javascript:window.close();">关闭当前页</a>
+    <a href="{{ url('/admin/index') }}" style="color: blue">首页</a>
 </div>
 <script src="/js/d3.min.js"></script>
 <script>

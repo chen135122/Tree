@@ -47,7 +47,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>文件列表</h5>
+                    <h5>文件列表</h5><a href="javascript:parent.history.go(-1)"><h5>返回上一级</h5></a>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>

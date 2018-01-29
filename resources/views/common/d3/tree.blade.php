@@ -10,6 +10,7 @@
     <link href="/css/plugins/dropzone/basic.css" rel="stylesheet">
     <link href="/css/plugins/dropzone/dropzone.css" rel="stylesheet">
     <link href="/css/style.min.css?v=4.0.0" rel="stylesheet">
+    <link href="/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
     <base target="_blank">
     <style>
         .file {
@@ -89,8 +90,8 @@
                                                             class="fa fa-paste"></i> 查看
                                                 </button>
                                             </a>
-                                            <a href="{{ url('/admin/delete/'.$file) }}" target="_self">
-                                                <button class="btn btn-warning btn-xs" type="button"><i
+                                            <a>
+                                                <button class="btn btn-warning btn-xs  demo3" value="{{ $file }}" type="button"><i
                                                             class="fa fa-times">删除</i>
                                                 </button>
                                             </a>
@@ -282,6 +283,7 @@
     <script src="/js/bootstrap.min.js?v=3.3.5"></script>
     <script src="/js/content.min.js?v=1.0.0"></script>
     <script src="/js/plugins/dropzone/dropzone.js"></script>
+    <script src="/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script>
         $(document).ready(function () {
             Dropzone.options = {
@@ -305,6 +307,25 @@
                     })
                 }
             }
+        });
+    </script>
+    <script>
+        $('.demo3').click(function () {
+            var name = $(this).attr("value");
+//            alert($(this).attr("value"));
+            swal({
+                title: "您确定要删除这条信息吗",
+                text: "删除后将无法恢复，请谨慎操作！",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "删除",
+                closeOnConfirm: false
+            }, function () {
+//                alert(name);
+                window.location.href="/admin/delete/"+name;
+                swal("删除成功！", "您已经永久删除了这条信息。", "success");
+            });
         });
     </script>
     <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
