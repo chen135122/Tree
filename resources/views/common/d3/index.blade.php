@@ -231,7 +231,7 @@
     <div id="count"></div>
     <div id="menu">
         <a href="javascript:window.close();">关闭当前页</a>
-        <a href="{{ url('/admin/index') }}">首页</a>
+        {{--<a href="{{ url('/admin/index') }}">首页</a>--}}
         <a href="javascript:window.location.reload();">静态图</a>
         <a href="javascript:void(0)" id="start">开始动画</a>
     </div>
