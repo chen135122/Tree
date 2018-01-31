@@ -74,7 +74,7 @@
                                 共计{{ $circles->group }}组,涉及{{ $circles->sumAccount }}账户,{{ substr(explode('.',$circles->sumMoney)[0],0,strlen(explode('.',$circles->sumMoney)[0])-4) }}万元
                             </th>
                             <tr>
-                                <th style="width: 100px">序号</th>
+                                <th style="width: 100px">Group号</th>
                                 <th>账号</th>
                                 <th>环路</th>
                                 <th>账号数</th>
@@ -86,17 +86,22 @@
                             <tbody>
                             @foreach($circles->accounts as $key => $value)
                                 <tr>
-                                    <td>{{ $key+1 }}</td>
+                                    <td>Group{{ $key+1 }}</td>
                                     <td>{{ $value->account }}</td>
                                     <td>{{ $value->circle }}</td>
                                     <td>{{ $value->sumAccount }}</td>
                                     <td>{{ substr(explode('.',$value->sumMoney)[0],0,strlen(explode('.',$value->sumMoney)[0])-4) }}</td>
                                     <td>
-                                        @for($i = 0; $i<3;$i++)
-                                            {{ $value->sumAccounts[$i] }},
-                                        @endfor
+
                                         @if(count($value->accounts)>3)
+                                                @for($i = 0; $i<3;$i++)
+                                                    {{ $value->sumAccounts[$i] }},
+                                                @endfor
                                             ...
+                                        @else
+                                            @foreach($value->sumAccounts as $v)
+                                                {{ $v }},
+                                            @endforeach
                                         @endif
                                         {{--@foreach($value->accounts as $item)--}}
                                         {{--{{ $item }}--}}

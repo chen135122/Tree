@@ -74,7 +74,7 @@
                                 共计{{ $all->allGroup }}组,涉及{{ $all->countsSum }}账户,{{ substr($all->allMoney,0,strlen($all->allMoney)-4) }}万元
                             </th>
                             <tr>
-                                <th style="width: 100px">序号</th>
+                                <th style="width: 100px">Tree号</th>
                                 <th>组数</th>
                                 <th>账号数</th>
                                 <th>总金额(万)</th>
@@ -85,7 +85,7 @@
                             <tbody>
                                 @foreach($all->allCounts as $key => $value)
                                 <tr>
-                                    <td>{{ $key+1 }}</td>
+                                    <td>Tree{{ $key+1 }}</td>
                                     <td>{{ $value->group }}</td>
                                     <td>{{ $value->count }}</td>
                                     <td>{{ substr($value->Money,0,strlen($value->Money)-4) }}</td>
