@@ -320,7 +320,7 @@ class HomeController extends Controller
         preg_match_all('/Tree[\s\S]+\{[\s\S]+\}\r\n\}\r\n\}\r\n/U', $data, $pre2,true );
         $start = $pre[0];
         $start2 = $pre2[0];
-//        dd($start);
+//        dd($start2);
         //判断环形图
         if(count($start)>0){
             $keys = array();
@@ -534,6 +534,7 @@ class HomeController extends Controller
                 array_push($charts,$chart);
             }
 //            dd($all);
+//            dd($charts);
             $all->allCounts = $charts;
             return view('common.d3.table',compact('all','filename'));
             dd($all);

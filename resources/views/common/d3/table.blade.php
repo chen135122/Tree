@@ -90,11 +90,16 @@
                                     <td>{{ $value->count }}</td>
                                     <td>{{ substr($value->Money,0,strlen($value->Money)-4) }}</td>
                                     <td>
-                                        @for($i = 0; $i<3;$i++)
-                                            {{ $value->accounts[$i] }},
-                                        @endfor
+
                                         @if(count($value->accounts)>3)
+                                            @for($i = 0; $i<3;$i++)
+                                                {{ $value->accounts[$i] }},
+                                            @endfor
                                             ...
+                                        @else
+                                            @foreach($value->accounts as $v)
+                                                {{ $v }},
+                                            @endforeach
                                         @endif
                                         {{--@foreach($value->accounts as $item)--}}
                                             {{--{{ $item }}--}}
