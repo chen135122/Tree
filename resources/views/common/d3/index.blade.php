@@ -449,7 +449,7 @@
 <script>
 
     var dataset = {!! $dataset !!};
-    
+
     var size = dataset.links.length;
 
     var array = [];
