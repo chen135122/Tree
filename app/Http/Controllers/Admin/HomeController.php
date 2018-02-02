@@ -295,7 +295,7 @@ class HomeController extends Controller
 //        dd($nodes);
 //                dd($name);
 //                dd($circles);
-                $dataset = "{links:[".$links."],circuit:[".$circuits."],nodes:[".$nodes."],account:".count($key).",transaction:".$name."}";
+                $dataset = "{links:[".$links."],circuit:[".$circuits."],nodes:[".$nodes."],account:".count($key).",transaction:".$name.",group:".($page+1)."}";
 //                return $dataset;
                 return view('common.d3.index',compact('dataset'));
 //                dd($key);

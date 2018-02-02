@@ -88,15 +88,17 @@
 
         #ring {
             position: fixed;
-            width: 100px;
-            height: 100%;
+            width: 150px;
+            height: 500px;
             top: 30px;
-            right: 30px;
+            right: 10px;
             z-index: 999;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         #ring > ul {
-            width: 100px;
+            width: 150px;
             height: 100%;
             margin: 0;
             padding: 20px 0;
@@ -112,22 +114,35 @@
             cursor: pointer;
         }
 
+        #ring > ul > li:last-child {
+            margin-bottom: 0;
+        }
+
         #info {
             position: fixed;
-            bottom: 30px;
+            bottom: 60px;
             right: 150px;
-            width: 500px;
+            width: 745px;
             /*height: 150px;*/
             height: 0;
             visibility: hidden;
-            background: white;
+            background: rgba(255, 255, 255, 0.8);
             border: 1px solid #ddd;
             cursor: move;
             z-index: 9999;
         }
 
+        #info > .header {
+            width: 745px;
+            height: 30px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            text-align: center;
+            line-height: 30px;
+        }
+
         #info > .title {
-            width: 500px;
+            width: 745px;
             height: 30px;
             border-bottom: 1px solid #ddd;
             font-size: 14px;
@@ -136,7 +151,7 @@
         #info > .title > div {
             border-right: 1px solid #ddd;
             float: left;
-            width: 124px;
+            width: 123px;
             height: 30px;
             line-height: 30px;
             text-align: center;
@@ -147,31 +162,39 @@
         }
 
         #info > .content {
-            width: 500px;
+            width: 744px;
             height: 120px;
             overflow-x: hidden;
             overflow-y: auto;
         }
 
         #info > .content > div {
-            width: 500px;
+            width: 744px;
             height: 30px;
+            border-bottom: 1px solid #ddd;
         }
+
+        /*#info > .content > div:last-child {*/
+        /*border-bottom: 0;*/
+        /*}*/
 
         #info > .content > div > div {
             border-right: 1px solid #ddd;
             float: left;
-            width: 124px;
+            width: 123px;
             height: 30px;
             line-height: 30px;
             text-align: center;
-            border-bottom: 1px solid #ddd;
             font-size: 12px;
             overflow: hidden;
         }
 
         #info > .content > div > div:last-child {
             border-right: 0;
+        }
+
+        .line1 {
+            stroke: red;
         }
 
         .circle {
@@ -194,7 +217,7 @@
             position: fixed;
             bottom: 30px;
             left: 50%;
-            margin-left: -575px;
+            margin-left: -600px;
             width: 1150px;
             height: 12px;
             padding: 0 20px;
@@ -222,18 +245,43 @@
             background: rgb(100, 149, 237);
         }
 
+        #prev {
+            position: absolute;
+            top: -12px;
+            left: -50px;
+            cursor: pointer;
+        }
+
+        #next {
+            position: absolute;
+            top: -12px;
+            right: -50px;
+            cursor: pointer;
+        }
+
+        .ui-slider-value.first {
+            position: absolute;
+            left: 18px;
+            top: -10px;
+        }
+
+        .ui-slider-value.last {
+            position: absolute;
+            left: 18px;
+            bottom: 0;
+        }
 
     </style>
-    <link rel="stylesheet" href="{{ asset('/css/flat-ui.css') }}"/>
+    <link rel="stylesheet" href="/css/flat-ui.css"/>
 </head>
 <body>
 <div id="main">
     <div id="count"></div>
     <div id="menu">
-        <a href="javascript:window.close();">关闭当前页</a>
-        {{--<a href="{{ url('/admin/index') }}">首页</a>--}}
+        <a href="javascript:window.close();">回到上一页</a>
         <a href="javascript:window.location.reload();">静态图</a>
         <a href="javascript:void(0)" id="start">开始动画</a>
+        <a href="javascript:void(0)" id="save">保存位置</a>
     </div>
 </div>
 
@@ -243,13 +291,22 @@
     <!--<div class="slider-segment"></div>-->
     <!--<div class="slider-handle"></div>-->
     <!--<a href="javascript:void(0)"></a>-->
-    <div id="vertical-slider" style="height: 400px;"></div>
+    <div id="vertical-slider" style="height: 400px;">
+        <span class="ui-slider-value first">5</span>
+        <span class="ui-slider-value last">1</span>
+    </div>
 </div>
 <div id="slider-h">
+    <a href="javascript:void(0)" class="btn btn-primary" id="prev">
+        <i class="fui-arrow-left"></i>
+    </a>
     <div id="horizontal-slider" style="height: 12px;">
         <span class="ui-slider-value first"></span>
         <span class="ui-slider-value last"></span>
     </div>
+    <a href="javascript:void(0)" class="btn btn-primary" id="next">
+        <i class="fui-arrow-right"></i>
+    </a>
 </div>
 <div id="container">
 
@@ -258,9 +315,14 @@
 
 </div>
 <div id="info">
+    <div class="header">
+        交易明细表
+    </div>
     <div class="title">
+        <div>group</div>
+        <div>flow</div>
         <div>发起账户</div>
-        <div>结束账户</div>
+        <div>接收账号</div>
         <div>交易金额</div>
         <div>时间</div>
     </div>
@@ -386,750 +448,13 @@
 
 <script>
 
-    // var dataset = {
-    //     links: [
-    //         {
-    //             source: 0,
-    //             target: 1,
-    //             info: '2016/12/5 15:32:02交易2500000',
-    //             name: "1467615008"
-    //         }, {
-    //             source: 1,
-    //             target: 0,
-    //             info: '2016/12/5 15:32:02交易2500000',
-    //             name: "455849016"
-    //         }, {
-    //             source: 2,
-    //             target: 0,
-    //             info: '2016/12/5 15:32:02交易2500000',
-    //             name: "229383403"
-    //         }, {
-    //             source: 3,
-    //             target: 1,
-    //             info: '2016/12/5 15:32:02交易2500000',
-    //             name: "868996948"
-    //         },
-    //     ],
-    //     circuit: [
-    //         {
-    //             name: "1467615008",
-    //             target: [
-    //                 {
-    //                     name: "455849016",
-    //                     money: "100000",
-    //                     datetime: "2017-1-1 19:00:00"
-    //                 }, {
-    //                     name: "1467615008",
-    //                     money: "100000",
-    //                     datetime: "2017-1-1 19:00:00"
-    //                 }
-    //             ]
-    //         }
-    //     ],
-    //     nodes: [
-    //         {
-    //             name: "1467615008",
-    //             title: "1467615008",
-    //             target: [
-    //                 {
-    //                     name: "455849016",
-    //                     money: "100000",
-    //                     datetime: "2017-1-1 19:00:00"
-    //                 }, {
-    //                     name: "1467615008",
-    //                     money: "100000",
-    //                     datetime: "2017-1-1 19:00:00"
-    //                 }
-    //             ]
-    //         }, {
-    //             name: "455849016",
-    //             title: "455849016"
-    //         }, {
-    //             name: "229383403",
-    //             title: "229383403"
-    //         }, {
-    //             name: "868996948",
-    //             title: "868996948"
-    //         }
-    //     ],
-    //     account: 13,
-    //     transaction: 50
-    // };
-    // var dataset = {
-    //     links: [{source: 0, target: 1, info: '2016/12/5 15:20:30交易2500000', name: "1467615008"}, {
-    //         source: 1,
-    //         target: 2,
-    //         info: '2016/12/5 15:25:42交易2500000',
-    //         name: "455849016"
-    //     }, {source: 2, target: 1, info: '2016/12/5 15:27:40交易2500000', name: "229383403"}, {
-    //         source: 1,
-    //         target: 2,
-    //         info: '2016/12/5 15:32:02交易2500000',
-    //         name: "455849016"
-    //     }, {source: 2, target: 1, info: '2016/12/5 15:33:59交易2500000', name: "229383403"}, {
-    //         source: 1,
-    //         target: 0,
-    //         info: '2016/12/5 15:38:49交易2500000',
-    //         name: "455849016"
-    //     },],
-    //     circuit: [{
-    //         name: "1467615008",
-    //         target: [{name: "455849016", money: "2500000", datetime: "2016/12/5 15:20:30"}, {
-    //             name: "229383403",
-    //             money: "2500000",
-    //             datetime: "2016/12/5 15:25:42"
-    //         }, {name: "455849016", money: "2500000", datetime: "2016/12/5 15:27:40"}, {
-    //             name: "229383403",
-    //             money: "2500000",
-    //             datetime: "2016/12/5 15:32:02"
-    //         }, {name: "455849016", money: "2500000", datetime: "2016/12/5 15:33:59"}, {
-    //             name: "1467615008",
-    //             money: "2500000",
-    //             datetime: "2016/12/5 15:38:49"
-    //         },]
-    //     }],
-    //     nodes: [{
-    //         name: "1467615008",
-    //         title: "1467615008",
-    //         target: [{name: "455849016", money: "2500000", datetime: "2016/12/5 15:20:30"}, {
-    //             name: "229383403",
-    //             money: "2500000",
-    //             datetime: "2016/12/5 15:25:42"
-    //         }, {name: "455849016", money: "2500000", datetime: "2016/12/5 15:27:40"}, {
-    //             name: "229383403",
-    //             money: "2500000",
-    //             datetime: "2016/12/5 15:32:02"
-    //         }, {name: "455849016", money: "2500000", datetime: "2016/12/5 15:33:59"}, {
-    //             name: "1467615008",
-    //             money: "2500000",
-    //             datetime: "2016/12/5 15:38:49"
-    //         },]
-    //     },{
-    //         name: "455849016",
-    //         title: "455849016"
-    //     },{
-    //         name: "229383403",
-    //         title:"229383403",
-    //     }],
-    //     account: 13,
-    //     transaction: 50
-    // };
     var dataset = {!! $dataset !!};
-    //    var dataset = {
-    //        links: [{source: 0, target: 1, info: '2016/12/5 15:20:30交易2500000', name: "1467615008"}, {
-    //            source: 1,
-    //            target: 2,
-    //            info: '2016/12/5 15:25:42交易2500000',
-    //            name: "455849016"
-    //        }, {source: 2, target: 1, info: '2016/12/5 15:27:40交易2500000', name: "229383403"}, {
-    //            source: 1,
-    //            target: 2,
-    //            info: '2016/12/5 15:32:02交易2500000',
-    //            name: "455849016"
-    //        }, {source: 2, target: 1, info: '2016/12/5 15:33:59交易2500000', name: "229383403"}, {
-    //            source: 1,
-    //            target: 0,
-    //            info: '2016/12/5 15:38:49交易2500000',
-    //            name: "455849016"
-    //        }, {source: 0, target: 3, info: '2016/12/6 15:00:11交易2500000', name: "1467615008"}, {
-    //            source: 3,
-    //            target: 2,
-    //            info: '2016/12/6 15:05:01交易2500000',
-    //            name: "455664117"
-    //        }, {source: 2, target: 3, info: '2016/12/6 15:06:51交易2500000', name: "229383403"}, {
-    //            source: 3,
-    //            target: 2,
-    //            info: '2016/12/6 15:10:41交易2500000',
-    //            name: "455664117"
-    //        }, {source: 2, target: 3, info: '2016/12/6 15:11:52交易2500000', name: "229383403"}, {
-    //            source: 3,
-    //            target: 0,
-    //            info: '2016/12/6 15:15:49交易2500000',
-    //            name: "455664117"
-    //        }, {source: 0, target: 4, info: '2016/12/7 15:29:35交易2500000', name: "1467615008"}, {
-    //            source: 4,
-    //            target: 2,
-    //            info: '2016/12/7 15:33:37交易2500000',
-    //            name: "868996948"
-    //        }, {source: 2, target: 4, info: '2016/12/7 15:34:29交易2500000', name: "229383403"}, {
-    //            source: 4,
-    //            target: 2,
-    //            info: '2016/12/7 15:38:57交易2500000',
-    //            name: "868996948"
-    //        }, {source: 2, target: 4, info: '2016/12/7 15:39:45交易2500000', name: "229383403"}, {
-    //            source: 4,
-    //            target: 0,
-    //            info: '2016/12/7 15:47:42交易2500000',
-    //            name: "868996948"
-    //        }, {source: 0, target: 5, info: '2016/12/8 15:20:12交易2500000', name: "1467615008"}, {
-    //            source: 5,
-    //            target: 2,
-    //            info: '2016/12/8 15:39:25交易2500000',
-    //            name: "455870454"
-    //        }, {source: 2, target: 5, info: '2016/12/8 15:40:26交易2500000', name: "229383403"}, {
-    //            source: 5,
-    //            target: 2,
-    //            info: '2016/12/8 15:43:59交易2500000',
-    //            name: "455870454"
-    //        }, {source: 2, target: 5, info: '2016/12/8 15:44:40交易2500000', name: "229383403"}, {
-    //            source: 5,
-    //            target: 0,
-    //            info: '2016/12/8 15:48:40交易2500000',
-    //            name: "455870454"
-    //        }, {source: 0, target: 6, info: '2016/12/9 15:34:08交易2500000', name: "1467615008"}, {
-    //            source: 6,
-    //            target: 2,
-    //            info: '2016/12/9 15:37:56交易2500000',
-    //            name: "455947695"
-    //        }, {source: 2, target: 6, info: '2016/12/9 15:39:06交易2500000', name: "229383403"}, {
-    //            source: 6,
-    //            target: 2,
-    //            info: '2016/12/9 15:45:28交易2500000',
-    //            name: "455947695"
-    //        }, {source: 2, target: 6, info: '2016/12/9 15:47:05交易2500000', name: "229383403"}, {
-    //            source: 6,
-    //            target: 0,
-    //            info: '2016/12/9 15:52:45交易2500000',
-    //            name: "455947695"
-    //        }, {source: 2, target: 7, info: '2016/12/5 15:05:58交易2500000', name: "229383403"}, {
-    //            source: 7,
-    //            target: 0,
-    //            info: '2016/12/5 15:16:31交易2500000',
-    //            name: "455805368"
-    //        }, {source: 0, target: 1, info: '2016/12/5 15:20:30交易2500000', name: "1467615008"}, {
-    //            source: 1,
-    //            target: 2,
-    //            info: '2016/12/5 15:25:42交易2500000',
-    //            name: "455849016"
-    //        }, {source: 2, target: 8, info: '2016/12/6 14:53:43交易2500000', name: "229383403"}, {
-    //            source: 8,
-    //            target: 0,
-    //            info: '2016/12/6 14:57:50交易2500000',
-    //            name: "1272504903"
-    //        }, {source: 0, target: 3, info: '2016/12/6 15:00:11交易2500000', name: "1467615008"}, {
-    //            source: 3,
-    //            target: 2,
-    //            info: '2016/12/6 15:05:01交易2500000',
-    //            name: "455664117"
-    //        }, {source: 2, target: 9, info: '2016/12/7 15:22:27交易2500000', name: "229383403"}, {
-    //            source: 9,
-    //            target: 0,
-    //            info: '2016/12/7 15:27:03交易2500000',
-    //            name: "455757123"
-    //        }, {source: 0, target: 4, info: '2016/12/7 15:29:35交易2500000', name: "1467615008"}, {
-    //            source: 4,
-    //            target: 2,
-    //            info: '2016/12/7 15:33:37交易2500000',
-    //            name: "868996948"
-    //        }, {source: 2, target: 10, info: '2016/12/8 15:12:16交易2500000', name: "229383403"}, {
-    //            source: 10,
-    //            target: 0,
-    //            info: '2016/12/8 15:16:56交易2500000',
-    //            name: "455741250"
-    //        }, {source: 0, target: 5, info: '2016/12/8 15:20:12交易2500000', name: "1467615008"}, {
-    //            source: 5,
-    //            target: 2,
-    //            info: '2016/12/8 15:39:25交易2500000',
-    //            name: "455870454"
-    //        }, {source: 11, target: 12, info: '2016/12/12 12:37:26交易3500000', name: "828159124"}, {
-    //            source: 12,
-    //            target: 2,
-    //            info: '2016/12/12 15:28:31交易3500000',
-    //            name: "72729"
-    //        }, {source: 2, target: 12, info: '2016/12/12 15:53:08交易3500000', name: "229383403"}, {
-    //            source: 12,
-    //            target: 11,
-    //            info: '2016/12/12 15:59:58交易3500000',
-    //            name: "72729"
-    //        },],
-    //        circuit: [{
-    //            name: "1467615008",
-    //            target: [{name: "455849016", money: "2500000", datetime: "2016/12/5 15:20:30"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/5 15:25:42"
-    //            }, {name: "455849016", money: "2500000", datetime: "2016/12/5 15:27:40"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/5 15:32:02"
-    //            }, {name: "455849016", money: "2500000", datetime: "2016/12/5 15:33:59"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/5 15:38:49"
-    //            },]
-    //        }, {
-    //            name: "1467615008",
-    //            target: [{name: "455664117", money: "2500000", datetime: "2016/12/6 15:00:11"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/6 15:05:01"
-    //            }, {name: "455664117", money: "2500000", datetime: "2016/12/6 15:06:51"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/6 15:10:41"
-    //            }, {name: "455664117", money: "2500000", datetime: "2016/12/6 15:11:52"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/6 15:15:49"
-    //            },]
-    //        }, {
-    //            name: "1467615008",
-    //            target: [{name: "868996948", money: "2500000", datetime: "2016/12/7 15:29:35"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/7 15:33:37"
-    //            }, {name: "868996948", money: "2500000", datetime: "2016/12/7 15:34:29"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/7 15:38:57"
-    //            }, {name: "868996948", money: "2500000", datetime: "2016/12/7 15:39:45"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/7 15:47:42"
-    //            },]
-    //        }, {
-    //            name: "1467615008",
-    //            target: [{name: "455870454", money: "2500000", datetime: "2016/12/8 15:20:12"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/8 15:39:25"
-    //            }, {name: "455870454", money: "2500000", datetime: "2016/12/8 15:40:26"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/8 15:43:59"
-    //            }, {name: "455870454", money: "2500000", datetime: "2016/12/8 15:44:40"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/8 15:48:40"
-    //            },]
-    //        }, {
-    //            name: "1467615008",
-    //            target: [{name: "455947695", money: "2500000", datetime: "2016/12/9 15:34:08"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/9 15:37:56"
-    //            }, {name: "455947695", money: "2500000", datetime: "2016/12/9 15:39:06"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/9 15:45:28"
-    //            }, {name: "455947695", money: "2500000", datetime: "2016/12/9 15:47:05"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/9 15:52:45"
-    //            },]
-    //        }, {
-    //            name: "229383403",
-    //            target: [{name: "455805368", money: "2500000", datetime: "2016/12/5 15:05:58"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/5 15:16:31"
-    //            }, {name: "455849016", money: "2500000", datetime: "2016/12/5 15:20:30"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/5 15:25:42"
-    //            },]
-    //        }, {
-    //            name: "229383403",
-    //            target: [{name: "1272504903", money: "2500000", datetime: "2016/12/6 14:53:43"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/6 14:57:50"
-    //            }, {name: "455664117", money: "2500000", datetime: "2016/12/6 15:00:11"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/6 15:05:01"
-    //            },]
-    //        }, {
-    //            name: "229383403",
-    //            target: [{name: "455757123", money: "2500000", datetime: "2016/12/7 15:22:27"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/7 15:27:03"
-    //            }, {name: "868996948", money: "2500000", datetime: "2016/12/7 15:29:35"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/7 15:33:37"
-    //            },]
-    //        }, {
-    //            name: "229383403",
-    //            target: [{name: "455741250", money: "2500000", datetime: "2016/12/8 15:12:16"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/8 15:16:56"
-    //            }, {name: "455870454", money: "2500000", datetime: "2016/12/8 15:20:12"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/8 15:39:25"
-    //            },]
-    //        }, {
-    //            name: "828159124",
-    //            target: [{name: "72729", money: "3500000", datetime: "2016/12/12 12:37:26"}, {
-    //                name: "229383403",
-    //                money: "3500000",
-    //                datetime: "2016/12/12 15:28:31"
-    //            }, {name: "72729", money: "3500000", datetime: "2016/12/12 15:53:08"}, {
-    //                name: "828159124",
-    //                money: "3500000",
-    //                datetime: "2016/12/12 15:59:58"
-    //            },]
-    //        },],
-    //        nodes: [{
-    //            name: "1467615008",
-    //            title: "1467615008",
-    //            target: [{name: "455849016", money: "2500000", datetime: "2016/12/5 15:20:30"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/5 15:25:42"
-    //            }, {name: "455849016", money: "2500000", datetime: "2016/12/5 15:27:40"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/5 15:32:02"
-    //            }, {name: "455849016", money: "2500000", datetime: "2016/12/5 15:33:59"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/5 15:38:49"
-    //            },]
-    //        }, {
-    //            name: "1467615008",
-    //            title: "1467615008",
-    //            target: [{name: "455664117", money: "2500000", datetime: "2016/12/6 15:00:11"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/6 15:05:01"
-    //            }, {name: "455664117", money: "2500000", datetime: "2016/12/6 15:06:51"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/6 15:10:41"
-    //            }, {name: "455664117", money: "2500000", datetime: "2016/12/6 15:11:52"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/6 15:15:49"
-    //            },]
-    //        }, {
-    //            name: "1467615008",
-    //            title: "1467615008",
-    //            target: [{name: "868996948", money: "2500000", datetime: "2016/12/7 15:29:35"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/7 15:33:37"
-    //            }, {name: "868996948", money: "2500000", datetime: "2016/12/7 15:34:29"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/7 15:38:57"
-    //            }, {name: "868996948", money: "2500000", datetime: "2016/12/7 15:39:45"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/7 15:47:42"
-    //            },]
-    //        }, {
-    //            name: "1467615008",
-    //            title: "1467615008",
-    //            target: [{name: "455870454", money: "2500000", datetime: "2016/12/8 15:20:12"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/8 15:39:25"
-    //            }, {name: "455870454", money: "2500000", datetime: "2016/12/8 15:40:26"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/8 15:43:59"
-    //            }, {name: "455870454", money: "2500000", datetime: "2016/12/8 15:44:40"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/8 15:48:40"
-    //            },]
-    //        }, {
-    //            name: "1467615008",
-    //            title: "1467615008",
-    //            target: [{name: "455947695", money: "2500000", datetime: "2016/12/9 15:34:08"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/9 15:37:56"
-    //            }, {name: "455947695", money: "2500000", datetime: "2016/12/9 15:39:06"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/9 15:45:28"
-    //            }, {name: "455947695", money: "2500000", datetime: "2016/12/9 15:47:05"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/9 15:52:45"
-    //            },]
-    //        }, {
-    //            name: "229383403",
-    //            title: "229383403",
-    //            target: [{name: "455805368", money: "2500000", datetime: "2016/12/5 15:05:58"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/5 15:16:31"
-    //            }, {name: "455849016", money: "2500000", datetime: "2016/12/5 15:20:30"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/5 15:25:42"
-    //            },]
-    //        }, {
-    //            name: "229383403",
-    //            title: "229383403",
-    //            target: [{name: "1272504903", money: "2500000", datetime: "2016/12/6 14:53:43"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/6 14:57:50"
-    //            }, {name: "455664117", money: "2500000", datetime: "2016/12/6 15:00:11"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/6 15:05:01"
-    //            },]
-    //        }, {
-    //            name: "229383403",
-    //            title: "229383403",
-    //            target: [{name: "455757123", money: "2500000", datetime: "2016/12/7 15:22:27"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/7 15:27:03"
-    //            }, {name: "868996948", money: "2500000", datetime: "2016/12/7 15:29:35"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/7 15:33:37"
-    //            },]
-    //        }, {
-    //            name: "229383403",
-    //            title: "229383403",
-    //            target: [{name: "455741250", money: "2500000", datetime: "2016/12/8 15:12:16"}, {
-    //                name: "1467615008",
-    //                money: "2500000",
-    //                datetime: "2016/12/8 15:16:56"
-    //            }, {name: "455870454", money: "2500000", datetime: "2016/12/8 15:20:12"}, {
-    //                name: "229383403",
-    //                money: "2500000",
-    //                datetime: "2016/12/8 15:39:25"
-    //            },]
-    //        }, {
-    //            name: "828159124",
-    //            title: "828159124",
-    //            target: [{name: "72729", money: "3500000", datetime: "2016/12/12 12:37:26"}, {
-    //                name: "229383403",
-    //                money: "3500000",
-    //                datetime: "2016/12/12 15:28:31"
-    //            }, {name: "72729", money: "3500000", datetime: "2016/12/12 15:53:08"}, {
-    //                name: "828159124",
-    //                money: "3500000",
-    //                datetime: "2016/12/12 15:59:58"
-    //            },]
-    //        },],
-    //        account: 13,
-    //        transaction: 50
-    //    };
-
-    // var dataset = {
-    //     links: [{source: 0, target: 1, info: '2016/12/5 15:20:30交易2500000', name: "1"}, {
-    //         source: 1,
-    //         target: 2,
-    //         info: '2016/12/5 15:25:42交易2500000',
-    //         name: "2"
-    //     }, {source: 2, target: 1, info: '2016/12/5 15:27:40交易2500000', name: "3"}, {
-    //         source: 1,
-    //         target: 2,
-    //         info: '2016/12/5 15:32:02交易2500000',
-    //         name: "2"
-    //     }, {source: 2, target: 1, info: '2016/12/5 15:33:59交易2500000', name: "3"}, {
-    //         source: 1,
-    //         target: 0,
-    //         info: '2016/12/5 15:38:49交易2500000',
-    //         name: "2"
-    //     }, {source: 0, target: 3, info: '2016/12/6 15:00:11交易2500000', name: "1"}, {
-    //         source: 3,
-    //         target: 2,
-    //         info: '2016/12/6 15:05:01交易2500000',
-    //         name: "4"
-    //     }, {source: 2, target: 3, info: '2016/12/6 15:06:51交易2500000', name: "3"}, {
-    //         source: 3,
-    //         target: 2,
-    //         info: '2016/12/6 15:10:41交易2500000',
-    //         name: "4"
-    //     }, {source: 2, target: 3, info: '2016/12/6 15:11:52交易2500000', name: "3"}, {
-    //         source: 3,
-    //         target: 0,
-    //         info: '2016/12/6 15:15:49交易2500000',
-    //         name: "4"
-    //     }, {source: 0, target: 4, info: '2016/12/7 15:29:35交易2500000', name: "1"}, {
-    //         source: 4,
-    //         target: 2,
-    //         info: '2016/12/7 15:33:37交易2500000',
-    //         name: "5"
-    //     }, {source: 2, target: 4, info: '2016/12/7 15:34:29交易2500000', name: "3"}, {
-    //         source: 4,
-    //         target: 2,
-    //         info: '2016/12/7 15:38:57交易2500000',
-    //         name: "5"
-    //     }, {source: 2, target: 4, info: '2016/12/7 15:39:45交易2500000', name: "3"}, {
-    //         source: 4,
-    //         target: 0,
-    //         info: '2016/12/7 15:47:42交易2500000',
-    //         name: "5"
-    //     }, {source: 0, target: 5, info: '2016/12/8 15:20:12交易2500000', name: "1"}, {
-    //         source: 5,
-    //         target: 2,
-    //         info: '2016/12/8 15:39:25交易2500000',
-    //         name: "6"
-    //     }, {source: 2, target: 5, info: '2016/12/8 15:40:26交易2500000', name: "3"}, {
-    //         source: 5,
-    //         target: 2,
-    //         info: '2016/12/8 15:43:59交易2500000',
-    //         name: "6"
-    //     }, {source: 2, target: 5, info: '2016/12/8 15:44:40交易2500000', name: "3"}, {
-    //         source: 5,
-    //         target: 0,
-    //         info: '2016/12/8 15:48:40交易2500000',
-    //         name: "6"
-    //     }, {source: 0, target: 6, info: '2016/12/9 15:34:08交易2500000', name: "1"}, {
-    //         source: 6,
-    //         target: 2,
-    //         info: '2016/12/9 15:37:56交易2500000',
-    //         name: "7"
-    //     }, {source: 2, target: 6, info: '2016/12/9 15:39:06交易2500000', name: "3"}, {
-    //         source: 6,
-    //         target: 2,
-    //         info: '2016/12/9 15:45:28交易2500000',
-    //         name: "7"
-    //     }, {source: 2, target: 6, info: '2016/12/9 15:47:05交易2500000', name: "3"}, {
-    //         source: 6,
-    //         target: 0,
-    //         info: '2016/12/9 15:52:45交易2500000',
-    //         name: "7"
-    //     }, {source: 2, target: 7, info: '2016/12/5 15:05:58交易2500000', name: "3"}, {
-    //         source: 7,
-    //         target: 0,
-    //         info: '2016/12/5 15:16:31交易2500000',
-    //         name: "8"
-    //     }, {source: 0, target: 1, info: '2016/12/5 15:20:30交易2500000', name: "1"}, {
-    //         source: 1,
-    //         target: 2,
-    //         info: '2016/12/5 15:25:42交易2500000',
-    //         name: "2"
-    //     }, {source: 2, target: 8, info: '2016/12/6 14:53:43交易2500000', name: "3"}, {
-    //         source: 8,
-    //         target: 0,
-    //         info: '2016/12/6 14:57:50交易2500000',
-    //         name: "9"
-    //     }, {source: 0, target: 3, info: '2016/12/6 15:00:11交易2500000', name: "1"}, {
-    //         source: 3,
-    //         target: 2,
-    //         info: '2016/12/6 15:05:01交易2500000',
-    //         name: "4"
-    //     }, {source: 2, target: 9, info: '2016/12/7 15:22:27交易2500000', name: "3"}, {
-    //         source: 9,
-    //         target: 0,
-    //         info: '2016/12/7 15:27:03交易2500000',
-    //         name: "10"
-    //     }, {source: 0, target: 4, info: '2016/12/7 15:29:35交易2500000', name: "1"}, {
-    //         source: 4,
-    //         target: 2,
-    //         info: '2016/12/7 15:33:37交易2500000',
-    //         name: "5"
-    //     }, {source: 2, target: 10, info: '2016/12/8 15:12:16交易2500000', name: "3"}, {
-    //         source: 10,
-    //         target: 0,
-    //         info: '2016/12/8 15:16:56交易2500000',
-    //         name: "11"
-    //     }, {source: 0, target: 5, info: '2016/12/8 15:20:12交易2500000', name: "1"}, {
-    //         source: 5,
-    //         target: 2,
-    //         info: '2016/12/8 15:39:25交易2500000',
-    //         name: "6"
-    //     }, {source: 11, target: 12, info: '2016/12/12 12:37:26交易3500000', name: "12"}, {
-    //         source: 12,
-    //         target: 2,
-    //         info: '2016/12/12 15:28:31交易3500000',
-    //         name: "13"
-    //     }, {source: 2, target: 12, info: '2016/12/12 15:53:08交易3500000', name: "3"}, {
-    //         source: 12,
-    //         target: 11,
-    //         info: '2016/12/12 15:59:58交易3500000',
-    //         name: "13"
-    //     }, {source: 13, target: 14, info: '2016/12/3 13:35:54交易27161', name: "14"}, {
-    //         source: 14,
-    //         target: 15,
-    //         info: '2016/12/3 13:39:13交易27159.5',
-    //         name: "15"
-    //     }, {source: 15, target: 13, info: '2016/12/3 13:42:16交易27159.5', name: "16"}, {
-    //         source: 13,
-    //         target: 14,
-    //         info: '2016/12/6 19:50:29交易36683.5',
-    //         name: "14"
-    //     }, {source: 14, target: 15, info: '2016/12/6 19:51:55交易36680.5', name: "15"}, {
-    //         source: 15,
-    //         target: 13,
-    //         info: '2016/12/6 19:53:05交易36680.5',
-    //         name: "16"
-    //     }, {source: 13, target: 14, info: '2016/12/8 7:51:02交易20220.5', name: "14"}, {
-    //         source: 14,
-    //         target: 15,
-    //         info: '2016/12/8 7:52:54交易20197.5',
-    //         name: "15"
-    //     }, {source: 15, target: 13, info: '2016/12/8 8:00:21交易20197.5', name: "16"}, {
-    //         source: 13,
-    //         target: 14,
-    //         info: '2016/12/9 10:05:45交易9339.5',
-    //         name: "14"
-    //     }, {source: 14, target: 15, info: '2016/12/9 10:06:53交易9316.5', name: "15"}, {
-    //         source: 15,
-    //         target: 13,
-    //         info: '2016/12/9 10:09:49交易9316.5',
-    //         name: "16"
-    //     }, {source: 13, target: 14, info: '2016/12/11 8:22:59交易21160.5', name: "14"}, {
-    //         source: 14,
-    //         target: 15,
-    //         info: '2016/12/11 8:24:20交易21157.5',
-    //         name: "15"
-    //     }, {source: 15, target: 13, info: '2016/12/11 8:25:38交易21157.5', name: "16"}, {
-    //         source: 13,
-    //         target: 14,
-    //         info: '2016/12/13 8:10:44交易10311.5',
-    //         name: "14"
-    //     }, {source: 14, target: 15, info: '2016/12/13 8:12:11交易10300.5', name: "15"}, {
-    //         source: 15,
-    //         target: 13,
-    //         info: '2016/12/13 8:13:25交易10300.5',
-    //         name: "16"
-    //     }, {source: 15, target: 13, info: '2016/12/9 8:44:45交易9443', name: "16"}, {
-    //         source: 13,
-    //         target: 14,
-    //         info: '2016/12/9 10:05:45交易9339.5',
-    //         name: "14"
-    //     }, {source: 14, target: 15, info: '2016/12/9 10:06:53交易9316.5', name: "15"}, {
-    //         source: 14,
-    //         target: 15,
-    //         info: '2016/12/9 8:43:42交易9443',
-    //         name: "15"
-    //     }, {source: 15, target: 13, info: '2016/12/9 8:44:45交易9443', name: "16"}, {
-    //         source: 13,
-    //         target: 14,
-    //         info: '2016/12/9 10:05:45交易9339.5',
-    //         name: "14"
-    //     },],
-    //     nodes: [{name: "1", title: '1467615008',}, {name: "2", title: '455849016',}, {
-    //         name: "3",
-    //         title: '229383403',
-    //     }, {name: "4", title: '455664117',}, {name: "5", title: '868996948',}, {
-    //         name: "6",
-    //         title: '455870454',
-    //     }, {name: "7", title: '455947695',}, {name: "8", title: '455805368',}, {
-    //         name: "9",
-    //         title: '1272504903',
-    //     }, {name: "10", title: '455757123',}, {name: "11", title: '455741250',}, {
-    //         name: "12",
-    //         title: '828159124',
-    //     }, {name: "13", title: '72729',}, {name: "14", title: '9771103',}, {name: "15", title: '6751989',}, {
-    //         name: "16",
-    //         title: '285146751',
-    //     },],
-    //     circuit: 18,
-    //     account: 16,
-    //     transaction: 74
-    // };
+    
     var size = dataset.links.length;
 
     var array = [];
-    var arrayCopy = [];
-
+    var arrayID = {};
+    var index = 0;
     var w = window.innerWidth,
         h = window.innerHeight;
     var color = d3.scaleOrdinal(d3.schemeCategory20);
@@ -1139,10 +464,79 @@
         .force("charge", d3.forceManyBody(-1500).strength(-1550).distanceMin(-100).distanceMax(-500))
         .force("center", d3.forceCenter(w / 2, h / 2));
 
+
     var zoom = d3.zoom().scaleExtent([1, 10])
         .on('zoom', zoomed);
 
+
+    var op = 0;
+
+    // for (var i = 0; i < dataset.links.length; i++) {
+    //     for (var j = i + 1; j < dataset.links.length; j++) {
+    //         console.log("dataset.links[i].source.name "+dataset.links[i].source.name);
+    //         console.log("dataset.links[j].source.name "+dataset.links[j].source.name);
+    //         console.log("dataset.links[i].target.name "+dataset.links[i].target.name);
+    //         console.log("dataset.links[j].target.name "+dataset.links[j].target.name);
+    //         if (dataset.links[i].source.name === dataset.links[j].source.name && dataset.links[i].target.name === dataset.links[j].target.name) {
+    //             arrayID[i] = true;
+    //         } else {
+    //             arrayID[i] = false;
+    //         }
+    //     }
+    // }
+
+    // for (var i = 0; i < dataset.links.length; i++) {
+    //     arrayID[0] = false;
+    //     for (var j = i + 1; j < dataset.links.length; j++) {
+    //         console.log("dataset.links[i].source.name "+dataset.links[i].source.name);
+    //         console.log("dataset.links[j].source.name "+dataset.links[j].source.name);
+    //         console.log("dataset.links[i].name "+dataset.links[i].name);
+    //         console.log("dataset.links[j].name "+dataset.links[j].name);
+    //         console.log("dataset.links[i].target.name "+dataset.links[i].target.name);
+    //         console.log("dataset.links[j].target.name "+dataset.links[j].target.name);
+    //         if (dataset.links[i].source.name === dataset.links[j].name && dataset.links[i].target.name === dataset.links[j].target.name) {
+    //             arrayID[i] = true;
+    //             op++;
+    //         } else {
+    //             arrayID[i] = false;
+    //         }
+    //     }
+    //     op = i;
+    // }
+
+
+    // var arrayID = {};
+
+    for (var i = 0; i < dataset.links.length; i++) {
+        for (var j = i + 1; j < dataset.links.length; j++) {
+            // console.log("dataset.links[i].source.name " + dataset.links[i].source.name);
+            // console.log("dataset.links[j].source.name " + dataset.links[j].source.name);
+            // console.log("dataset.links[i].name " + dataset.links[i].name);
+            // console.log("dataset.links[j].name " + dataset.links[j].name);
+            // console.log("dataset.links[i].target.name " + dataset.links[i].target.name);
+            // console.log("dataset.links[j].target.name " + dataset.links[j].target.name);
+            if (dataset.links[i].source.name === dataset.links[j].source.name && dataset.links[i].target.name === dataset.links[j].target.name) {
+                //  arrayID[i] = true;
+                if (!arrayID[j] && (j - 1) !== i) {
+                    arrayID[j] = true;
+                }
+
+                // op++;
+            }
+            // else {
+            //     arrayID[i] = false;
+            //     arrayID[i] = false;
+            // }
+        }
+        // op = i;
+    }
+
+    console.log(arrayID);
+
+
     force.on('tick', tick);
+
+
     // var force = d3.forceSimulation()
     //     .dataset.nodes(d3.values(dataset.nodes))
     //     .dataset.links(dataset.links)
@@ -1170,8 +564,8 @@
         .attr("viewBox", "0 -5 10 10")
         .attr('preserveAspectRatio', 'xMidYMid meet')
         .attr('markerUnits', 'userSpaceOnUse')
-        .attr("refX", 38)
-        .attr("refY", -5.4)
+        .attr("refX", 15.5)
+        .attr("refY", -1.8)
         .attr("markerWidth", 10)
         .attr("markerHeight", 10)
         .attr("orient", "auto")
@@ -1205,6 +599,7 @@
     //     return d.info;
     // });
     // txt.style('display', 'none');
+    console.log(dataset.links);
 
     function dragstarted(d) {
         if (!d3.event.active) force.alphaTarget(0.3).restart();
@@ -1236,7 +631,7 @@
         .attr('class', function (d, i) {
             return 'circle';
         })
-        .attr("r", 30)
+        .attr("r", 7.5)
         .call(d3.drag()
             .on("start", dragstarted)
             .on("drag", dragged)
@@ -1296,6 +691,23 @@
     var tmp = null;
     var ids = 0;
     console.log("-------->");
+    var text = textgroup.append("text")
+        .attr('id', function (d, i) {
+            return 'text' + '-' + d.name;
+        })
+        .style('font-size', '12px')
+        .attr('text-decoration', 'none')
+        .attr('text-anchor', 'middle')
+        .attr('pointer-events', 'none')
+        .attr('white-space', 'nowrap')
+        .attr('dy', '.4em')
+        .style('fill', '#000000')
+        .html(function (d) {
+            // if (d.title.length > 5) {
+            //  //   return '<tspan x="0" y="' + (-15) + '">' + d.title.substring(0, 5) + '</tspan><tspan x="0" y="' + -20 + '">' + d.title.substr(5) + '</tspan>';
+            // }
+            return '<tspan x="0" y="-20">' + d.title + '</tspan>';
+        });
     var path = t.data(dataset.links)
         .enter().append("path")
         .attr('id', function (d, i) {
@@ -1309,46 +721,14 @@
              return 'link link' + d.name + ' link-' + tmp + '-' + d.name + ' link-' + d.name + '-' + d.target.name + '-' + i + ' link1-' + d.name + '-' + d.target.name;
              tmp = null;
              }*/
-            console.log(' link2-' + d.name + '-' + d.target.name + '-' + i)
+            // console.log(' link2-' + d.name + '-' + d.target.name + '-' + i)
             return 'link link' + d.name + ' link-' + d.name + '-' + d.target.name + ' link2-' + d.name + '-' + d.target.name + '-' + i + ' link1-' + d.name + '-' + d.target.name;
-        })
-        .attr('stroke', function (d, i) {
-            return color(i);
         })
         .attr("marker-end", function (d) {
             return "url(#arrow)";
         });
-    var animation = false;
-    var gs = false;
-    d3.select(document).on('click', function (d, i) {
-
-        if (animation === false) {
-            if (d3.event.target.nodeName !== 'circle' && d3.event.target.nodeName !== 'path' && d3.event.target.nodeName !== 'text' && d3.event.target.nodeName !== 'LI' && d3.event.target.nodeName !== 'DIV' && d3.event.target.nodeName !== 'A' && d3.event.target.id !== 'vertical-slider') {
 
 
-                if (animation === false) {
-                    d3.selectAll('path').style('stroke-width', 1).style('display', 'inline');
-                    $("#info").css("visibility", "hidden");
-                    $("#info").css("height", "0");
-                    $("#info>.content").html("");
-                }
-                if (op) {
-                    var id = d3.select(".circle2").attr('class').indexOf('circle2');
-                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
-                    console.log(1);
-                    op = false;
-                    //  gs = false;
-                }
-
-                // d3.select("#circle-" + name).classed(d3.select("#circle-" + name).attr('class').substring(0,-8), true);
-                // if (!ts) {
-                //     txt.style('display', 'none');
-                // }
-            }
-        }
-
-    });
-    console.log("-------->");
     var tems;
     for (var g = 0; g < dataset.circuit.length; g++) {
         var u = dataset.circuit[g].target;
@@ -1368,7 +748,7 @@
             if (h === 0) {
 
                 var b = d3.selectAll('.link2-' + dataset.circuit[g].name + '-' + u[h].name + '-' + ids)._groups[0];
-
+                var txts = d3.select('#text-' + dataset.circuit[g].name)._groups[0];
                 // for (var y = 0; y < b.length; y++) {
                 //
                 //     var os = {
@@ -1392,13 +772,14 @@
                 // };
 
                 var os = {
-                    obj: f[0],
+                    obj: b[0],
                     name: dataset.circuit[g].name,
                     sub: u[h].name,
                     money: u[h].money,
                     datetime: u[h].datetime,
                     count: g,
-                    trigger: false
+                    trigger: false,
+                    text: txts
                 };
 
                 array.push(os);
@@ -1406,7 +787,7 @@
             }
             else {
                 var b = d3.selectAll('.link2-' + tems + '-' + u[h].name + '-' + ids)._groups[0];
-                console.log(b);
+                var txts = d3.select('#text-' + tems)._groups[0];
                 tems = u[h].name;
                 // for (var y = 0; y < b.length; y++) {
                 //     console.log('.link-' + dataset.circuit[g].name + '-' + u[h].name)
@@ -1427,29 +808,55 @@
                     money: u[h].money,
                     datetime: u[h].datetime,
                     count: g,
-                    trigger: true
+                    trigger: true,
+                    text: txts
                 };
+
                 array.push(os);
             }
             ids++;
         }
         // ids++;
     }
-    console.log(ids);
-    var text = textgroup.append("text")
-        .style('font-size', '12px')
-        .attr('text-decoration', 'none')
-        .attr('text-anchor', 'middle')
-        .attr('pointer-events', 'none')
-        .attr('white-space', 'nowrap')
-        .attr('dy', '.4em')
-        .style('fill', 'white')
-        .html(function (d) {
-            if (d.title.length > 5) {
-                return '<tspan x="0" y="' + (-7) + '">' + d.title.substring(0, 5) + '</tspan><tspan x="0" y="' + 10 + '">' + d.title.substr(5) + '</tspan>';
+
+    path.attr('stroke', function (d, i) {
+        return color(array[i].count);
+    });
+
+
+    var animation = false;
+    var gs = false;
+    d3.select(document).on('click', function (d, i) {
+
+        if (animation === false) {
+            if (d3.event.target.nodeName !== 'circle' && d3.event.target.nodeName !== 'path' && d3.event.target.nodeName !== 'text' && d3.event.target.nodeName !== 'LI' && d3.event.target.nodeName !== 'DIV' && d3.event.target.nodeName !== 'A' && d3.event.target.nodeName !== 'SPAN' && d3.event.target.id !== 'vertical-slider') {
+                $("path").removeClass("line1");
+                $("text").css('display', 'inline');
+                if (animation === false) {
+                    d3.selectAll('path').style('stroke-width', 1).style('display', 'inline');
+                    $("#info").css("visibility", "hidden");
+                    $("#info").css("height", "0");
+                    $("#info>.content").html("");
+                }
+                if (op) {
+                    var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                    op = false;
+                    //  gs = false;
+                }
+
+                // d3.select("#circle-" + name).classed(d3.select("#circle-" + name).attr('class').substring(0,-8), true);
+                // if (!ts) {
+                //     txt.style('display', 'none');
+                // }
             }
-            return '<tspan>' + d.title + '</tspan>';
-        });
+        }
+
+    });
+    console.log("-------->");
+
+
+    var index2 = 0;
     var gf = 0;
     var bi = 0;
     var op = false;
@@ -1457,14 +864,22 @@
     var gid = 0;
     var move = 0;
     var svg2 = d3.select("#ring").append('ul');
-    var g = svg2.selectAll('ul').data(dataset.circuit).enter().append('li').style('color', function (d, i) {
+    var g = svg2.selectAll('ul').data(dataset.circuit).enter().append('li');
+
+
+    g.append('span').style('color', function (d, i) {
         return color(i);
     }).text(function (d, i) {
-        return 'ring' + (i + 1);
+        return 'flow' + (i + 1);
     }).on('click', function (d, k) {
+
+
         if (animation === false) {
+            // save = true;
+            // animation = true;
             d3.selectAll('path').style('stroke-width', 1).style('display', 'none');
             d3.selectAll('defs path').style('stroke-width', 1).style('display', 'inline');
+            $("text").css('display', 'none');
 
             $("#info>.content").html("");
             if (op) {
@@ -1480,16 +895,19 @@
             if (op === false) {
                 $("#info>.content").html("");
                 $("#info").css("visibility", "visible");
-                $("#info").css("height", "150px");
+                $("#info").css("height", "180px");
 
-
+                //   var index3 = 0;
+                // var len = 0;
                 var name = d.name;
-                var tst = d.target.length - 1;
+                // var tst = d.target.length - 1;
                 d3.select("#circle-" + name).classed("circle2", true);
+
                 var temp;
                 for (var j = 0; j < array.length; j++) {
                     if (name === array[j].name && k === array[j].count) {
-
+                        // index3 = j;
+                        // index = j;
                         var count = 0;
 
                         var i = j + 1;
@@ -1500,6 +918,9 @@
                                 if (count === 0) {
                                     $(array[i - 1].obj).css('stroke-width', '1px').css('display', 'inline');
                                     $(array[i].obj).css('stroke-width', '1px').css('display', 'inline');
+
+                                    $(array[i - 1].text).css('display', 'inline');
+                                    $(array[i].text).css('display', 'inline');
                                     // $(array[i].obj).css('stroke-width', '3px').css('display', 'inline');
                                     // temp = (array[i].name === null ? array[i].sub : array[i].name);
 //                                    if (array[index].name === null) {
@@ -1512,22 +933,25 @@
 //                                            tiw = array[id].sub;
 //                                        }
 //                                    }
-                                    $("#info>.content").append("<div><div><span>" + name + "</span></div><div><span>" + array[i - 1].sub + "</span></div><div><span>¥" + array[i - 1].money + "</span></div><div><span>" + array[i - 1].datetime + "</span></div></div>")
-                                    $("#info>.content").append("<div><div><span>" + array[i - 1].sub + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+                                    $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (k + 1) + "</span></div><div><span>" + name + "</span></div><div><span>" + array[i - 1].sub + "</span></div><div><span>¥" + array[i - 1].money + "</span></div><div><span>" + array[i - 1].datetime + "</span></div></div>")
+                                    $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (k + 1) + "</span></div><div><span>" + array[i - 1].sub + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
                                     temp = array[i].sub;
                                 } else {
                                     $(array[i].obj).css('stroke-width', '1px').css('display', 'inline');
+                                    $(array[i].text).css('display', 'inline');
 
                                     // if (temp !== (array[i].name === null ? array[i].sub : array[i].name)) {
                                     //     $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + (array[i].name === null ? array[i].sub : array[i].name) + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
                                     //     temp = (array[i].name === null ? array[i].sub : array[i].name);
                                     // }
                                     if (array[i].name === null) {
-                                        $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+                                        $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (k + 1) + "</span></div><div><span>" + temp + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+                                        // $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
                                         temp = array[i].sub;
 
                                     } else {
-                                        $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+                                        $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (k + 1) + "</span></div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+                                        // $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
                                         temp = array[i].sub;
                                     }
                                 }
@@ -1537,6 +961,9 @@
                         } catch (e) {
 
                         }
+
+                        // len = count;
+
                         count = 0;
 
                         break;
@@ -1544,66 +971,273 @@
                 }
 
 
-//                if (bi === 0) {
-//
-//                } else {
-//                    for (var j = bi; j < array.length; j++) {
-//                        if (name === array[j].name) {
-//                            var count = 0;
-//                            for (var i = j + 1; array[i].sub !== null; i++) {
-//                                op = true;
-//                                if (count === 0) {
-//                                    $(array[i].obj).css('stroke-width', '3px').css('display', 'inline');
-//                                    temp = (array[i].name === null ? array[i].sub : array[i].name);
-//                                    $("#info>.content").append("<div><div><span>" + name + "</span></div><div><span>" + temp + "</span></div><div><span>¥" + array[i + 1].money + "</span></div><div><span>" + array[i + 1].datetime + "</span></div></div>")
-//                                } else {
-//                                    $(array[i].obj).css('stroke-width', '3px').css('display', 'inline');
-//                                    $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + (array[i].name === null ? array[i].sub : array[i].name) + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
-//                                    temp = (array[i].name === null ? array[i].sub : array[i].name);
-//                                }
-//                                count++;
-//                            }
-//                            count = 0;
-//                            bi = j;
-//                        }
-//                        break;
-//                    }
-//                }
-
-//                bi = 0;
-//                for (var j = 0; j < dataset.links.length; j++) {
-//
-//                    var tar = dataset.links[j].target.source;
-//
-//                    if (name === dataset.links[j].name) {
-//                        console.log(d.target)
-//                        console.log(dataset.links[j])
-//                        for (var i = 0; i < d.target.length; i++) {
-//                            op = true;
-//                            if (i === 0) {
-//                                d3.select('.link-' + name + '-' + d.target[i].name).style('stroke-width', '3px').style('display', 'inline');
-//                                temp = d.target[i].name;
-//                                $("#info>.content").append("<div><div><span>" + name + "</span></div><div><span>" + d.target[i].name + "</span></div><div><span>¥" + d.target[i].money + "</span></div><div><span>" + d.target[i].datetime + "</span></div></div>")
-//                            } else {
-//                                d3.select('.link-' + temp + '-' + d.target[i].name).style('stroke-width', '3px').style('display', 'inline');
-//                                $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + d.target[i].name + "</span></div><div><span>¥" + d.target[i].money + "</span></div><div><span>" + d.target[i].datetime + "</span></div></div>")
-//                                temp = d.target[i].name;
-//                            }
-//                        }
-//                        break;
-//                    }
-//                }
             }
         }
-
-
         //  txt.style('display', 'none');
 
         // d3.selectAll('.link-' + d.name).style('stroke-width', 3).style('display', 'inline');
     });
 
-    console.log(array)
+    var opens = 0;
+    var childrens = false;
+    var timer = null;
+    var tr = false;
+    g.append('a').text('播放动画').style('margin-left', '10px').on('click', function (d, k) {
+        var self = this;
+        childrens = true;
+        // start.innerText = '开始动画';
+        console.log($("#start").text())
+        if (timer) {
+            clearTimeout(timer);
+            timer = setTimeout(function () {
 
+                if (animation === false && $("#start").text() !== "停止动画") {
+                    $(self).text('停止动画');
+                    if ($("#start").text() === "开始动画" && $(self).text() === "停止动画") {
+                        tr = false;
+                    }
+                    save = true;
+                    d3.selectAll('path').style('stroke-width', 1).style('display', 'none');
+                    d3.selectAll('defs path').style('stroke-width', 1).style('display', 'inline');
+
+                    $("#info>.content").html("");
+                    if (op) {
+
+                        $("#info").css("visibility", "hidden");
+                        $("#info").css("height", "0");
+                        $("#info>.content").html("");
+                        var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                        d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                        op = false;
+
+                    }
+                    if (op === false) {
+
+                        $("#info>.content").html("");
+                        $("#info").css("visibility", "visible");
+                        $("#info").css("height", "180px");
+
+                        var index3 = 0;
+                        var len = 0;
+                        var name = d.name;
+                        var tst = d.target.length - 1;
+                        d3.select("#circle-" + name).classed("circle2", true);
+                        var temp;
+                        for (var j = 0; j < array.length; j++) {
+                            if (name === array[j].name && k === array[j].count) {
+                                index3 = j;
+                                index = j;
+                                var count = 0;
+
+                                var i = j + 1;
+                                try {
+                                    while (array[i].trigger !== false) {
+
+                                        op = true;
+//                                 if (count === 0) {
+//                                     $(array[i - 1].obj).css('stroke-width', '1px').css('display', 'inline');
+//                                     $(array[i].obj).css('stroke-width', '1px').css('display', 'inline');
+//                                     // $(array[i].obj).css('stroke-width', '3px').css('display', 'inline');
+//                                     // temp = (array[i].name === null ? array[i].sub : array[i].name);
+// //                                    if (array[index].name === null) {
+// //                                        console.log(array[index].sub);
+// //
+// //                                    } else {
+// //                                        var id = index + 1;
+// //                                        if (id < array.length) {
+// //                                            $("#info>.content").append("<div><div><span>" + array[index].name + "</span></div><div><span>" + array[id].sub + "</span></div><div><span>¥" + array[id].money + "</span></div><div><span>" + array[id].datetime + "</span></div></div>");
+// //                                            tiw = array[id].sub;
+// //                                        }
+// //                                    }
+//                                     $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (k + 1) + "</span></div><div><span>" + name + "</span></div><div><span>" + array[i - 1].sub + "</span></div><div><span>¥" + array[i - 1].money + "</span></div><div><span>" + array[i - 1].datetime + "</span></div></div>")
+//                                     $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (k + 1) + "</span></div><div><span>" + array[i - 1].sub + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+//                                     temp = array[i].sub;
+//                                 } else {
+//                                     $(array[i].obj).css('stroke-width', '1px').css('display', 'inline');
+//
+//                                     // if (temp !== (array[i].name === null ? array[i].sub : array[i].name)) {
+//                                     //     $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + (array[i].name === null ? array[i].sub : array[i].name) + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+//                                     //     temp = (array[i].name === null ? array[i].sub : array[i].name);
+//                                     // }
+//                                     if (array[i].name === null) {
+//                                         $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (k + 1) + "</span></div><div><span>" + temp + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+//                                         // $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+//                                         temp = array[i].sub;
+//
+//                                     } else {
+//                                         $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (k + 1) + "</span></div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+//                                         // $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+//                                         temp = array[i].sub;
+//                                     }
+//                                 }
+                                        count++;
+                                        i++;
+                                    }
+                                } catch (e) {
+
+                                }
+
+                                len = count;
+
+                                count = 0;
+
+                                // break;
+                            }
+                        }
+
+                        opens = k;
+                        $("text").css('display', 'none');
+                        startAnimation(speed, true, index3 + len + 1, self);
+
+                    }
+
+                }
+
+                if (animation === true && opens === k && $("#start").text() !== "停止动画") {
+                    clearInterval(time);
+                    time = null;
+                    index = 0;
+                    $("#info").css("visibility", "hidden");
+                    $("#info").css("height", "0");
+                    $("#info>.content").html("");
+                    d3.selectAll('path').style('stroke-width', 1).style('display', 'inline');
+                    d3.selectAll('text').style('stroke-width', 1).style('display', 'inline');
+                    op = false;
+                    var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                    t1 = false;
+                    tr = true;
+                    $(self).text('播放动画');
+                    animation = false;
+                    childrens = true;
+                }
+            }, 300);
+        } else {
+            timer = setTimeout(function () {
+
+                if (animation === false && $("#start").text() !== "停止动画") {
+                    $(self).text('停止动画');
+                    if ($("#start").text() === "开始动画" && $(self).text() === "停止动画") {
+                        tr = false;
+                    }
+                    save = true;
+                    d3.selectAll('path').style('stroke-width', 1).style('display', 'none');
+                    d3.selectAll('defs path').style('stroke-width', 1).style('display', 'inline');
+
+                    $("#info>.content").html("");
+                    if (op) {
+
+                        $("#info").css("visibility", "hidden");
+                        $("#info").css("height", "0");
+                        $("#info>.content").html("");
+                        var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                        d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                        op = false;
+
+                    }
+                    if (op === false) {
+
+                        $("#info>.content").html("");
+                        $("#info").css("visibility", "visible");
+                        $("#info").css("height", "180px");
+
+                        var index3 = 0;
+                        var len = 0;
+                        var name = d.name;
+                        var tst = d.target.length - 1;
+                        d3.select("#circle-" + name).classed("circle2", true);
+                        var temp;
+                        for (var j = 0; j < array.length; j++) {
+                            if (name === array[j].name && k === array[j].count) {
+                                index3 = j;
+                                index = j;
+                                var count = 0;
+
+                                var i = j + 1;
+                                try {
+                                    while (array[i].trigger !== false) {
+
+                                        op = true;
+//                                 if (count === 0) {
+//                                     $(array[i - 1].obj).css('stroke-width', '1px').css('display', 'inline');
+//                                     $(array[i].obj).css('stroke-width', '1px').css('display', 'inline');
+//                                     // $(array[i].obj).css('stroke-width', '3px').css('display', 'inline');
+//                                     // temp = (array[i].name === null ? array[i].sub : array[i].name);
+// //                                    if (array[index].name === null) {
+// //                                        console.log(array[index].sub);
+// //
+// //                                    } else {
+// //                                        var id = index + 1;
+// //                                        if (id < array.length) {
+// //                                            $("#info>.content").append("<div><div><span>" + array[index].name + "</span></div><div><span>" + array[id].sub + "</span></div><div><span>¥" + array[id].money + "</span></div><div><span>" + array[id].datetime + "</span></div></div>");
+// //                                            tiw = array[id].sub;
+// //                                        }
+// //                                    }
+//                                     $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (k + 1) + "</span></div><div><span>" + name + "</span></div><div><span>" + array[i - 1].sub + "</span></div><div><span>¥" + array[i - 1].money + "</span></div><div><span>" + array[i - 1].datetime + "</span></div></div>")
+//                                     $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (k + 1) + "</span></div><div><span>" + array[i - 1].sub + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+//                                     temp = array[i].sub;
+//                                 } else {
+//                                     $(array[i].obj).css('stroke-width', '1px').css('display', 'inline');
+//
+//                                     // if (temp !== (array[i].name === null ? array[i].sub : array[i].name)) {
+//                                     //     $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + (array[i].name === null ? array[i].sub : array[i].name) + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+//                                     //     temp = (array[i].name === null ? array[i].sub : array[i].name);
+//                                     // }
+//                                     if (array[i].name === null) {
+//                                         $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (k + 1) + "</span></div><div><span>" + temp + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+//                                         // $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+//                                         temp = array[i].sub;
+//
+//                                     } else {
+//                                         $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (k + 1) + "</span></div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+//                                         // $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+//                                         temp = array[i].sub;
+//                                     }
+//                                 }
+                                        count++;
+                                        i++;
+                                    }
+                                } catch (e) {
+
+                                }
+
+                                len = count;
+
+                                count = 0;
+
+                                // break;
+                            }
+                        }
+
+                        opens = k;
+                        $("text").css('display', 'none');
+                        startAnimation(speed, true, index3 + len + 1, self);
+                    }
+
+                }
+
+                if (animation === true && opens === k && $("#start").text() !== "停止动画") {
+                    clearInterval(time);
+                    time = null;
+                    index = 0;
+                    $("#info").css("visibility", "hidden");
+                    $("#info").css("height", "0");
+                    $("#info>.content").html("");
+                    d3.selectAll('path').style('stroke-width', 1).style('display', 'inline');
+                    d3.selectAll('text').style('stroke-width', 1).style('display', 'inline');
+                    op = false;
+                    var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                    t1 = false;
+                    tr = true;
+                    $(self).text('播放动画');
+                    animation = false;
+                    childrens = true;
+                }
+            }, 300);
+        }
+
+    });
 
     var t1 = false;
     var start = document.getElementById('start');
@@ -1668,22 +1302,92 @@
     // }
     var speed = 500;
     var start1 = false;
-    var kk = false;
-    $("#start").click(function () {
-        start1 = true;
 
-        startAnimation(speed, gs = false);
+    var kk = false;
+    var startTimers = null;
+    $("#start").click(function () {
+        var len = $("#ring>ul>li>a").length;
+        for (var p = 0; p < len; p++) {
+
+
+            // if ($("#start").text() === "开始动画" && $(self).text() === "停止动画") {
+            //
+            //     tr = false;
+            // }
+
+            if ($("#ring>ul>li>a").eq(p).text() === "停止动画" && $(this).text() === "开始动画") {
+                tr = false;
+                break;
+            }
+
+            if ($("#ring>ul>li>a").eq(p).text() !== "停止动画") {
+                tr = true;
+            }
+
+
+        }
+        if (tr) {
+            if (!childrens) {
+                start.innerText = '停止动画';
+                childrens = false;
+                if (startTimers) {
+                    clearTimeout(startTimers);
+                    startTimers = setTimeout(function () {
+                        start1 = true;
+                        startAnimation(speed, gs = false, array.length);
+                        // animation = false;
+                    }, 300);
+
+                } else {
+                    startTimers = setTimeout(function () {
+                        start1 = true;
+                        startAnimation(speed, gs = false, array.length);
+                        //  animation = false;
+                    }, 300);
+                }
+            } else {
+                start.innerText = '停止动画';
+                childrens = false;
+                $("#info>.content").html("");
+                $("#info").css("visibility", "visible");
+                $("#info").css("height", "180px");
+                path.style('display', 'none');
+                if (startTimers) {
+                    clearTimeout(startTimers);
+                    startTimers = setTimeout(function () {
+                        start1 = true;
+                        startAnimation(speed, gs = false, array.length);
+                        //   animation = false;
+                    }, 300);
+
+                } else {
+                    startTimers = setTimeout(function () {
+                        start1 = true;
+                        startAnimation(speed, gs = false, array.length);
+                        //  animation = false;
+                    }, 300);
+                }
+            }
+
+        }
+
     });
 
+    // var sum = 100;
     $.fn.addSliderSegments = function (amount, orientation) {
         return this.each(function () {
             if (orientation == "vertical") {
-                var output = ''
-                    , i;
+                var output = '',
+                    i;
                 for (i = 1; i <= amount - 2; i++) {
-                    output += '<div class="ui-slider-segment" style="top:' + 100 / (amount - 1) * i + '%;"></div>';
+                    if (amount === 1) {
+                        output += "<div class=\"ui-slider-segment\" style=top:" + 100 / (amount - 1) * i + "%><span style=margin-right:-20px;padding-left:15px;position:relative;bottom:9px;font-size:14px;>" + (5 - amount) + "</span></div>";
+                    }
+                    else {
+                        //sum += 200;
+                        output += "<div class=\"ui-slider-segment\" style=top:" + 100 / (amount - 1) * i + "%><span style=margin-right:-20px;padding-left:15px;position:relative;bottom:9px;font-size:14px;>" + (5 - i) + "</span></div>";
+                    }
                 }
-                ;
                 $(this).prepend(output);
             } else {
                 var segmentGap = 100 / (amount - 0.5) + "%"
@@ -1698,6 +1402,7 @@
     var $verticalSlider = $("#vertical-slider");
     var $horizontalSlider = $("#horizontal-slider");
 
+    var sliderIndex = 0;
     var sliders;
 
     if ($verticalSlider.length) {
@@ -1713,31 +1418,31 @@
                         t1 = false;
                         gs = true;
                         start1 = false;
-                        startAnimation(speed = 100, true);
+                        startAnimation(speed = 100, true, array.length);
                     }
                     if (ui.value === 4) {
                         t1 = false;
                         gs = true;
                         start1 = false;
-                        startAnimation(speed = 300, true);
+                        startAnimation(speed = 300, true, array.length);
                     }
                     if (ui.value === 3) {
                         t1 = false;
                         gs = true;
                         start1 = false;
-                        startAnimation(speed = 500, true);
+                        startAnimation(speed = 500, true, array.length);
                     }
                     if (ui.value === 2) {
                         t1 = false;
                         gs = true;
                         start1 = false;
-                        startAnimation(speed = 800, true);
+                        startAnimation(speed = 800, true, array.length);
                     }
                     if (ui.value === 1) {
                         t1 = false;
                         gs = true;
                         start1 = false;
-                        startAnimation(speed = 1000, true);
+                        startAnimation(speed = 1000, true, array.length);
                     }
                     ftime = false;
                 }
@@ -1751,8 +1456,10 @@
             value: 0,
             orientation: "horizontal",
             range: "min",
-            slide: function (event, ui) {
-                if (animation === false && ui.value >= 1) {
+            slide: function (e, ui) {
+                e.stopPropagation();
+                sliderIndex = ui.value;
+                if (animation === false && sliderIndex >= 1) {
                     if (op) {
                         var id = d3.select(".circle2").attr('class').indexOf('circle2');
                         d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
@@ -1760,9 +1467,9 @@
                     }
                     $("#info>.content").html("");
                     $("#info").css("visibility", "visible");
-                    $("#info").css("height", "150px");
+                    $("#info").css("height", "180px");
                     path.style('display', 'none');
-                    for (var i = 0; i < ui.value; i++) {
+                    for (var i = 0; i < sliderIndex; i++) {
                         console.log(array[i])
                         $(array[i].obj).css('stroke-width', '1px').css('display', 'inline');
 
@@ -1776,15 +1483,19 @@
                         // }
 
                         if (array[i].name === null) {
-                            $("#info>.content").append("<div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+                            $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (array[i].count + 1) + "</span></div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+
+                            //   $("#info>.content").append("<div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
                             sliderTiw = array[i].sub;
 
                         } else {
-                            $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+
+                            $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (array[i].count + 1) + "</span></div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+                            //  $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
                             sliderTiw = array[i].sub;
                         }
                     }
-                } else {
+                } else if (animation === false && sliderIndex === 0) {
                     path.style('stroke-width', '1px').style('display', 'inline');
                     $("#info>.content").html("");
                     $("#info").css("visibility", "hidden");
@@ -1803,7 +1514,200 @@
     //
     //    });
 
-    var index = 0;
+    $("#prev").click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        --sliderIndex;
+        if (sliderIndex <= 0) {
+            sliderIndex = 0;
+            $horizontalSlider.slider("value", 0);
+            if (animation === false && sliderIndex >= 1) {
+                if (op) {
+                    var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                    op = false;
+                }
+                $("#info>.content").html("");
+                $("#info").css("visibility", "visible");
+                $("#info").css("height", "180px");
+                path.style('display', 'none');
+                for (var i = 0; i < sliderIndex; i++) {
+                    console.log(array[i])
+                    $(array[i].obj).css('stroke-width', '1px').css('display', 'inline');
+
+
+                    // if (array[i].name === null) {
+                    //     $("#info>.content").append("<div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i + 1].sub + "</span></div><div><span>¥" + array[i + 1].money + "</span></div><div><span>" + array[i + 1].datetime + "</span></div></div>");
+                    //    sliderTiw = array[i + 1].sub;
+                    // } else {
+                    //     $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i + 1].sub + "</span></div><div><span>¥" + array[i + 1].money + "</span></div><div><span>" + array[i + 1].datetime + "</span></div></div>");
+                    //     sliderTiw = array[i + 1].sub;
+                    // }
+
+                    if (array[i].name === null) {
+                        $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (array[i].count + 1) + "</span></div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+
+                        //   $("#info>.content").append("<div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+                        sliderTiw = array[i].sub;
+
+                    } else {
+
+                        $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (array[i].count + 1) + "</span></div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+                        //  $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+                        sliderTiw = array[i].sub;
+                    }
+                }
+            } else if (animation === false && sliderIndex === 0) {
+                path.style('stroke-width', '1px').style('display', 'inline');
+                $("#info>.content").html("");
+                $("#info").css("visibility", "hidden");
+                $("#info").css("height", "0");
+            }
+        } else {
+            $horizontalSlider.slider("value", sliderIndex);
+            if (animation === false && sliderIndex >= 1) {
+                if (op) {
+                    var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                    op = false;
+                }
+                $("#info>.content").html("");
+                $("#info").css("visibility", "visible");
+                $("#info").css("height", "180px");
+                path.style('display', 'none');
+                for (var i = 0; i < sliderIndex; i++) {
+                    console.log(array[i])
+                    $(array[i].obj).css('stroke-width', '1px').css('display', 'inline');
+
+
+                    // if (array[i].name === null) {
+                    //     $("#info>.content").append("<div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i + 1].sub + "</span></div><div><span>¥" + array[i + 1].money + "</span></div><div><span>" + array[i + 1].datetime + "</span></div></div>");
+                    //    sliderTiw = array[i + 1].sub;
+                    // } else {
+                    //     $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i + 1].sub + "</span></div><div><span>¥" + array[i + 1].money + "</span></div><div><span>" + array[i + 1].datetime + "</span></div></div>");
+                    //     sliderTiw = array[i + 1].sub;
+                    // }
+
+                    if (array[i].name === null) {
+                        $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (array[i].count + 1) + "</span></div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+
+                        //   $("#info>.content").append("<div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+                        sliderTiw = array[i].sub;
+
+                    } else {
+
+                        $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (array[i].count + 1) + "</span></div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+                        //  $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+                        sliderTiw = array[i].sub;
+                    }
+                }
+            } else if (animation === false && sliderIndex === 0) {
+                path.style('stroke-width', '1px').style('display', 'inline');
+                $("#info>.content").html("");
+                $("#info").css("visibility", "hidden");
+                $("#info").css("height", "0");
+            }
+        }
+    });
+
+
+    $("#next").click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        ++sliderIndex;
+        if (sliderIndex >= array.length) {
+            sliderIndex = array.length;
+            $horizontalSlider.slider("value", array.length);
+            if (animation === false && sliderIndex >= 1) {
+                if (op) {
+                    var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                    op = false;
+                }
+                $("#info>.content").html("");
+                $("#info").css("visibility", "visible");
+                $("#info").css("height", "180px");
+                path.style('display', 'none');
+                for (var i = 0; i < sliderIndex; i++) {
+                    console.log(array[i])
+                    $(array[i].obj).css('stroke-width', '1px').css('display', 'inline');
+
+
+                    // if (array[i].name === null) {
+                    //     $("#info>.content").append("<div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i + 1].sub + "</span></div><div><span>¥" + array[i + 1].money + "</span></div><div><span>" + array[i + 1].datetime + "</span></div></div>");
+                    //    sliderTiw = array[i + 1].sub;
+                    // } else {
+                    //     $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i + 1].sub + "</span></div><div><span>¥" + array[i + 1].money + "</span></div><div><span>" + array[i + 1].datetime + "</span></div></div>");
+                    //     sliderTiw = array[i + 1].sub;
+                    // }
+
+                    if (array[i].name === null) {
+                        $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (array[i].count + 1) + "</span></div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+
+                        //   $("#info>.content").append("<div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+                        sliderTiw = array[i].sub;
+
+                    } else {
+
+                        $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (array[i].count + 1) + "</span></div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+                        //  $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+                        sliderTiw = array[i].sub;
+                    }
+                }
+            } else if (animation === false && sliderIndex === 0) {
+                path.style('stroke-width', '1px').style('display', 'inline');
+                $("#info>.content").html("");
+                $("#info").css("visibility", "hidden");
+                $("#info").css("height", "0");
+            }
+        } else {
+            $horizontalSlider.slider("value", sliderIndex);
+            if (animation === false && sliderIndex >= 1) {
+                if (op) {
+                    var id = d3.select(".circle2").attr('class').indexOf('circle2');
+                    d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
+                    op = false;
+                }
+                $("#info>.content").html("");
+                $("#info").css("visibility", "visible");
+                $("#info").css("height", "180px");
+                path.style('display', 'none');
+                for (var i = 0; i < sliderIndex; i++) {
+                    console.log(array[i])
+                    $(array[i].obj).css('stroke-width', '1px').css('display', 'inline');
+
+
+                    // if (array[i].name === null) {
+                    //     $("#info>.content").append("<div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i + 1].sub + "</span></div><div><span>¥" + array[i + 1].money + "</span></div><div><span>" + array[i + 1].datetime + "</span></div></div>");
+                    //    sliderTiw = array[i + 1].sub;
+                    // } else {
+                    //     $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i + 1].sub + "</span></div><div><span>¥" + array[i + 1].money + "</span></div><div><span>" + array[i + 1].datetime + "</span></div></div>");
+                    //     sliderTiw = array[i + 1].sub;
+                    // }
+
+                    if (array[i].name === null) {
+                        $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (array[i].count + 1) + "</span></div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+
+                        //   $("#info>.content").append("<div><div><span>" + sliderTiw + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+                        sliderTiw = array[i].sub;
+
+                    } else {
+
+                        $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (array[i].count + 1) + "</span></div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+                        //  $("#info>.content").append("<div><div><span>" + array[i].name + "</span></div><div><span>" + array[i].sub + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>");
+                        sliderTiw = array[i].sub;
+                    }
+                }
+            } else if (animation === false && sliderIndex === 0) {
+                path.style('stroke-width', '1px').style('display', 'inline');
+                $("#info>.content").html("");
+                $("#info").css("visibility", "hidden");
+                $("#info").css("height", "0");
+            }
+        }
+    });
+
+
     var it = 0;
     var sets;
     var temp;
@@ -1875,19 +1779,36 @@
     var trigger = false;
 
     var str = array[0].name;
-    console.log(str);
 
-    function startAnimation(speed, target, self) {
+
+    var save = false;
+
+    $("#save").click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (animation && !save) {
+            clearInterval(time);
+            index = index2;
+            // animation = false;
+            start.innerText = '开始动画';
+            start1 = true;
+            trigger = true;
+            t1 = false;
+        }
+    });
+
+    function startAnimation(speed, target, len, self) {
+
 
         if (op) {
             var id = d3.select(".circle2").attr('class').indexOf('circle2');
             d3.select(".circle2").attr('class', d3.select(".circle2").attr('class').substring(0, id));
-            console.log(1);
             op = false;
             //  gs = false;
         }
         if (start1 === false) {
             clearInterval(time);
+
             //$("#info>.content").html("");
             start1 = true;
         }
@@ -1901,23 +1822,22 @@
 //                clearInterval(time);
 //            }
 
+
             time = setInterval(function () {
-                console.log(speed);
+
                 if (target === false && trigger === false) {
                     path.style('display', 'none');
                     $("#info>.content").html("");
                 }
-                start.innerText = '停止动画';
+                childrens = true;
                 t1 = true;
                 ts = true;
                 ftime = false;
-                if (index < array.length) {
+                if (index < len) {
                     $("#info").css("visibility", "visible");
-                    $("#info").css("height", "150px");
+                    $("#info").css("height", "180px");
 
                     for (var i = 0; i < dataset.circuit.length; i++) {
-                        // gs = false;
-
                         if (dataset.circuit[i].name === array[index].name) {
                             d3.select("#circle-" + array[index].name).classed("circle2", true);
                             if (str !== array[index].name) {
@@ -1930,16 +1850,22 @@
                             }
                             str = array[index].name;
                         }
-
                     }
 
-
+                    $(array[index].text).css('display', 'inline');
                     if (array[index].name === null) {
-                        $("#info>.content").append("<div><div><span>" + sliderTiw + "</span></div><div><span>" + array[index].sub + "</span></div><div><span>¥" + array[index].money + "</span></div><div><span>" + array[index].datetime + "</span></div></div>");
+                        //  $("#info>.content").append("<div><div><span>" + temp + "</span></div><div><span>" + (array[i].name === null ? array[i].sub : array[i].name) + "</span></div><div><span>¥" + array[i].money + "</span></div><div><span>" + array[i].datetime + "</span></div></div>")
+
+                        $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (array[index].count + 1) + "</span></div><div><span>" + sliderTiw + "</span></div><div><span>" + array[index].sub + "</span></div><div><span>¥" + array[index].money + "</span></div><div><span>" + array[index].datetime + "</span></div></div>")
+
+                        //   $("#info>.content").append("<div><div><span>" + sliderTiw + "</span></div><div><span>" + array[index].sub + "</span></div><div><span>¥" + array[index].money + "</span></div><div><span>" + array[index].datetime + "</span></div></div>");
                         sliderTiw = array[index].sub;
 
                     } else {
-                        $("#info>.content").append("<div><div><span>" + array[index].name + "</span></div><div><span>" + array[index].sub + "</span></div><div><span>¥" + array[index].money + "</span></div><div><span>" + array[index].datetime + "</span></div></div>");
+
+                        $("#info>.content").append("<div><div><span>" + dataset.group + "</span></div><div><span>flow" + (array[index].count + 1) + "</span></div><div><span>" + array[index].name + "</span></div><div><span>" + array[index].sub + "</span></div><div><span>¥" + array[index].money + "</span></div><div><span>" + array[index].datetime + "</span></div></div>")
+
+                        // $("#info>.content").append("<div><div><span>" + array[index].name + "</span></div><div><span>" + array[index].sub + "</span></div><div><span>¥" + array[index].money + "</span></div><div><span>" + array[index].datetime + "</span></div></div>");
                         sliderTiw = array[index].sub;
                     }
 
@@ -1965,9 +1891,18 @@
                     // var cir = dataset.circuit[index];
 
                     gs = false;
-
-                    //   gc = true;
                     $(array[index].obj).css('stroke-width', '1px').css('display', 'inline');
+                    //  $(array[index].obj).css('stroke-width', '1px').css('display', 'inline').addClass("line1");
+                    //   gc = true;
+                    // if (array[index].count === array[index + 1].count) {
+                    //     $(array[index].obj).css('stroke-width', '1px').css('display', 'inline').addClass("line1");
+                    // } else {
+                    //     $(array[index + 1].obj).css('stroke-width', '1px').css('display', 'inline').addClass("line1");
+                    //     if (len === array.length) {
+                    //         $("path").removeClass("line1");
+                    //     }
+                    // }
+
                     // var sets = setInterval(function () {
                     //     // outs(cir, cir.target.length);
                     //
@@ -1994,20 +1929,27 @@
 
 
                     index++;
-
+                    index2 = index;
 
                 } else {
+                    childrens = false;
                     ftime = true;
                     gs = true;
                     start.innerText = '开始动画';
                     animation = false;
                     t1 = false;
                     trigger = false;
+                    tr = true;
+                    save = false;
+                    $("path").removeClass("line1");
                     index = 0;
                     it = 0;
                     ts = false;
                     start1 = false;
                     clearInterval(time);
+                    if (self) {
+                        $(self).text('播放动画');
+                    }
                     time = null;
                     ss = true;
 //                    $("#info").css("visibility", "hidden");
@@ -2022,9 +1964,12 @@
 
         } else {
             clearInterval(time);
+            $("path").removeClass("line1");
             ftime = true;
             time = null;
             animation = false;
+            save = false;
+            childrens = false;
 //            path.style('stroke-width', '1px');
             if (gs) {
                 $("#info>.content").html("");
@@ -2045,6 +1990,7 @@
                 t1 = false;
                 ts = false;
                 start1 = false;
+                //  index2 = index;
                 index = 0;
                 path.style('display', 'inline').style('stroke-width', '1px');
                 $("#info>.content").html("");
@@ -2064,24 +2010,60 @@
 
     }
 
+    var tmps = {};
+
+    var cgs = 1;
+    console.log(arrayID)
+
     function tick() {
 
+        circle.attr("cx", function (d) {
+            return d.x;
+        }).attr("cy", function (d) {
+            return d.y;
+        });
+
         path.attr("d", function (d, i) {
+            // tems.target = {};
+            // tems.source = {};
+            //
+            // if (tems.target.x === d.target.x && tems.target.y === d.target.y && tems.source.x === d.source.x && tems.source.y === d.source.y) {
+            //     var dx = d.target.x - d.source.x,
+            //         dy = d.target.y - d.source.y,
+            //         dr = Math.sqrt((dx + i * 5) * (dx + i * 5) + (dy + i * 5) * (dy + i * 5));
+            //     tems = {};
+            //     return "M" + d.source.x + i * 5 + ","
+            //         + d.source.y + i * 5 + "A" + dr + ","
+            //         + dr + " 0 0,1 " + d.target.x + i * 5 + ","
+            //         + d.target.y + i * 5;
+            // } else {
+            //
+            //     tems.target.x = d.target.x;
+            //     tems.target.y = d.target.y;
+            //     tems.source.x = d.source.x;
+            //     tems.source.y = d.source.y;
+            // }
+            // console.log("---->d.target.x" + d.target.x);
+            // console.log("---->d.target.y" + d.target.y);
+            // console.log("---->d.source.x" + d.source.x);
+            // console.log("---->d.source.y" + d.source.y);
+            // console.log("----->copy " + arrayID[i]);
+            if (arrayID[i]) {
+//                console.log(i);
+                return "M" + d.source.x + ","
+                    + d.source.y + "A" + 15 * (i + 1) + ","
+                    + 15 * (i + 1) + " 0 0,1 " + d.target.x + ","
+                    + d.target.y;
+            }
             var dx = d.target.x - d.source.x,
                 dy = d.target.y - d.source.y,
-                dr = Math.sqrt((dx + i * 5) * (dx + i * 5) + (dy + i * 5) * (dy + i * 5));
+                dr = Math.sqrt((dx + i * 15) * (dx + i * 15) + (dy + i * 15) * (dy + i * 15));
             return "M" + d.source.x + i * 5 + ","
                 + d.source.y + i * 5 + "A" + dr + ","
                 + dr + " 0 0,1 " + d.target.x + i * 5 + ","
                 + d.target.y + i * 5;
         });
 
-        circle.attr("cx", function (d) {
-            return d.x;
-        })
-            .attr("cy", function (d) {
-                return d.y;
-            });
 
         text.attr("transform", function (d) {
             return "translate(" + d.x + "," + d.y + ")";
