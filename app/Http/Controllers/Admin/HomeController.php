@@ -73,7 +73,12 @@ class HomeController extends Controller
                 $chart->Money = 0;
 //                dd($chart);
                 $tree = "";
+                $treeAll = array();
+                $first = array();
+                $second = array();
+                $third = array();
                 foreach ($datas as $list){
+                    $treeKey = (object)array();
 //                    $count = array();
 //                    dd($list);
 //                    preg_match_all("/\t\TO[\s\S]+\{[\s\S]+\}\r\n/U",$list,$result,PREG_PATTERN_ORDER);
@@ -85,8 +90,13 @@ class HomeController extends Controller
                     preg_match_all("/\t\Value[\s\S]+\r\n/U",$list,$l,true);
                     $k = explode('Name',$j[0][0]);
                     $m = explode('Value',$l[0][0]);
+//                    dd($k);
+                    $first[trim($k[1])] = trim($m[1]);
+                    $treeKey->name = trim($k[1]);
+                    $treeKey->value = trim($m[1]);
                     $all->allMoney += trim($m[1]);
                     $chart->Money += trim($m[1]);
+//                    dd($k[1]);
 //                    dd($m);
                     if(!in_array(trim($k[1]),$accounts)){
                         array_push($accounts,trim($k[1]));
@@ -95,17 +105,52 @@ class HomeController extends Controller
                     $childrens = "";
                     $z = $result[0];
 //                    dd($z);
+                    $keyStart = 0;
+                    $treeKey->child = array();
+                    if(!array_key_exists(trim($k[1]),$second)){
+                        $second[trim($k[1])] = array();
+                    }
+                    if(!array_key_exists(trim($k[1]),$third)){
+                        $third[trim($k[1])] = array();
+                    }
                     foreach ($z as $a => $b){
+//                        dd($b);
+                        $keyChild = (object)array();
+//                        $treeKey->child[1] = 1;
 //                dd($b);
                         preg_match_all("/\t\TO[\s\S]+\r\n/U",$b,$c,true);
 //                dd($c);
 //                dd($c[0][0]);
                         $h = explode('|',$c[0][0]);
                         $g = explode("TO",$h[0]);
+                        $keyChild->name = trim($g[1]);
+                        if(!array_key_exists(trim($g[1]),$second[trim($k[1])])){
+                            $second[trim($k[1])][trim($g[1])] = $c[0][0];
+                        }else{
+                            $second[trim($k[1])][trim($g[1])] = $second[trim($k[1])][trim($g[1])].','.$c[0][0];
+//                            $second[(trim($k[1]).','.trim($g[1]))] = $second[(trim($k[1]).','.trim($g[1]))].','.$c[0][0];
+                        }
+                        if(!array_key_exists(trim($g[1]),$third[trim($k[1])])){
+                            $third[trim($k[1])][trim($g[1])] = array();
+                        }
+
 //                dd($g);
+
+//                        }else{
+//                            $treeKey->child[trim($g[1])] = 1;
+//                        }
+
+//                        if($keyStart != trim($g[1])){
+//                            $keyStart = trim($g[1]);
+//                        }
                         if(!in_array(trim($g[1]),$accounts)){
                             array_push($accounts,trim($g[1]));
                         }
+//                        if(!array_key_exists(trim($g[1]),$treeKey[trim($k[1])])){
+//                            $treeKey[trim($k[1])][trim($g[1])]["data"] = "".$b;
+//                        }else{
+//                            $treeKey[trim($k[1])][trim($g[1])]["data"] = $treeKey[trim($k[1])][trim($g[1])]["data"].$b;
+//                        }
 //                        if(!array_key_exists(trim($g[1]),$count)){
 //                            $chart->count++;
 //                            $all->allCounts++;
@@ -116,12 +161,37 @@ class HomeController extends Controller
 //                dd($d);
                         $e = explode("\r\n",trim($d[0][0]));
                         $children = "";
+//                        if(!array_key_exists(trim($g[1]),$treeKey->child)) {
+//                            $treeKey->child[trim($g[1])] = $keyChild;
+//                        }else{
+//
+//                        }
+//                        $treeKey[trim($k[1])][trim($g[1])]["count"] = array();
 //                        dd($e);
                         for($i = 1;$i<count($e)-1;$i++){
                             $f = explode('|',$e[$i]);
+//                            dd($f[0]);
                             if(!in_array(trim($f[0]),$accounts)){
                                 array_push($accounts,trim($f[0]));
                             }
+                            if(!array_key_exists(trim($f[0]),$third[trim($k[1])][trim($g[1])])){
+                                $third[trim($k[1])][trim($g[1])][trim($f[0])] = $e[$i];
+                            }else{
+                                $third[trim($k[1])][trim($g[1])][trim($f[0])] = $third[trim($k[1])][trim($g[1])][trim($f[0])].','.$e[$i];
+                            }
+
+//                            if(!array_key_exists((trim($k[1]).','.trim($k[1]).','.trim($f[0])),$third)){
+//                                $third[(trim($k[1]).','.trim($g[1]).','.trim($f[0]))] = $e[$i];
+//                            }else{
+//                                $third[(trim($k[1]).','.trim($g[1]).','.trim($f[0]))] = $third[(trim($k[1]).','.trim($g[1]).','.trim($f[0]))].','.$e[$i];
+//                            }
+
+//                            if(!array_key_exists(trim($f[0]),$treeKey[trim($k[1])][trim($g[1])]["count"])){
+//                                $treeKey[trim($k[1])][trim($g[1])]["count"][trim($f[0])] = "".$e[$i];
+//                            }else{
+//                                $treeKey[trim($k[1])][trim($g[1])]["count"][trim($f[0])] = $treeKey[trim($k[1])][trim($g[1])]["count"][trim($f[0])].$e[$i];
+//                            }
+//                            dd($treeKey);
 //                            if(!array_key_exists(trim($f[0]),$count)){
 //                                $chart->count++;
 //                                $all->allCounts++;
@@ -132,17 +202,81 @@ class HomeController extends Controller
                             $children = $children.$child;
 //                    array_push($children,$child);
                         }
+//                        dd($treeKey);
                         $node = "{name:'".trim($g[1])."',money:'".trim($h[1])."',datetime:'".trim($h[2])."',children:[".$children."]},";
                         $childrens = $childrens.$node;
 //                return $node;
 //                dd($e);
                     }
+//                    dd($treeKey);
+//                    dd($keyStart);
                     $nodes = "{name:'".trim($k[1])."',money:'".trim($m[1])."',children:[".$childrens."]},";
                     $tree = $tree.$nodes;
 //            return  $nodes;
 
-
+                    array_push($treeAll,$treeKey);
                 }
+                $lastTree = "";
+                foreach ($first  as $fr => $fv){
+//                    dd($fv);
+                    $fr_ch = "";
+                    foreach ($second[$fr] as $se => $sv){
+//                        dd($sv);
+                        $sv_arr = explode(',',$sv);
+//                        dd($sv_arr);
+                        $sv_ch = "";
+                        foreach ($sv_arr as $sv_k => $sv_v){
+                            $sv_ch_arr = explode("|",$sv_v);
+//                            dd($sv_ch_arr);
+                            $sv_ch = $sv_ch."{money:'".trim($sv_ch_arr[1])."',datetime:'".trim($sv_ch_arr[2])."'},";
+                        }
+
+//                        dd($sv_ch);
+
+//                        dd($third[$fr][$se]);
+                        $th_ch = '';
+                        foreach ($third[$fr][$se] as $th => $tv){
+//                            dd($tv);
+                            $third_ch = explode(',',$tv);
+//                            dd($third_ch);
+                            $v_fr = "";
+                            foreach ($third_ch as $ch_k => $ch_v){
+//                                dd($ch_v);
+                                $k_ch = explode("|",$ch_v);
+                                $v_fr = $v_fr."{money:'".trim($k_ch[1])."',datetime:'".trim($k_ch[2])."'},";
+//                                dd($k_ch);
+                            }
+                            $v_fr = "{name:'".$th."',count:[".$v_fr."]},";
+//                            dd($v_fr);
+//                            dd($fr);
+                            $th_ch = $th_ch.$v_fr;
+                        }
+                        $th_ch = "children:[".$th_ch."]";
+//                        dd($th_ch);
+                        $sv_ch = "children:[{name:'".$se."',count:[".$sv_ch."],".$th_ch."}]";
+                        $fr_ch = $fr_ch."{name:'".$fr."',money:'".$fv."',count:[],".$sv_ch."},";
+//                        dd($fr_ch);
+//                        dd($sv_ch);
+                    }
+                    $lastTree = $lastTree.$fr_ch;
+//                    return $lastTree;
+//                    dd($lastTree);
+//                    dd($fr_ch);
+                }
+                $lastTree = "{name:'',children:[".$lastTree."]}";
+//                return $lastTree;
+                return view('common.d3.show',compact('lastTree'));
+//                dd($third);
+//                dd($second);
+//                dd($first);
+//                dd($treeAll);
+//                foreach ($treeKey as $keyValue){
+//                    dd($keyValue);
+//                }
+//                foreach ($datas as $list){
+//                    dd($list);
+//                }
+                dd($treeKey);
                 $all->countsSum += count($accounts);
                 $chart->accounts = $accounts;
                 $trees = "{name:'',children:[".$tree."]}";

@@ -65,7 +65,7 @@
                 </a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a class="J_menuItem" href="{{ url('/admin/tree') }}" data-index="0">文件列表图形</a>
+                        <a class="J_menuItem" href="{{ url('/admin/tree') }}" data-index="0">数据文件</a>
                     </li>
                     {{--<li>--}}
                         {{--<a class="J_menuItem" href="{{ url('/admin/upload') }}" data-index="0">文件上传</a>--}}

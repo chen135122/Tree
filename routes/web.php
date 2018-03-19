@@ -50,6 +50,19 @@ Route::prefix('admin')->namespace('Admin')->group(function() {
     Route::post('/tree','HomeController@treePost');
     Route::post('/upload','HomeController@upload');
     Route::get('/index','HomeController@backIndex');
+    Route::get('/test',function (){
+        $array = array();
+        $array['1'] = 111;
+        $array['1']['2'] = 111222;
+        $array['2'] = 222;
+        $array['3']['1'] = 311;
+        $array['3']['2'] = 322;
+//        $array['3']['1']['1'] = 3111111;
+//        $array['3']['1']['2'] = 3111222;
+//        $array['3']['2']['1'] = 3222111;
+//        $array['3']['2']['2'] = 3222222;
+        dd($array);
+    });
 
 
     // 权限管理
